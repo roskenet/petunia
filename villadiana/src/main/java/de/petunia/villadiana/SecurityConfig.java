@@ -13,7 +13,7 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
-@Profile("production")
+@Profile("prod")
 @EnableWebSecurity
 public class SecurityConfig {
 
