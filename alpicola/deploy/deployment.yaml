@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alpicola
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alpicola
+  template:
+    metadata:
+      labels:
+        app: alpicola
+    spec:
+      containers:
+      - name: alpicola
+        image: roskenet/alpicola:1.0.0
+        ports:
+        - name: www
+          containerPort: 3000 
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: alpicola
+spec:
+  selector:
+    app: alpicola
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: www
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: alpicola
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: "alpicola"
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: alpicola
+                port:
+                  number: 80
+
