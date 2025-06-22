@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: villadiana
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+  session:
+    store-type: redis
+    redis:
+      namespace: petunia:session
+    timeout: 30m
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://keycloak/realms/petunia   # OIDC discovery
+        registration:
+          keycloak:
+            client-id: villadiana
+            client-secret: 6w8HibfpYVEQIgMTKAFXFPMC8NgaOHBU
+            authorization-grant-type: authorization_code
+            scope: openid,profile,email
+  data:
+    redis:
+      host: valkey
+      port: 6379
+      password: password
