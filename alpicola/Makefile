@@ -1,10 +1,10 @@
 APP_NAME=alpicola
 APP_VERSION=1.0.0
-IMAGE_NAME=$(APP_NAME):${APP_VERSION}
+IMAGE_NAME=roskenet/$(APP_NAME):${APP_VERSION}
 CONTAINER_NAME=$(APP_NAME)
 PORT=3000
 
-.PHONY: build run stop dev logs clean
+.PHONY: build run stop dev logs deploy clean
 
 build:
 	docker build -t $(IMAGE_NAME) .
@@ -26,3 +26,11 @@ logs:
 
 clean: stop
 	docker rmi $(IMAGE_NAME)
+
+deploy: build
+		kubectl config use-context minikube
+		kubectl apply -f deploy/deployment.yaml
+
+undeploy:
+		kubectl config use-context minikube
+		kubectl delete -f deploy/deployment.yaml
