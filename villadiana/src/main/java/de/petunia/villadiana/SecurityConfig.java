@@ -27,6 +27,7 @@ public class SecurityConfig {
 
 //    @Autowired
 //    private ClientRegistrationRepository clientRegistrationRepository;
+
 @Bean
 public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
@@ -39,16 +40,16 @@ public CorsConfigurationSource corsConfigurationSource() {
     source.registerCorsConfiguration("/**", configuration);
     return source;
 }
+
 //    @Bean
 //    public WebMvcConfigurer corsConfigurer() {
 //        return new WebMvcConfigurer() {
 //            @Override
 //            public void addCorsMappings(CorsRegistry registry) {
-//                registry.addMapping("/**")
-//                        .allowedOriginPatterns("http://localhost:3000", "http://alpicola")
+//                registry.addMapping("/api/**")
+//                        .allowedOrigins("http://localhost:3000")
 //                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-//                        .allowCredentials(true)
-//                        .allowedHeaders("*");
+//                        .allowCredentials(true);
 //            }
 //        };
 //    }
@@ -71,7 +72,7 @@ public CorsConfigurationSource corsConfigurationSource() {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(Customizer.withDefaults())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated()
