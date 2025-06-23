@@ -1,6 +1,6 @@
 'use client';
 
-import {useEffect, useState} from 'react';
+import { useAuthenticatedFetch } from '@/lib/hooks/useAuthenticatedFetch';
 
 type Petunia = {
     name: string;
@@ -8,27 +8,18 @@ type Petunia = {
 };
 
 export default function PetuniasPage() {
-    const [petunias, setPetunias] = useState<Petunia[]>([]);
-    const [error, setError] = useState<string | null>(null);
+    const { data: petunias, error, loading } = useAuthenticatedFetch<Petunia[]>('/api/petunias');
 
-    useEffect(() => {
-        fetch('http://localhost:8080/api/petunias', {
-            credentials: 'include',
-        })
-            .then((res) => {
-                if (!res.ok) throw new Error('Nicht eingeloggt oder Serverfehler');
-                return res.json();
-            })
-            .then((data: Petunia[]) => setPetunias(data))
-            .catch((err) => setError(err.message));
-    }, []);
-
-    if (error) {
-        return <p style={{color: 'red'}}>Fehler: {error}</p>;
+    if (loading) {
+        return <p>Lade Petunien …</p>;
     }
 
-    if (petunias.length === 0) {
-        return <p>Lade Petunien …</p>;
+    if (error) {
+        return <p style={{ color: 'red' }}>Fehler: {error}</p>;
+    }
+
+    if (!petunias || petunias.length === 0) {
+        return <p>Keine Petunien gefunden.</p>;
     }
 
     return (
