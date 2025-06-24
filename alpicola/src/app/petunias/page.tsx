@@ -1,6 +1,7 @@
 'use client';
 
 import { useAuthenticatedFetch } from '@/lib/hooks/useAuthenticatedFetch';
+import LogoutButton from "@/components/LogoutButton";
 
 type Petunia = {
     name: string;
@@ -24,6 +25,7 @@ export default function PetuniasPage() {
 
     return (
         <div>
+            <LogoutButton />
             <h1>Petunien</h1>
             <ul>
                 {petunias.map((p, i) => (

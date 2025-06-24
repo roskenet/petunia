@@ -10,8 +10,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -25,10 +28,10 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
-//    @Autowired
-//    private ClientRegistrationRepository clientRegistrationRepository;
+    @Autowired
+    private ClientRegistrationRepository clientRegistrationRepository;
 
-@Bean
+//@Bean
 public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.setAllowedOriginPatterns(List.of("http://localhost:3000"));
@@ -41,34 +44,6 @@ public CorsConfigurationSource corsConfigurationSource() {
     return source;
 }
 
-//    @Bean
-//    public WebMvcConfigurer corsConfigurer() {
-//        return new WebMvcConfigurer() {
-//            @Override
-//            public void addCorsMappings(CorsRegistry registry) {
-//                registry.addMapping("/api/**")
-//                        .allowedOrigins("http://localhost:3000")
-//                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-//                        .allowCredentials(true);
-//            }
-//        };
-//    }
-
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http
-//                .authorizeHttpRequests(auth -> auth
-//                        .requestMatchers("/api/**").authenticated()
-//                        .anyRequest().permitAll())
-//                .oauth2Login(oauth -> oauth
-//                         .loginPage("/oauth2/authorization/keycloak"))   // Einstiegspunkt fürs SPA
-//                .logout(logout -> logout
-//                        .logoutSuccessHandler(oidcLogoutSuccessHandler()))
-//                .csrf(csrf -> csrf
-//                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()));
-//        return http.build();
-//    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -78,31 +53,28 @@ public CorsConfigurationSource corsConfigurationSource() {
                         .anyRequest().authenticated()
                 )
                 .oauth2Login(oauth -> oauth
-                        .loginPage("/oauth2/authorization/keycloak"))
+                        .loginPage("/oauth2/authorization/keycloak")
+                        .defaultSuccessUrl("http://localhost:3000/petunias", true))
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sm -> sm
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
                 .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessHandler((request, response, authentication) -> {
-                            request.getSession().invalidate();
-                            response.setStatus(HttpServletResponse.SC_OK);
-                        }).permitAll()
+                        .logoutSuccessHandler(oidcLogoutSuccessHandler())
+                        .permitAll()
+                ).exceptionHandling(eh -> eh
+                        .authenticationEntryPoint((req, res, authException) -> {
+                            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthenticated");
+                        })
                 );
-//                .exceptionHandling(eh -> eh
-//                        .authenticationEntryPoint((req, res, authException) -> {
-//                            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthenticated");
-//                        })
-//                );
 
         return http.build();
     }
 
-//    private LogoutSuccessHandler oidcLogoutSuccessHandler() {
-//        OidcClientInitiatedLogoutSuccessHandler handler =
-//                new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
-//        handler.setPostLogoutRedirectUri("{baseUrl}/");
-//        return handler;
-//    }
+    private LogoutSuccessHandler oidcLogoutSuccessHandler() {
+        OidcClientInitiatedLogoutSuccessHandler handler =
+                new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
+        handler.setPostLogoutRedirectUri("http://localhost:3000/");
+        return handler;
+    }
 }

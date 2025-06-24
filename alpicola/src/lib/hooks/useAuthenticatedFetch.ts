@@ -14,8 +14,8 @@ export function useAuthenticatedFetch<T>(url: string) {
             .then((res) => {
                 if (res.status === 401 || res.redirected) {
                     // User not logged in – redirect to login via BFF
-                    window.location.href = url;
-                    // window.location.href = "/oauth2/authorization/keycloak";
+                    // window.location.href = url;
+                    window.location.href = "/oauth2/authorization/keycloak";
                     return null;
                 }
                 return res.json();
