@@ -25,6 +25,6 @@ spring:
 app:
   security:
     allowed-origin-patterns:
-      - http://alpicola
-    post-logout-redirect-uri: http://alpicola
-    default-login-success-url: http://alpicola/petunias
+      - http://localhost:3000
+    post-logout-redirect-uri: http://localhost:3000
+    default-login-success-url: http://localhost:3000/petunias
