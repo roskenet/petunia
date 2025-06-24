@@ -21,3 +21,10 @@ spring:
       host: valkey
       port: 6379
       password: password
+
+app:
+  security:
+    allowed-origin-patterns:
+      - http://localhost:3000
+    post-logout-redirect-uri: http://localhost:3000
+    default-login-success-url: http://localhost:3000/petunias

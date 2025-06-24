@@ -1,5 +1,6 @@
 package de.petunia.villadiana;
 
+import de.petunia.villadiana.config.SecurityProperties;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -17,8 +18,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.List;
-
 @Profile("prod")
 @Configuration
 @EnableWebSecurity
@@ -27,12 +26,15 @@ public class SecurityConfig {
     @Autowired
     private ClientRegistrationRepository clientRegistrationRepository;
 
+    @Autowired
+    private SecurityProperties securityProperties;
+
     private CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(List.of("http://localhost:3000"));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
-        configuration.setAllowCredentials(true);
+        configuration.setAllowedOriginPatterns(securityProperties.getAllowedOriginPatterns());
+        configuration.setAllowedMethods(securityProperties.getAllowedMethods());
+        configuration.setAllowedHeaders(securityProperties.getAllowedHeaders());
+        configuration.setAllowCredentials(securityProperties.isAllowCredentials());
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -42,7 +44,7 @@ public class SecurityConfig {
     private LogoutSuccessHandler oidcLogoutSuccessHandler() {
         OidcClientInitiatedLogoutSuccessHandler handler =
                 new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
-        handler.setPostLogoutRedirectUri("http://localhost:3000");
+        handler.setPostLogoutRedirectUri(securityProperties.getPostLogoutRedirectUri());
         return handler;
     }
 
@@ -56,7 +58,7 @@ public class SecurityConfig {
                 )
                 .oauth2Login(oauth -> oauth
                         .loginPage("/oauth2/authorization/keycloak")
-                        .defaultSuccessUrl("http://localhost:3000/petunias", true))
+                        .defaultSuccessUrl(securityProperties.getDefaultLoginSuccessUrl(), true))
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sm -> sm
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
