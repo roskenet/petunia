@@ -3,7 +3,7 @@ spring:
     store-type: redis
     redis:
       namespace: petunia:session
-    timeout: 3m
+    timeout: 30m
   security:
     oauth2:
       client:
