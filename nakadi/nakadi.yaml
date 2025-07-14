@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nakadi
+  labels:
+    app: nakadi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nakadi
+  template:
+    metadata:
+      labels:
+        app: nakadi
+    spec:
+      containers:
+      - name: nakadi
+        image: roskenet/nakadi:10.9.0
+        imagePullPolicy: "IfNotPresent"
+        env:
+        - name: NAKADI_OAUTH2_MODE
+          value: "OFF"
+        - name: NAKADI_ZOOKEEPER_CONNECTIONSTRING
+          value: "zookeeper://zookeeper:2181"
+        - name: SPRING_DATASOURCE_URL
+          value: jdbc:postgresql://postgres/nakadi
+        - name: SPRING_DATASOURCE_USERNAME
+          value: nakadi
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: nakadi
+#        - name: DLQ_REDRIVE_EVENT_TYPE_ATTACHMENT_JOB
+#          value: "false"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: nakadi
+  labels:
+    app: nakadi
+spec:
+  selector:
+    app: nakadi
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+    name: api
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nakadi
+  labels:
+    app: nakadi
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: nakadi.minikube
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: nakadi
+                port:
+                  name: api

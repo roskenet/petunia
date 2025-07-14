@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zookeeper
+  labels:
+    app: zookeeper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zookeeper
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+    spec:
+      volumes:
+      - name: zookeeper-data
+        hostPath:
+          path: /mnt/zookeeper/data
+          type: Directory 
+      - name: zookeeper-datalog
+        hostPath:
+          path: /mnt/zookeeper/datalog
+          type: Directory
+      containers:
+      - name: zookeeper
+        image: zookeeper:3.8
+        imagePullPolicy: "IfNotPresent"
+        env:
+        - name: ZOO_ADMINSERVER_ENABLED
+          value: "false"
+        volumeMounts:
+        - mountPath: /data
+          name: zookeeper-data
+        - mountPath: /datalog
+          name: zookeeper-datalog
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper
+  labels:
+    app: zookeeper
+spec:
+  selector:
+    app: zookeeper
+  ports:
+  - port: 2181 
