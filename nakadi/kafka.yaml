@@ -16,13 +16,11 @@ spec:
     spec:
       volumes:
       - name: kafka-data
-        hostPath:
-          path: /mnt/kafka/data
-          type: Directory
+        persistentVolumeClaim:
+          claimName: kafka-data-pvc
       - name: kafka-secrets
-        hostPath:
-          path: /mnt/kafka/secrets
-          type: Directory
+        persistentVolumeClaim:
+          claimName: kafka-secrets-pvc
       containers:
       - name: kafka
         image: bitnami/kafka:3.8
