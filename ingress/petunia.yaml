@@ -1,0 +1,70 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: petunia
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/enable-websocket: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - petunia.roskenet.de
+    secretName: petunia-tls
+  rules:
+  - host: petunia.roskenet.de
+    http:
+      paths:
+      - path: /ws
+        pathType: Prefix
+        backend:
+          service:
+            name: villadiana
+            port:
+              number: 8080
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: villadiana
+            port:
+              number: 8080
+      - path: /oauth2
+        pathType: Prefix
+        backend:
+          service:
+            name: villadiana
+            port:
+              number: 8080
+      - path: /login
+        pathType: Prefix
+        backend:
+          service:
+            name: villadiana
+            port:
+              number: 8080
+      - path: /logout
+        pathType: Prefix
+        backend:
+          service:
+            name: villadiana
+            port:
+              number: 8080
+      - path: /me
+        pathType: Prefix
+        backend:
+          service:
+            name: villadiana
+            port:
+              number: 8080
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: alpicola
+            port:
+              number: 80
+

@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      initContainers:
+      - name: postgres-init
+        image: postgres:17.5
+        command:
+        - sh
+        - -c
+        - |
+          mkdir -p /var/lib/postgresql/data
+          chown -R 999:999 /var/lib/postgresql/data
+          chmod 700 /var/lib/postgresql/data
+
+          # Check if PostgreSQL is already initialized
+          # if [ ! -f /var/lib/postgresql/data/PG_VERSION ]; then
+          #   echo "Initializing PostgreSQL database..."
+          #   su-exec 999:999 initdb -D /var/lib/postgresql/data
+          # else
+          #   echo "PostgreSQL already initialized"
+          # fi
+        volumeMounts:
+        - name: postgres-storage
+          mountPath: /var/lib/postgresql/data
+        securityContext:
+          runAsUser: 0  # Run as root only for the init container
+      securityContext: 
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+      containers:
+        - name: postgres
+          image: postgres:17.5
+          imagePullPolicy: "IfNotPresent"
+#          command: ["postgres", "-c", "config_file=/etc/postgres-config/postgresql.conf"]         
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom: 
+                secretKeyRef:
+                  name: postgres-admin-credentials
+                  key: postgres-password
+          volumeMounts:
+            - mountPath: /etc/postgres-config
+              name: postgres-config
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-storage
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+        - name: postgres-config
+          configMap:
+            name: postgres-config
+
