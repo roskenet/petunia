@@ -3,8 +3,8 @@ kind: Ingress
 metadata:
   name: polonium
   annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   ingressClassName: nginx
   tls:
@@ -21,4 +21,4 @@ spec:
           service:
             name: polonium
             port:
-              number: 8080
+              number: 80
