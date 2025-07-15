@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: axillaris
-        image: roskenet/axillaris:2.9.0
+        image: roskenet/axillaris:2.10.0
         imagePullPolicy: IfNotPresent
         env:
         - name: KEYCLOAK_SECRET
