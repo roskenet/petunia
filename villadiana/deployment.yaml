@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: villadiana
-        image: roskenet/villadiana:3.15.0
+        image: roskenet/villadiana:3.18.0
         env:
         - name: KEYCLOAK_SECRET
           value: lgb0JOFsrFdtw08nw6MyTpv5vQG9rrGO

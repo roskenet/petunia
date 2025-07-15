@@ -8,6 +8,7 @@ metadata:
     nginx.ingress.kubernetes.io/enable-websocket: "true"
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/use-forwarded-headers: "true"
 spec:
   ingressClassName: nginx
   tls:
