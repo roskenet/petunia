@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  labels:
+    app: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      initContainers:
+      - name: postgres-init
+        image: postgres:17.5
+        securityContext:
+          runAsUser: 0
+        command:
+        - sh
+        - -c
+        - |
+          mkdir -p /var/lib/postgresql/data
+          chown -R 999:999 /var/lib/postgresql/data
+          chmod 700 /var/lib/postgresql/data
+          if [ ! -f /var/lib/postgresql/data/PG_VERSION ]; then
+            echo "Initializing PostgreSQL database..."
+            exec su postgres -c "/usr/lib/postgresql/17/bin/initdb -D /var/lib/postgresql/data"
+          else
+            echo "PostgreSQL already initialized"
+          fi
+        volumeMounts:
+        - name: postgres-data
+          mountPath: /var/lib/postgresql/data
+      securityContext: 
+        runAsUser: 999
+        runAsGroup: 999
+        fsGroup: 999
+      containers:
+        - name: postgres
+          image: postgres:17.5
+          imagePullPolicy: IfNotPresent
+          command: ["postgres", "-c", "config_file=/etc/postgres-config/postgresql.conf"]         
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom: 
+                secretKeyRef:
+                  name: petunia
+                  key: postgres-root-password
+          volumeMounts:
+            - mountPath: /etc/postgres-config
+              name: postgres-config
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-data
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-data
+        - name: postgres-config
+          configMap:
+            name: postgres
+
