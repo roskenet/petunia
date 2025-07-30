@@ -1,18 +1,20 @@
+{{- include "petunia.checkSecret" . }}
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "petunia-postgres.fullname" . }}
+  name: {{ include "postgres.fullname" . }}
   labels:
-    app: {{ include "petunia-postgres.name" . }}
+    {{- include "petunia-postgres.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "petunia-postgres.name" . }}
+      {{- include "petunia-postgres.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        app: {{ include "petunia-postgres.name" . }}
+        {{- include "petunia-postgres.selectorLabels" . | nindent 8 }}
     spec:
       initContainers:
         - name: postgres-init
@@ -23,8 +25,8 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom: 
                 secretKeyRef:
-                  name: petunia
-                  key: postgres-root-password
+                  name: "{{ .Values.secrets.name }}"
+                  key: "{{ .Values.secrets.passwordKey }}"
           command:
             - sh
             - -c
@@ -38,7 +40,8 @@ spec:
                 su postgres -c "/usr/lib/postgresql/17/bin/initdb -D /var/lib/postgresql/data"
 
                 su postgres -c "/usr/lib/postgresql/17/bin/pg_ctl -D /var/lib/postgresql/data -o '-c listen_addresses=localhost' -w start"
-                echo \"ALTER USER postgres WITH PASSWORD '\$POSTGRES_PASSWORD';\" | su postgres -c "psql"
+              
+                echo "ALTER USER postgres WITH PASSWORD '${POSTGRES_PASSWORD}';" | su postgres -c "psql"
                 su postgres -c "/usr/lib/postgresql/17/bin/pg_ctl -D /var/lib/postgresql/data -m fast stop"
               else
                 echo "PostgreSQL already initialized"
@@ -63,8 +66,8 @@ spec:
       volumes:
         - name: postgres-config
           configMap:
-            name: {{ include "petunia-postgres.fullname" . }}
+            name: {{ include "postgres.fullname" . }}
         - name: postgres-data
           persistentVolumeClaim:
-            claimName: {{ .Values.persistence.existingClaim }}
+            claimName: {{ .Values.persistence.name }}
 

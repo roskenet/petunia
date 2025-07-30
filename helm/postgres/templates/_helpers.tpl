@@ -1,8 +1,21 @@
+{{- define "petunia.checkSecret" -}}
+{{- if not (lookup "v1" "Secret" .Release.Namespace "petunia") }}
+{{- fail "Secret 'petunia' not found. Please install the 'secrets' chart first." }}
+{{- end }}
+{{- end }}
+
 {{/*
 Expand the name of the chart.
 */}}
 {{- define "petunia-postgres.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{/*
+Create a simpler name by just using the release name
+*/}}
+{{- define "postgres.fullname" -}}
+{{ .Release.Name }}
 {{- end }}
 
 {{/*

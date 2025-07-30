@@ -7,7 +7,10 @@ replicaCount: 1
 
 postgres:
   user: postgres
-  rootPassword: postgres
+
+secrets:
+  name: petunia
+  passwordKey: postgres-root-password
 
 persistence:
   enabled: true
@@ -26,6 +29,7 @@ config:
     conf: |
       listen_addresses = '*'
       random_page_cost = 1.0
+      hba_file = '/etc/postgres-config/pg_hba.conf'
 
   pg_hba:
     conf: |
@@ -38,4 +42,5 @@ service:
   type: ClusterIP
   port: 5432
   targetPort: 5432
+  portName: postgres
 

@@ -4,12 +4,14 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Values.persistence.name }}
   labels:
-    app: {{ include "petunia-postgres.name" . }}
+    {{- include "petunia-postgres.labels" . | nindent 4 }}
 spec:
-  accessModes: {{ toYaml .Values.persistence.accessModes | nindent 4 }}
+  accessModes:
+    {{- range .Values.persistence.accessModes }}
+    - {{ . }}
+    {{- end }}
   resources:
     requests:
       storage: {{ .Values.persistence.size }}
   storageClassName: {{ .Values.persistence.storageClassName }}
 {{- end }}
-
