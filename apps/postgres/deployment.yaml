@@ -37,9 +37,8 @@ spec:
             echo "Initializing PostgreSQL database..."
             su postgres -c "/usr/lib/postgresql/17/bin/initdb -D /var/lib/postgresql/data"
 
-           echo "ALTER USER postgres WITH PASSWORD '${POSTGRES_PASSWORD}';" > /tmp/set-postgres-password.sql
            su postgres -c "/usr/lib/postgresql/17/bin/pg_ctl -D /var/lib/postgresql/data -o '-c listen_addresses=localhost' -w start"
-           su postgres -c "psql -f /tmp/set-postgres-password.sql"
+           echo "ALTER USER postgres WITH PASSWORD '${POSTGRES_PASSWORD}';" | su postgres -c "psql"
            su postgres -c "/usr/lib/postgresql/17/bin/pg_ctl -D /var/lib/postgresql/data -m fast stop"
 
           else
@@ -57,12 +56,6 @@ spec:
           image: postgres:17.5
           imagePullPolicy: IfNotPresent
           command: ["postgres", "-c", "config_file=/etc/postgres-config/postgresql.conf"]         
-#          env:
-#            - name: POSTGRES_PASSWORD
-#              valueFrom: 
-#                secretKeyRef:
-#                  name: petunia
-#                  key: postgres-root-password
           volumeMounts:
             - mountPath: /etc/postgres-config
               name: postgres-config
