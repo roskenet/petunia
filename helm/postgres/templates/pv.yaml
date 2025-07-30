@@ -1,0 +1,19 @@
+{{- if .Values.persistence.enabled }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.persistence.name }}
+  labels:
+    app: {{ include "petunia-postgres.name" . }}
+spec:
+  capacity:
+    storage: {{ .Values.persistence.size }}
+  accessModes: {{ toYaml .Values.persistence.accessModes | nindent 4 }}
+  persistentVolumeReclaimPolicy: {{ .Values.persistence.reclaimPolicy }}
+  storageClassName: {{ .Values.persistence.storageClassName }}
+  {{- if .Values.persistence.hostPath.enabled }}
+  hostPath:
+    path: {{ .Values.persistence.hostPath.path }}
+  {{- end }}
+{{- end }}
+

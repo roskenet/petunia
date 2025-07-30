@@ -1,0 +1,41 @@
+image:
+  repository: postgres
+  tag: "17.5"
+  pullPolicy: IfNotPresent
+
+replicaCount: 1
+
+postgres:
+  user: postgres
+  rootPassword: postgres
+
+persistence:
+  enabled: true
+  name: postgres-data
+  storageClassName: postgres-data
+  accessModes:
+    - ReadWriteOnce
+  size: 2Gi
+  hostPath:
+    enabled: true
+    path: /mnt/postgres-data
+  reclaimPolicy: Retain
+
+config:
+  postgresql:
+    conf: |
+      listen_addresses = '*'
+      random_page_cost = 1.0
+
+  pg_hba:
+    conf: |
+      local   all             all                                     scram-sha-256
+      host    all             all             10.244.0.0/16           scram-sha-256
+      host    all             all             ::1/128                 scram-sha-256
+      host    all             all             127.0.0.1/32            scram-sha-256
+
+service:
+  type: ClusterIP
+  port: 5432
+  targetPort: 5432
+

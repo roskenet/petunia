@@ -1,0 +1,7 @@
+apiVersion: v2
+name: petunia-postgres
+description: A Helm chart for PostgreSQL in Project Petunia
+type: application
+version: 0.1.0
+appVersion: "17.5"
+
