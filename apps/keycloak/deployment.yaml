@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  labels:
+    app: keycloak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: keycloak
+  template: 
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+      - name: keycloak
+        image: keycloak/keycloak:26.3
+        imagePullPolicy: IfNotPresent
+        args: ["start-dev", "--db-url=jdbc:postgresql://postgres/keycloak", "--db=postgres", "--db-username=keycloak", "--db-password=keycloak"]
+        env:
+        - name: HOSTNAME
+          value: keycloak
+        - name: KEYCLOAK_ADMIN
+          value: admin
+        - name: KEYCLOAK_ADMIN_PASSWORD
+          value: password
+        - name: DB_VENDOR
+          value: postgres
+        - name: DB_ADDR
+          value: postgres
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_USER
+          value: keycloak
+        - name: DB_PASSWORD
+          value: keycloak
+        - name: DB_DATABASE
+          value: keycloak
+        ports:
+        - name: service
+          containerPort: 8080
+#        - name: actuator
+#          containerPort: 9000
+#        startupProbe:
+#          httpGet:
+#            path: /health
+#            port: actuator
+#          periodSeconds: 10 
+#          failureThreshold: 30
+#        livenessProbe:
+#          httpGet:
+#            path: /health
+#            port: actuator
+#          periodSeconds: 5 
+#          failureThreshold: 3 
+#        readinessProbe:
+#          httpGet:
+#            path: /health
+#            port: actuator
+#          periodSeconds: 5
+#          failureThreshold: 1
+

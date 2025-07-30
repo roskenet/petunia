@@ -19,6 +19,12 @@ spec:
         image: postgres:17.5
         securityContext:
           runAsUser: 0
+        env:
+        - name: POSTGRES_PASSWORD
+          valueFrom: 
+            secretKeyRef:
+              name: petunia
+              key: postgres-root-password
         command:
         - sh
         - -c
@@ -26,9 +32,16 @@ spec:
           mkdir -p /var/lib/postgresql/data
           chown -R 999:999 /var/lib/postgresql/data
           chmod 700 /var/lib/postgresql/data
+
           if [ ! -f /var/lib/postgresql/data/PG_VERSION ]; then
             echo "Initializing PostgreSQL database..."
-            exec su postgres -c "/usr/lib/postgresql/17/bin/initdb -D /var/lib/postgresql/data"
+            su postgres -c "/usr/lib/postgresql/17/bin/initdb -D /var/lib/postgresql/data"
+
+           echo "ALTER USER postgres WITH PASSWORD '${POSTGRES_PASSWORD}';" > /tmp/set-postgres-password.sql
+           su postgres -c "/usr/lib/postgresql/17/bin/pg_ctl -D /var/lib/postgresql/data -o '-c listen_addresses=localhost' -w start"
+           su postgres -c "psql -f /tmp/set-postgres-password.sql"
+           su postgres -c "/usr/lib/postgresql/17/bin/pg_ctl -D /var/lib/postgresql/data -m fast stop"
+
           else
             echo "PostgreSQL already initialized"
           fi
@@ -44,12 +57,12 @@ spec:
           image: postgres:17.5
           imagePullPolicy: IfNotPresent
           command: ["postgres", "-c", "config_file=/etc/postgres-config/postgresql.conf"]         
-          env:
-            - name: POSTGRES_PASSWORD
-              valueFrom: 
-                secretKeyRef:
-                  name: petunia
-                  key: postgres-root-password
+#          env:
+#            - name: POSTGRES_PASSWORD
+#              valueFrom: 
+#                secretKeyRef:
+#                  name: petunia
+#                  key: postgres-root-password
           volumeMounts:
             - mountPath: /etc/postgres-config
               name: postgres-config
