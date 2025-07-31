@@ -1,18 +1,20 @@
+{{- include "petunia.checkSecret" . }}
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "keycloak.fullname" . }}
+  name: {{ include "petunia.fullname" . }}
   labels:
-    app: {{ include "keycloak.name" . }}
+    {{- include "petunia.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "keycloak.name" . }}
+      {{- include "petunia.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        app: {{ include "keycloak.name" . }}
+        {{- include "petunia.selectorLabels" . | nindent 8 }}
     spec:
       containers:
         - name: keycloak
@@ -26,17 +28,17 @@ spec:
             - "--db-password={{ .Values.database.password }}"
           env:
             - name: HOSTNAME
-              value: {{ include "keycloak.fullname" . }}
+              value: {{ .Values.keycloak.hostname }}
             - name: KEYCLOAK_ADMIN
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.secretName }}
-                  key: keycloak.adminUser
+                  key: {{ .Values.keycloak.adminUserKey }}
             - name: KEYCLOAK_ADMIN_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.secretName }}
-                  key: keycloak.adminPassword
+                  key: {{ .Values.keycloak.adminPasswordKey }}
             - name: DB_VENDOR
               value: {{ .Values.database.vendor }}
             - name: DB_ADDR
