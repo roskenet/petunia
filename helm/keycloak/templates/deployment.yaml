@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "keycloak.fullname" . }}
+  labels:
+    app: {{ include "keycloak.name" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "keycloak.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "keycloak.name" . }}
+    spec:
+      containers:
+        - name: keycloak
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          args:
+            - "start-dev"
+            - "--db-url={{ .Values.database.jdbcUrl }}"
+            - "--db={{ .Values.database.vendor }}"
+            - "--db-username={{ .Values.database.username }}"
+            - "--db-password={{ .Values.database.password }}"
+          env:
+            - name: HOSTNAME
+              value: {{ include "keycloak.fullname" . }}
+            - name: KEYCLOAK_ADMIN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: keycloak.adminUser
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: keycloak.adminPassword
+            - name: DB_VENDOR
+              value: {{ .Values.database.vendor }}
+            - name: DB_ADDR
+              value: {{ .Values.database.host }}
+            - name: DB_PORT
+              value: "{{ .Values.database.port }}"
+            - name: DB_USER
+              value: {{ .Values.database.username }}
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: postgres.keycloakPassword
+            - name: DB_DATABASE
+              value: {{ .Values.database.name }}
+          ports:
+            - name: service
+              containerPort: {{ .Values.service.port }}
+

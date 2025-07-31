@@ -3,18 +3,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "postgres.fullname" . }}
+  name: {{ include "petunia.fullname" . }}
   labels:
-    {{- include "postgres.labels" . | nindent 4 }}
+    {{- include "petunia.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "postgres.selectorLabels" . | nindent 6 }}
+      {{- include "petunia.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "postgres.selectorLabels" . | nindent 8 }}
+        {{- include "petunia.selectorLabels" . | nindent 8 }}
     spec:
       initContainers:
         - name: postgres-init
@@ -66,7 +66,7 @@ spec:
       volumes:
         - name: postgres-config
           configMap:
-            name: {{ include "postgres.fullname" . }}
+            name: {{ include "petunia.fullname" . }}
         - name: postgres-data
           persistentVolumeClaim:
             claimName: {{ .Values.persistence.name }}
