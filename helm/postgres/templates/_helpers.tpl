@@ -1,4 +1,4 @@
-{{- define "petunia.checkSecret" -}}
+{{- define "petunia-postgres.checkSecret" -}}
 {{- if not (lookup "v1" "Secret" .Release.Namespace "petunia") }}
 {{- fail "Secret 'petunia' not found. Please install the 'secrets' chart first." }}
 {{- end }}

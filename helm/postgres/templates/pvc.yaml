@@ -4,7 +4,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Values.persistence.name }}
   labels:
-    {{- include "petunia-postgres.labels" . | nindent 4 }}
+    {{- include "petunia.labels" . | nindent 4 }}
 spec:
   accessModes:
     {{- range .Values.persistence.accessModes }}

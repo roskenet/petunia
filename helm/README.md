@@ -1,8 +1,10 @@
-# petunia-postgres
+# Project Petunia Deployments
 
-A Helm chart for deploying a PostgreSQL instance as part of **Project Petunia**.
+Helm charts for deploying various parts of **Project Petunia**.
 
-This chart assumes that a central Kubernetes Secret named `petunia` already exists in the same namespace and provides the required credentials (e.g. the root password). You can manage that via the `secrets` chart.
+This chart assumes that a central Kubernetes Secret named `petunia` 
+already exists in the same namespace and provides the required credentials 
+(e.g. the root passwords). You can manage that via the `secrets` chart.
 
 ---
 
@@ -30,6 +32,10 @@ helm upgrade --install secrets ./helm/secrets \
 This creates a Secret called petunia with the key postgres-root-password.
 
 ## 🚀 Install / Upgrade
+
+```shell
+helm dependency update helm/postgres
+```
 
 ```bash
 helm upgrade --install postgres ./helm/postgres
@@ -69,9 +75,26 @@ kubectl delete pvc postgres-data
 kubectl delete pv postgres-data
 ```
 
+## Keycloak
+
+### Deployment
+
+```bash
+helm upgrade --install keycloak ./helm/keycloak \
+  --set keycloak.adminUser=admin \
+  --set keycloak.adminPassword=keycloak
+```
+
+```
+kubectl create secret generic petunia \
+  --from-literal=keycloak.adminUser=admin \
+  --from-literal=keycloak.adminPassword=keycloak \
+  --from-literal=postgres.keycloakPassword=keycloak
+```
+
 ## 💬 Contact
 
-This chart is part of Project Petunia, a playground for distributed systems, 
+These charts are part of Project Petunia, a playground for distributed systems, 
 microservices, and containerised applications.
 
 Felix Roske <felix@roskenet.de>
