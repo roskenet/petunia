@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: {{ include "postgres.fullname" . }}
   labels:
-    {{- include "petunia-postgres.labels" . | nindent 4 }}
+    {{- include "postgres.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -12,5 +12,5 @@ spec:
       protocol: TCP
       name: {{ .Values.service.portName }}
   selector:
-    {{- include "petunia-postgres.selectorLabels" . | nindent 4 }}
+    {{- include "postgres.selectorLabels" . | nindent 4 }}
 

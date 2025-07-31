@@ -5,16 +5,16 @@ kind: Deployment
 metadata:
   name: {{ include "postgres.fullname" . }}
   labels:
-    {{- include "petunia-postgres.labels" . | nindent 4 }}
+    {{- include "postgres.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "petunia-postgres.selectorLabels" . | nindent 6 }}
+      {{- include "postgres.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "petunia-postgres.selectorLabels" . | nindent 8 }}
+        {{- include "postgres.selectorLabels" . | nindent 8 }}
     spec:
       initContainers:
         - name: postgres-init

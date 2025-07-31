@@ -4,7 +4,7 @@ kind: PersistentVolume
 metadata:
   name: {{ .Values.persistence.name }}
   labels:
-    {{- include "petunia-postgres.labels" . | nindent 4 }}
+    {{- include "postgres.labels" . | nindent 4 }}
 spec:
   capacity:
     storage: {{ .Values.persistence.size }}
