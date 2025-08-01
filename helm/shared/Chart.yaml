@@ -1,6 +1,6 @@
 apiVersion: v2
-name: secrets
-description: A Helm chart for shared secrets
+name: shared
+description: A Helm chart for shared values
 type: application
 version: 0.1.0
 appVersion: "1.0"

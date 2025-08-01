@@ -14,14 +14,14 @@ secrets:
 
 persistence:
   enabled: true
-  name: postgres-data
-  storageClassName: postgres-data
+  name: data
+  storageClassName: data
   accessModes:
     - ReadWriteOnce
   size: 2Gi
   hostPath:
     enabled: true
-    path: /mnt/postgres-data
+    basePath: /mnt
   reclaimPolicy: Retain
 
 config:

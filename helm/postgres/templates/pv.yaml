@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: {{ .Values.persistence.name }}
+  name: {{ include "petunia.persistenceName" . }}
   labels:
     {{- include "petunia.labels" . | nindent 4 }}
 spec:
@@ -13,8 +13,8 @@ spec:
     - {{ . }}
     {{- end }}
   persistentVolumeReclaimPolicy: {{ .Values.persistence.reclaimPolicy }}
-  storageClassName: {{ .Values.persistence.storageClassName }}
+  storageClassName: {{ include "petunia.storageClassName" . }}
   hostPath:
-    path: {{ .Values.persistence.hostPath.path }}
+    path: {{ include "petunia.hostPath" . }}
 {{- end }}
 

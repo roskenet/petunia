@@ -20,13 +20,17 @@ This chart includes:
 
 ---
 
-## 🔐 Prerequisite: Secrets
+## 🔐 Prerequisite: Secrets and shared properties
 
 Before deploying this chart, you must install the `secrets` chart to create the required secret:
-
-```bash
-helm upgrade --install secrets ./helm/secrets \
-  --set secrets.postgresRootPassword=myStrongPassword
+```shell
+helm upgrade --install petunia ./shared \
+  --set postgres.rootPassword=postgres \
+  --set keycloak.adminUser=keycloak \
+  --set keycloak.adminPassword=keycloak \
+  --set keycloak.databaseUser=keycloak \
+  --set keycloak.databasePassword=keycloak \
+-f ./shared/values-minikube.yaml
 ```
 
 This creates a Secret called petunia with the key postgres-root-password.
@@ -70,7 +74,7 @@ helm template postgres ./helm/postgres
 
 ```bash
 helm uninstall postgres
-helm uninstall secrets
+helm uninstall shared
 kubectl delete pvc postgres-data
 kubectl delete pv postgres-data
 ```

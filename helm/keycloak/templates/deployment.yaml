@@ -22,11 +22,13 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - "start-dev"
-            - "--db-url={{ .Values.database.jdbcUrl }}"
-            - "--db={{ .Values.database.vendor }}"
-            - "--db-username={{ .Values.database.username }}"
-            - "--db-password={{ .Values.database.password }}"
+            - "--db-url=${JDBC_URL}"
+            - "--db=${DB_VENDOR}"
+            - "--db-username=${DB_USER}"
+            - "--db-password=${DB_PASSWORD}"
           env:
+            - name: JDBC_URL
+              value: {{ .Values.database.jdbcUrl }}
             - name: HOSTNAME
               value: {{ .Values.keycloak.hostname }}
             - name: KEYCLOAK_ADMIN
@@ -46,14 +48,26 @@ spec:
             - name: DB_PORT
               value: "{{ .Values.database.port }}"
             - name: DB_USER
-              value: {{ .Values.database.username }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: {{ .Values.keycloak.databaseUserKey }}
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.secretName }}
-                  key: postgres.keycloakPassword
+                  key: {{ .Values.keycloak.databasePasswordKey }}
             - name: DB_DATABASE
               value: {{ .Values.database.name }}
+            - name: KC_HOSTNAME
+              value: {{ .Values.keycloak.hostname }}
+            - name: KC_PROXY
+              value: "edge"
+            - name: KC_HTTP_ENABLED
+              value: "true"
+            - name: KC_HOSTNAME_STRICT
+              value: "false"
+
           ports:
             - name: service
               containerPort: {{ .Values.service.port }}

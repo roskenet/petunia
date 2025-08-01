@@ -1,0 +1,7 @@
+#
+
+tls:
+  enabled: false
+
+keycloak:
+  url: keycloak

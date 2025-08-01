@@ -22,7 +22,4 @@ sources:
   - https://github.com/keycloak/keycloak
   - https://artifacthub.io/packages/helm/bitnami/keycloak
 
-dependencies:
-  - name: petunia-common
-    version: 0.1.0
-    repository: "file://../petunia-common"
+dependencies: []

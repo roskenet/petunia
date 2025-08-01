@@ -44,3 +44,23 @@ app.kubernetes.io/name: {{ include "petunia.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
+{{/*
+Generate a full persistence name like <release-name>-<chart-name>-<persistence-name>
+*/}}
+{{- define "petunia.persistenceName" -}}
+{{- printf "%s-%s" (include "petunia.fullname" .) .Values.persistence.name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{/*
+Generate a full storageClassName like <release-name>-<persistence-class>
+*/}}
+{{- define "petunia.storageClassName" -}}
+{{- printf "%s-%s" .Release.Name .Values.persistence.storageClassName | trunc 63 | trimSuffix "-" }}
+{{- end }}
+
+{{/*
+Generate hostPath: /mnt/<persistence-name>
+*/}}
+{{- define "petunia.hostPath" -}}
+{{- printf "%s/%s" .Values.persistence.hostPath.basePath (include "petunia.persistenceName" .) }}
+{{- end }}

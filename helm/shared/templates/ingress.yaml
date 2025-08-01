@@ -1,0 +1,93 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: petunia
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/enable-websocket: "true"
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+{{- if .Values.tls.enabled }}
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - www.roskenet.de
+    - petunia.roskenet.de
+    - auth.roskenet.de
+    secretName: petunia-tls
+{{- end}}
+  rules:
+  - host: {{ .Values.keycloak.url }}
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: keycloak
+              port:
+                number: 8080
+  - host: www.roskenet.de
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: polonium
+              port:
+                number: 8080
+  - host: petunia.roskenet.de
+    http:
+      paths:
+      - path: /ws
+        pathType: Prefix
+        backend:
+          service:
+            name: villadiana
+            port:
+              number: 8080
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: villadiana
+            port:
+              number: 8080
+      - path: /oauth2
+        pathType: Prefix
+        backend:
+          service:
+            name: villadiana
+            port:
+              number: 8080
+      - path: /login
+        pathType: Prefix
+        backend:
+          service:
+            name: villadiana
+            port:
+              number: 8080
+      - path: /logout
+        pathType: Prefix
+        backend:
+          service:
+            name: villadiana
+            port:
+              number: 8080
+      - path: /me
+        pathType: Prefix
+        backend:
+          service:
+            name: villadiana
+            port:
+              number: 8080
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: alpicola
+            port:
+              number: 80

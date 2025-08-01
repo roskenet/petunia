@@ -69,5 +69,5 @@ spec:
             name: {{ include "petunia.fullname" . }}
         - name: postgres-data
           persistentVolumeClaim:
-            claimName: {{ .Values.persistence.name }}
+            claimName: {{ include "petunia.persistenceName" . }}
 

@@ -1,0 +1,7 @@
+#
+
+tls:
+  enabled: true
+
+keycloak:
+  url: auth.roskenet.de
