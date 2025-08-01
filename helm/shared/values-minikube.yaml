@@ -5,3 +5,6 @@ tls:
 
 keycloak:
   url: keycloak
+
+polonium:
+  url: polonium

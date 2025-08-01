@@ -5,3 +5,6 @@ tls:
 
 keycloak:
   url: auth.roskenet.de
+
+polonium:
+  url: www.roskenet.de

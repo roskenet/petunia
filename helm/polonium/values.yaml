@@ -1,0 +1,14 @@
+replicaCount: 1
+
+image:
+  repository: roskenet/polonium
+  tag: "3.2.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8080
+
+containerPort: 8080
+
+resources: {}
