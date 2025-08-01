@@ -1,5 +1,0 @@
-apiVersion: v2
-name: petunia-common
-description: Common templates and helper functions for Petunia charts
-type: library
-version: 0.1.0
