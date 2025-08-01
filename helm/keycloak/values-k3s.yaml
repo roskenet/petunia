@@ -7,6 +7,9 @@ image:
 
 secretName: petunia
 
+postgres:
+  rootPasswordKey: postgres-root-password
+
 keycloak:
   hostname: https://auth.roskenet.de
   adminUserKey: keycloak-admin-user
@@ -22,6 +25,7 @@ database:
   username: keycloak
   password: keycloak
   name: keycloak
+  adminUser: postgres
 
 service:
   type: ClusterIP

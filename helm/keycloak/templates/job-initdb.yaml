@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "petunia.fullname" . }}-db-init
+  labels:
+    {{- include "petunia.labels" . | nindent 4 }}
+spec:
+  ttlSecondsAfterFinished: 3600
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: psql
+          image: postgres:17
+          command:
+            - /bin/sh
+            - -c
+            - |
+              echo "Checking if user exists..."
+              if ! psql -h {{ .Values.database.host }} -U {{ .Values.database.adminUser }} -tAc "SELECT 1 FROM pg_roles WHERE rolname='{{ .Values.database.username }}'" | grep -q 1; then
+                echo "Creating user '{{ .Values.database.username }}'"
+                psql -h {{ .Values.database.host }} -U {{ .Values.database.adminUser }} -c "CREATE USER {{ .Values.database.username }} WITH PASSWORD '{{ .Values.database.password }}';"
+              else
+                echo "User '{{ .Values.database.username }}' already exists"
+              fi
+              echo "Checking if database exists..."
+              if ! psql -h {{ .Values.database.host }} -U {{ .Values.database.adminUser }} -tAc "SELECT 1 FROM pg_database WHERE datname='{{ .Values.database.name }}'" | grep -q 1; then
+                echo "Creating database '{{ .Values.database.name }}'"
+                psql -h {{ .Values.database.host }} -U {{ .Values.database.adminUser }} -c "CREATE DATABASE {{ .Values.database.name }} OWNER '{{ .Values.database.username }}';"
+              else
+                echo "Database '{{ .Values.database.name }}' already exists"
+              fi
+          env:
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ .Values.secretName }}"
+                  key: "{{ .Values.postgres.rootPasswordKey }}"
