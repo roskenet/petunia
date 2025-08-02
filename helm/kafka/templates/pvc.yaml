@@ -1,0 +1,20 @@
+{{- if .Values.persistence.enabled }}
+{{- range $i, $vol := .Values.persistence.volumes }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ printf "%s-%s" (include "petunia.fullname" $) $vol.name | trunc 63 | trimSuffix "-" }}
+  labels:
+    {{- include "petunia.labels" $ | nindent 4 }}
+spec:
+  accessModes:
+    {{- range $vol.accessModes }}
+    - {{ . }}
+    {{- end }}
+  resources:
+    requests:
+      storage: {{ $vol.size }}
+  storageClassName: {{ printf "%s-%s" (include "petunia.fullname" $) $vol.name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}

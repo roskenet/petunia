@@ -9,7 +9,7 @@ postgres:
   user: postgres
 
 secrets:
-  name: petunia
+  name: petunia-shared
   passwordKey: postgres-root-password
 
 persistence:

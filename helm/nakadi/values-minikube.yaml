@@ -1,0 +1,34 @@
+replicaCount: 1
+
+image:
+  repository: roskenet/nakadi
+  tag: "11.0.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+
+secretName: petunia-shared
+
+postgres:
+  rootPasswordKey: postgres-root-password
+
+database:
+  host: "postgres"
+  adminUser: "postgres"
+  name: "nakadi"
+  username: "nakadi"
+
+env:
+  NAKADI_OAUTH2_MODE: "OFF"
+  NAKADI_ZOOKEEPER_CONNECTIONSTRING: "zookeeper://zookeeper:2181"
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres/nakadi"
+  SPRING_DATASOURCE_USERNAME: "nakadi"
+  SPRING_DATASOURCE_PASSWORD: "nakadi"
+  # DLQ_REDRIVE_EVENT_TYPE_ATTACHMENT_JOB: "false"
+
+livenessProbe:
+  initialDelaySeconds: 30
+  periodSeconds: 10

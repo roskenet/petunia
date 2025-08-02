@@ -1,0 +1,36 @@
+
+replicaCount: 1
+
+image:
+  repository: bitnami/kafka
+  tag: 3.8
+  pullPolicy: IfNotPresent
+
+kafka:
+  brokerId: 0
+  zookeeperConnect: zookeeper:2181
+  advertisedListeners: PLAINTEXT://kafka:9092
+  listenerSecurityProtocolMap: PLAINTEXT:PLAINTEXT
+
+service:
+  type: ClusterIP
+  port: 9092
+
+persistence:
+  enabled: true
+  hostPath:
+    enabled: true
+    basePath: /mnt
+  volumes:
+    - name: data
+      mountPath: /var/lib/kafka/data
+      accessModes:
+        - ReadWriteOnce
+      size: 1Gi
+      reclaimPolicy: Retain
+    - name: secrets
+      mountPath: /var/lib/kafka/secrets
+      accessModes:
+        - ReadWriteOnce
+      size: 1Gi
+      reclaimPolicy: Retain
