@@ -1,0 +1,6 @@
+apiVersion: v2
+name: villadiana
+description: Frontend-for-Backend Service for Project Petunia
+type: application
+version: 0.1.0
+appVersion: "3.28.0"

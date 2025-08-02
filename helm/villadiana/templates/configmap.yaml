@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "petunia.fullname" . }}-config
+data:
+  KEYCLOAK_ISSUER_URI: {{ .Values.env.KEYCLOAK_ISSUER_URI | quote }}
+  KEYCLOAK_TOKEN_URI: {{ .Values.env.KEYCLOAK_TOKEN_URI | quote }}
+  NAKADI_URI: {{ .Values.env.NAKADI_URI | quote }}
+  ALLOWED_ORIGINS: {{ .Values.env.ALLOWED_ORIGINS | quote }}
+  POST_LOGOUT_REDIRECT: {{ .Values.env.POST_LOGOUT_REDIRECT | quote }}
+  POST_LOGIN_REDIRECT: {{ .Values.env.POST_LOGIN_REDIRECT | quote }}
+  AXILLARIS_URI: {{ .Values.env.AXILLARIS_URI | quote }}

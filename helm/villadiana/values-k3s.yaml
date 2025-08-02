@@ -1,0 +1,23 @@
+replicaCount: 1
+
+image:
+  repository: roskenet/villadiana
+  tag: "3.28.0"
+  pullPolicy: IfNotPresent
+
+env:
+  KEYCLOAK_ISSUER_URI: https://keycloak.example.com/realms/petunia
+  KEYCLOAK_TOKEN_URI: https://keycloak.example.com/realms/petunia/protocol/openid-connect/token
+  NAKADI_URI: http://nakadi:8080
+  ALLOWED_ORIGINS: http://localhost:3000
+  POST_LOGOUT_REDIRECT: http://localhost:3000
+  POST_LOGIN_REDIRECT: http://localhost:3000/petunias
+  AXILLARIS_URI: http://axillaris:8080
+
+secretName: petunia
+secretKey: keycloak-villadiana-secret
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
