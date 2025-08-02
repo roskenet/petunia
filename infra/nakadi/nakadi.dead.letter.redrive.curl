@@ -1,0 +1,9 @@
+curl -v -XPOST http://localhost:8080/event-types -H "Content-type: application/json" -d '{
+  "name": "nakadi.dead.letter.redrive",
+  "owning_application": "nakadi",
+  "category": "undefined",
+  "schema": {
+    "type": "json_schema",
+    "schema": "{ \"additionalProperties\": true }"
+  }
+}'
