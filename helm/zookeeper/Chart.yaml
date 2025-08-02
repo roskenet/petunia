@@ -1,0 +1,7 @@
+apiVersion: v2
+name: zookeeper
+description: A Helm chart for Zookeeper in Project Petunia
+type: application
+version: 0.1.0
+appVersion: "17.5"
+dependencies: []

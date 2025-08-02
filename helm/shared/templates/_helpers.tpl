@@ -1,5 +1,5 @@
 {{- define "petunia.checkSecret" -}}
-{{- if not (lookup "v1" "Secret" .Release.Namespace "petunia") }}
+{{- if not (lookup "v1" "Secret" .Release.Namespace "petunia-shared") }}
 {{- fail "Secret 'petunia' not found. Please install the 'secrets' chart first." }}
 {{- end }}
 {{- end }}

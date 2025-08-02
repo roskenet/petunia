@@ -1,0 +1,32 @@
+replicaCount: 1
+
+image:
+  repository: zookeeper
+  tag: "3.8"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 2181
+
+zookeeper:
+  disableAdmin: "false"
+
+persistence:
+  enabled: true
+  hostPath:
+    enabled: true
+    basePath: /data
+  volumes:
+    - name: data
+      mountPath: /data
+      accessModes:
+        - ReadWriteOnce
+      size: 2Gi
+      reclaimPolicy: Retain
+    - name: datalog
+      mountPath: /datalog
+      accessModes:
+        - ReadWriteOnce
+      size: 2Gi
+      reclaimPolicy: Retain

@@ -5,7 +5,7 @@ image:
   tag: "26.3"
   pullPolicy: IfNotPresent
 
-secretName: petunia
+secretName: petunia-shared
 
 postgres:
   rootPasswordKey: postgres-root-password
