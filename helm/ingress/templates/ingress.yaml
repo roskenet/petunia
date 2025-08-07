@@ -41,7 +41,7 @@ spec:
             service:
               name: nakadi-ui
               port:
-                number: 8080
+                number: 3000
   {{- end}}
   - host: {{ .Values.keycloak.url }}
     http:
