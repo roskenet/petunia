@@ -12,5 +12,5 @@ polonium:
 nakadi:
   expose: false
 
-nakadi-ui:
+nakadiui:
   expose: false

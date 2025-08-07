@@ -30,7 +30,9 @@ spec:
               name: nakadi
               port:
                 number: 80
-  - host: {{ .Values.nakadi-ui.url }}
+  {{- end}}
+  {{- if .Values.nakadiui.expose }}
+  - host: {{ .Values.nakadiui.url }}
     http:
       paths:
         - path: /

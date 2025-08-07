@@ -13,6 +13,6 @@ nakadi:
   expose: true
   url: nakadi
 
-nakadi-ui:
+nakadiui:
   expose: true
   url: nakadi-ui
