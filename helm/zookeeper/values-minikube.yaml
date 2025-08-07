@@ -22,11 +22,11 @@ persistence:
       mountPath: /data
       accessModes:
         - ReadWriteOnce
-      size: 2Gi
+      size: 1Gi
       reclaimPolicy: Retain
     - name: datalog
       mountPath: /datalog
       accessModes:
         - ReadWriteOnce
-      size: 2Gi
+      size: 1Gi
       reclaimPolicy: Retain

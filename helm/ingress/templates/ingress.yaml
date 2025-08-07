@@ -19,6 +19,28 @@ spec:
     secretName: petunia-tls
 {{- end}}
   rules:
+  {{- if .Values.nakadi.expose }}
+  - host: {{ .Values.nakadi.url }}
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: nakadi
+              port:
+                number: 80
+  - host: {{ .Values.nakadi-ui.url }}
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: nakadi-ui
+              port:
+                number: 8080
+  {{- end}}
   - host: {{ .Values.keycloak.url }}
     http:
       paths:

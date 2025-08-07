@@ -12,3 +12,7 @@ polonium:
 nakadi:
   expose: true
   url: nakadi
+
+nakadi-ui:
+  expose: true
+  url: nakadi-ui
