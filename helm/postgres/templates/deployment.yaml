@@ -21,7 +21,10 @@ spec:
             runAsUser: 0
           env:
             - name: POSTGRES_PASSWORD
-              value: "postgres"
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ .Values.secrets.name }}"
+                  key: "{{ .Values.postgres.passwordKey }}"
           command:
             - sh
             - -c
