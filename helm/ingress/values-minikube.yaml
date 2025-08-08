@@ -4,6 +4,12 @@ tls:
   enabled: false
 
 hosts:
+  - host: sonar
+    paths:
+      - path: /
+        service:
+          name: sonar
+          port: 9000
   - host: excalidraw
     paths:
       - path: /

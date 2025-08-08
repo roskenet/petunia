@@ -21,7 +21,7 @@ spec:
             claimName: {{ printf "%s-%s" (include "petunia.fullname" $) $vol.name | trunc 63 | trimSuffix "-" }}
         {{- end }}
       containers:
-        - name: kafka
+        - name: sonar
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
