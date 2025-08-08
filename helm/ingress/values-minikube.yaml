@@ -4,6 +4,12 @@ tls:
   enabled: false
 
 hosts:
+  - host: excalidraw
+    paths:
+      - path: /
+        service:
+          name: excalidraw
+          port: 80
   - host: nakadi
     paths:
       - path: /

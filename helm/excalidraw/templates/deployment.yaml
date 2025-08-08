@@ -15,9 +15,12 @@ spec:
         {{- include "petunia.selectorLabels" . | nindent 8 }}
     spec:
       containers:
-        - name: villadiana
+        - name: {{ include "petunia.name" . }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: www
-              containerPort: 8080
+            {{- range .Values.ports }}
+            - name: {{ .name }}
+              containerPort: {{ .containerPort }}
+            {{- end }}
+          resources: {{- toYaml .Values.resources | nindent 12 }}
