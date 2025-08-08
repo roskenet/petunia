@@ -23,18 +23,21 @@ hosts:
           name: sonarqube
           port: 9000
   - host: keycloak
+    enabled: true
     paths:
       - path: /
         service:
           name: keycloak
           port: 8080
   - host: polonium
+    enabled: true
     paths:
       - path: /
         service:
           name: polonium
           port: 8080
   - host: villadiana
+    enabled: false
     paths:
       - path: /ws
         service:
