@@ -23,8 +23,8 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: "{{ .Values.secrets.name }}"
-                  key: "{{ .Values.postgres.passwordKey }}"
+                  name: {{ include "petunia.fullname" . }}
+                  key: {{ .Values.postgres.passwordKey }}
           command:
             - sh
             - -c

@@ -7,9 +7,6 @@ replicaCount: 1
 
 postgres:
   user: postgres
-
-secrets:
-  name: petunia-shared
   passwordKey: postgres-root-password
 
 persistence:

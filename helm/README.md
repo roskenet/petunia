@@ -29,8 +29,7 @@ helm upgrade --install petunia ./shared \
   --set keycloak.adminUser=keycloak \
   --set keycloak.adminPassword=keycloak \
   --set keycloak.databaseUser=keycloak \
-  --set keycloak.databasePassword=keycloak \
--f ./shared/values-minikube.yaml
+  --set keycloak.databasePassword=keycloak
 ```
 
 This creates a Secret called petunia with the key postgres-root-password.
