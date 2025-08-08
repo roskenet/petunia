@@ -5,9 +5,12 @@ metadata:
   labels:
     {{- include "petunia.labels" . | nindent 4 }}
 spec:
-  type: {{ .Values.service.type }}
+  type: {{ (index .Values.ports 0).type }}
   selector:
     {{- include "petunia.selectorLabels" . | nindent 4 }}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: http
+    {{- range .Values.ports }}
+    - name: {{ .name }}
+      port: {{ .servicePort }}
+      targetPort: {{ .name }}
+    {{- end }}
