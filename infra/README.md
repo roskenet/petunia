@@ -27,6 +27,15 @@ Settings for sonarqube:
 ```
 echo 'vm.max_map_count=262144' | sudo tee -a /etc/sysctl.conf
 ```
+Add them after initialsing the minikube with
+
+```
+#!/bin/bash
+PROFILE=${1:-dev}
+# minikube start -p "$PROFILE" --driver=docker
+minikube ssh -p "$PROFILE" -- "echo 'vm.max_map_count=262144' | sudo tee -a /etc/sysctl.conf && sudo sysctl -p"
+```
+
 
 ```
 sudo sysctl -p
