@@ -1,4 +1,4 @@
-#
+# The ingress front controller
 
 tls:
   enabled: false
