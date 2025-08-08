@@ -9,123 +9,27 @@ metadata:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
-{{- if .Values.tls.enabled }}
   ingressClassName: nginx
+  {{- if .Values.tls.enabled }}
   tls:
-  - hosts:
-    - www.roskenet.de
-    - petunia.roskenet.de
-    - auth.roskenet.de
-    secretName: petunia-tls
-{{- end}}
+    - hosts:
+      {{- range .Values.hosts }}
+      - {{ .host }}
+      {{- end }}
+      secretName: petunia-tls
+  {{- end }}
   rules:
-  {{- if .Values.nakadi.expose }}
-  - host: {{ .Values.nakadi.url }}
+  {{- range .Values.hosts }}
+  - host: {{ .host }}
     http:
       paths:
-        - path: /
+        {{- range .paths }}
+        - path: {{ .path }}
           pathType: Prefix
           backend:
             service:
-              name: nakadi
+              name: {{ .service.name }}
               port:
-                number: 80
-  {{- end}}
-  {{- if .Values.nakadiui.expose }}
-  - host: {{ .Values.nakadiui.url }}
-    http:
-      paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: nakadi-ui
-              port:
-                number: 3000
-  {{- end}}
-  {{- if .Values.sonar.expose }}
-  - host: {{ .Values.sonar.url }}
-    http:
-      paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: {{ .Values.sonar.service.name}}
-              port:
-                number: {{ .Values.sonar.service.port}}
-  {{- end}}
-  - host: {{ .Values.keycloak.url }}
-    http:
-      paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: keycloak
-              port:
-                number: 8080
-  - host: {{ .Values.polonium.url }}
-    http:
-      paths:
-        - path: /
-          pathType: Prefix
-          backend:
-            service:
-              name: polonium
-              port:
-                number: 8080
-  {{- if .Values.villadiana.expose }}
-  - host: {{ .Values.villadiana.url }}
-    http:
-      paths:
-      - path: /ws
-        pathType: Prefix
-        backend:
-          service:
-            name: villadiana
-            port:
-              number: 8080
-      - path: /api
-        pathType: Prefix
-        backend:
-          service:
-            name: villadiana
-            port:
-              number: 8080
-      - path: /oauth2
-        pathType: Prefix
-        backend:
-          service:
-            name: villadiana
-            port:
-              number: 8080
-      - path: /login
-        pathType: Prefix
-        backend:
-          service:
-            name: villadiana
-            port:
-              number: 8080
-      - path: /logout
-        pathType: Prefix
-        backend:
-          service:
-            name: villadiana
-            port:
-              number: 8080
-      - path: /me
-        pathType: Prefix
-        backend:
-          service:
-            name: villadiana
-            port:
-              number: 8080
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: alpicola
-            port:
-              number: 80
-  {{- end}}
+                number: {{ .service.port }}
+        {{- end }}
+  {{- end }}
