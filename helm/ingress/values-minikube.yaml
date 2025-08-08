@@ -20,3 +20,7 @@ nakadiui:
 sonar:
   expose: true
   url: sonar
+
+villadiana:
+  expose: true
+  url: villadiana

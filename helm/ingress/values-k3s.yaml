@@ -17,3 +17,7 @@ nakadiui:
 
 sonar:
   expose: false
+
+villadiana:
+  expose: true
+  url: petunia.roskenet.de

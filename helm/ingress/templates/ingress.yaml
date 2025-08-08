@@ -75,7 +75,8 @@ spec:
               name: polonium
               port:
                 number: 8080
-  - host: petunia.roskenet.de
+  {{- if .Values.villadiana.expose }}
+  - host: {{ .Values.villadiana.url }}
     http:
       paths:
       - path: /ws
@@ -127,3 +128,4 @@ spec:
             name: alpicola
             port:
               number: 80
+  {{- end}}
