@@ -16,3 +16,7 @@ nakadi:
 nakadiui:
   expose: true
   url: nakadi-ui
+
+sonar:
+  expose: true
+  url: sonar

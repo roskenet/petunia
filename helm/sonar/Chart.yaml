@@ -1,0 +1,5 @@
+apiVersion: v2
+name: sonar
+description: A Helm chart for deploying sonarqube
+version: 1.0.0
+appVersion: "25.8.0.112029-community"

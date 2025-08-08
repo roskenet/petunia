@@ -43,6 +43,18 @@ spec:
               port:
                 number: 3000
   {{- end}}
+  {{- if .Values.sonar.expose }}
+  - host: {{ .Values.sonar.url }}
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: sonar
+              port:
+                number: 9000
+  {{- end}}
   - host: {{ .Values.keycloak.url }}
     http:
       paths:
