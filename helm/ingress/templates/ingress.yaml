@@ -51,9 +51,9 @@ spec:
           pathType: Prefix
           backend:
             service:
-              name: sonar
+              name: {{ .Values.sonar.service.name}}
               port:
-                number: 9000
+                number: {{ .Values.sonar.service.port}}
   {{- end}}
   - host: {{ .Values.keycloak.url }}
     http:

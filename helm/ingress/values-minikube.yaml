@@ -20,6 +20,9 @@ nakadiui:
 sonar:
   expose: true
   url: sonar
+  service:
+    name: sonarqube
+    port: 9000
 
 villadiana:
   expose: true
