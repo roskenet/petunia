@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: roskenet/polonium
-  tag: "3.2.0"
+  tag: "3.3.0"
   pullPolicy: IfNotPresent
 
 ports:
