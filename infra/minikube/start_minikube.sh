@@ -3,10 +3,11 @@
 PROFILE=${1:-minikube}
 MEMORY=${2:-8192}
 CPUS=${3:-2}
+MOUNT=$HOME/.local/share/mounts
 
-mkdir -p $HOME/mounts
+mkdir -p $MOUNT
 
-minikube start -p "$PROFILE" --driver=docker --mount --mount-string="$HOME/mounts/$PROFILE:/mnt" --addons=ingress --memory=$MEMORY --cpus=$CPUS
+minikube start -p "$PROFILE" --driver=docker --mount --mount-string="$MOUNT/$PROFILE:/mnt" --addons=ingress --memory=$MEMORY --cpus=$CPUS
 
 minikube ssh -p "$PROFILE" -- "sudo tee -a /etc/sysctl.conf > /dev/null <<'EOF'
 # Setting for elasticache
