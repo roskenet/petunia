@@ -1,0 +1,15 @@
+replicaCount: 1
+
+image:
+  repository: roskenet/nakadi-ui
+  tag: "10.0.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3000
+  targetPort: 3000
+
+env:
+  NAKADI_API_URL: "http://nakadi"
+  BASE_URL: "https://nakadi-ui"
