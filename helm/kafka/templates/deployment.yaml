@@ -30,15 +30,21 @@ spec:
             - name: ALLOW_PLAINTEXT_LISTENER
               value: "yes"
             - name: KAFKA_ENABLE_KRAFT
-              value: "no"
-            - name: KAFKA_BROKER_ID
-              value: "{{ .Values.kafka.brokerId }}"
-            - name: KAFKA_ZOOKEEPER_CONNECT
-              value: "{{ .Values.kafka.zookeeperConnect }}"
-            - name: KAFKA_ADVERTISED_LISTENERS
+              value: "yes"
+            - name: KAFKA_CFG_NODE_ID
+              value: "{{ .Values.kafka.nodeId }}"
+            - name: KAFKA_CFG_PROCESS_ROLES
+              value: "{{ .Values.kafka.processRoles }}"
+            - name: KAFKA_CFG_CONTROLLER_LISTENER_NAMES
+              value: "{{ .Values.kafka.controllerListenerNames }}"
+            - name: KAFKA_CFG_LISTENERS
+              value: "{{ .Values.kafka.listeners }}"
+            - name: KAFKA_CFG_ADVERTISED_LISTENERS
               value: "{{ .Values.kafka.advertisedListeners }}"
-            - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
+            - name: KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP
               value: "{{ .Values.kafka.listenerSecurityProtocolMap }}"
+            - name: KAFKA_CFG_CONTROLLER_QUORUM_VOTERS
+              value: "{{ .Values.kafka.controllerQuorumVoters }}"
           volumeMounts:
             {{- range $i, $vol := .Values.persistence.volumes }}
             - mountPath: {{ $vol.mountPath }}

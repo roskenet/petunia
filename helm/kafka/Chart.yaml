@@ -1,5 +1,5 @@
 apiVersion: v2
 name: kafka
-description: A Helm chart for deploying Kafka with Zookeeper
+description: A Helm chart for deploying Kafka with KRaft (no Zookeeper)
 version: 0.1.0
 appVersion: "3.8"
