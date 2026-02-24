@@ -1,6 +1,0 @@
-apiVersion: v2
-name: nakadi
-description: Nakadi event bus deployment
-type: application
-version: 0.1.0
-appVersion: "11.0.0"

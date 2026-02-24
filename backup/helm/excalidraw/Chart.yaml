@@ -1,5 +1,0 @@
-apiVersion: v2
-name: excalidraw
-description: My own version of Excalidraw
-type: application
-version: 1.0.0

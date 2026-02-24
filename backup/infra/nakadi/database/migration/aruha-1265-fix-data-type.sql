@@ -1,1 +1,0 @@
-alter type az_operation set schema zn_data;
