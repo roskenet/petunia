@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository
 import java.util.UUID
 
 @Repository
-interface PlayerAccountRepository : JpaRepository<PlayerAccount, UUID>
+interface PlayerAccountRepository : JpaRepository<PlayerAccount, UUID> {
+    fun findByPlayerName(playerName: String): PlayerAccount?
+}
