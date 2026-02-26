@@ -1,41 +1,115 @@
-# Project Petunia Überblick  
+# ProjectPetunia Overview
 
-Das Projekt Petunia ist ein Börsensimulationsspiel.
+**ProjectPetunia** is an online stock market simulation game.
 
-Das Spiel wird im Internet gespielt. Die Spieler können auf ihr Konto und Portfolio zugreifen, wie man es von "normalen" Banking-Apps gewöhnt ist. Mittels einer Browser-App können sie dort auch ihre Kauf- und Verkauforders anlegen.
+## Game Concept
 
-## Spielidee
-Das Spiel besteht aus folgenden Elementen:
+The game simulates the trading of securities on the fictional stock exchange “Petunia”.
 
-### Player
-Die Spieler sind die Marktteilnehmer an der Börse. Sie können jederzeit in das Spiel eintreten und erhalten einen bestimmten Betrag an Spielgeld.
+The securities represent shares in teams from Germany’s 1st Football Bundesliga.  
+The economic performance of the companies in the game is driven by their real-world sporting success or failure.
+
+This creates a link between real-world events and the online game, while also introducing — indirectly — an element similar to sports betting.
+
+## Game Elements
+
+The game consists of the following components:
+
+### Players
+
+Players are the market participants on the exchange.
+
+They can join the game at any time and receive a certain amount of virtual starting capital.
+
+Just like in the real world, they are given:
+
+- an online account  
+- an online securities portfolio  
+
+There they can view their balance and holdings, and place buy and sell orders for shares.
 
 ### Shares
-An der fiktiven Börse können fiktive Anteilscheine an den Mannschaften der 1. deutschen Fußballbundesliga gehandelt werden. Zum Spielstart gibt es pro Mannschaft eine festgelegte Anzahl an Anteilen, die die Spieler handeln können.
 
-### Dividenden
-Nach den realen, tatsächlichen Spieltagen in der Fußballbundesliga werden Dividenden ausgezahlt. Hierbei soll für das Spiel berücksichtigt werden, ob die in der Tabelle aktuell weiter unten stehende Mannschaft gegen eine weiter oben stehende Mannschaft gewonnen hat und ob der Sieger sogar einen Auswärtssieg errungen hat.
+On the fictional exchange, virtual shares of Bundesliga teams can be traded.
 
-### Orderbuch
-Das Orderbuch ist der Service, der die eingehenden Orders entgegennimmt und abwickelt. Mit den historischen Orderdaten sollen auch die Marktveränderungen in klassischen Börsencharts angezeigt werden können.
+At the start of the game, each team has a fixed number of shares available for trading.
 
-### Clearing
-Der Clearingservice verwaltet die Wertpapiere und Konten der Spieler. Er fungiert als Bank und Clearingstelle.
+### Dividends
 
-### Die Zentralbank und Börsenaufsicht
-Die fiktive Zentralbank hat die Aufgabe durch Markt-Eingriffe im Spiel notwenige Regulierungen durchzuführen - beispielsweise Inflationsbekämpfung.
+Dividends are paid out after real Bundesliga match days.
 
-### Die Börse
-Die Börse ist die zentrale Game-Engine. Sie stellt die Verbindung zwischen Orderbuch, Clearing und Zentralbank her. Sie ist in dieser Simulation auch für die Auszahlung der Dividenden zuständig, nachdem sie mit den wahren Spielergebnissen gefüttert wurde.
+The dividend amount depends on the team’s sporting performance on that match day.
 
-### Technische Umsetzung
+A formula (to be defined) will take into account factors such as:
 
-Die Frontends sind mit React geschrieben. Alle Microservices sind Spring Boot / Kotlin Webapps, die mittels REST-Schnittstellen oder über Nakadi Event-Streams kommunizieren. Das Orderbuch und die Clearingstelle speichern ihre Daten in einer PostgreSQL Datenbank.
+- the opponent’s league position  
+- goal difference  
+- whether the match was played at home or away  
 
-Orderbuch, Clearing, Zentralbank und Börse sind in der ersten Version in einem Monolithen implementiert, der auf der Hexagonal Architektur basiert. 
+## Implementation
 
-Die Benutzerverwaltung und der Login werden ein Keycloak Server sein.
+The following institutions are required for implementation:
 
-Deployment soll zum lokalen Testen auf minikube und im live-Betrieb auf einem k3s stattfinden. Dazu soll es helm charts geben.
+### Exchange
 
-Für die Komponenten gibt es zusätzlich zu diesem Dokument spezielle Spezifikationen im Ordner `specs`.
+The exchange manages the order book and acts as the trading venue.
+
+It:
+
+- receives buy and sell orders from players  
+- executes trades  
+- acts as the price broker  
+- determines and stores share prices  
+
+### Bank
+
+The bank manages player accounts and portfolios.
+
+It acts as the clearing entity responsible for transferring:
+
+- securities  
+- funds  
+
+between players and portfolios.
+
+Players interact with the game exclusively through the bank.
+
+After each real match day, the bank receives the football results and calculates the dividends to be paid to shareholders.
+
+### Central Bank
+
+The central bank serves as the game’s core engine.
+
+Its responsibilities go far beyond those of a real-world central bank.
+
+It indirectly steers the game and can regulate the market through:
+
+- interest rates  
+- other interventions  
+
+for example to combat inflation.
+
+It may also act as a trader itself in order to maintain market liquidity.
+
+## Technical Implementation
+
+Frontends will be built using:
+
+- React / Next.js  
+- TypeScript  
+
+All microservices are Spring Boot / Kotlin web applications, typically communicating via REST interfaces.
+
+Data is generally stored in a PostgreSQL database.
+
+A Nakadi server or additional databases may be used for specific purposes.
+
+User management and authentication will be handled via a Keycloak server.
+
+### Deployment
+
+- Local testing → minikube  
+- Live operation → k3s  
+
+Each technical component has its own detailed specification in its respective subdirectory.
+
