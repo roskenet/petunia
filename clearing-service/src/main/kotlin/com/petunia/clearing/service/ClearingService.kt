@@ -6,7 +6,6 @@ import com.petunia.clearing.repository.AssetRepository
 import com.petunia.clearing.repository.PlayerAccountRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.math.BigDecimal
 import java.util.UUID
 
 @Service
@@ -22,7 +21,7 @@ class ClearingService(
     fun getAccountById(id: UUID): PlayerAccount? = playerAccountRepository.findById(id).orElse(null)
 
     @Transactional
-    fun createAccount(playerName: String, initialBalance: BigDecimal): PlayerAccount {
+    fun createAccount(playerName: String, initialBalance: Long): PlayerAccount {
         val account = PlayerAccount(playerName = playerName, balance = initialBalance)
         return playerAccountRepository.save(account)
     }
@@ -61,4 +60,63 @@ class ClearingService(
         val updatedAsset = asset.copy(quantity = asset.quantity - quantity)
         return assetRepository.save(updatedAsset)
     }
+
+    @Transactional
+    fun clearTrade(
+        buyerName: String,
+        sellerName: String,
+        symbol: String,
+        quantity: Long,
+        price: Long
+    ): TradeSettlement {
+        val buyer = playerAccountRepository.findByPlayerName(buyerName)
+            ?: throw IllegalArgumentException("Buyer not found")
+        val seller = playerAccountRepository.findByPlayerName(sellerName)
+            ?: throw IllegalArgumentException("Seller not found")
+
+        val sellerAsset = assetRepository.findByAccountIdAndSymbol(seller.id, symbol)
+            ?: throw IllegalArgumentException("Seller asset not found")
+        if (sellerAsset.quantity < quantity) {
+            throw IllegalArgumentException("Insufficient asset quantity")
+        }
+
+        val total = price * quantity
+        if (buyer.balance < total) {
+            throw IllegalArgumentException("Insufficient balance")
+        }
+
+        val updatedSellerAsset = sellerAsset.copy(quantity = sellerAsset.quantity - quantity)
+        assetRepository.save(updatedSellerAsset)
+
+        val buyerAsset = assetRepository.findByAccountIdAndSymbol(buyer.id, symbol)
+        val updatedBuyerAsset = if (buyerAsset != null) {
+            buyerAsset.copy(quantity = buyerAsset.quantity + quantity)
+        } else {
+            Asset(account = buyer, symbol = symbol, quantity = quantity)
+        }
+        assetRepository.save(updatedBuyerAsset)
+
+        val updatedBuyer = buyer.copy(balance = buyer.balance - total)
+        val updatedSeller = seller.copy(balance = seller.balance + total)
+        playerAccountRepository.save(updatedBuyer)
+        playerAccountRepository.save(updatedSeller)
+
+        return TradeSettlement(
+            buyerAccountId = buyer.id,
+            sellerAccountId = seller.id,
+            symbol = symbol,
+            quantity = quantity,
+            price = price,
+            total = total
+        )
+    }
 }
+
+data class TradeSettlement(
+    val buyerAccountId: UUID,
+    val sellerAccountId: UUID,
+    val symbol: String,
+    val quantity: Long,
+    val price: Long,
+    val total: Long
+)

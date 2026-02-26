@@ -1,7 +1,6 @@
 package com.petunia.clearing.domain
 
 import jakarta.persistence.*
-import java.math.BigDecimal
 import java.time.OffsetDateTime
 import java.util.UUID
 
@@ -15,7 +14,7 @@ data class PlayerAccount(
     val playerName: String,
 
     @Column(nullable = false)
-    val balance: BigDecimal = BigDecimal.ZERO,
+    val balance: Long = 0L,
 
     @Column(name = "created_at", insertable = false, updatable = false)
     val createdAt: OffsetDateTime? = null,

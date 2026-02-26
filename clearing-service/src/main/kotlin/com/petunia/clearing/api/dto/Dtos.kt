@@ -1,17 +1,16 @@
 package com.petunia.clearing.api.dto
 
-import java.math.BigDecimal
 import java.util.UUID
 
 data class PlayerAccountDto(
     val id: UUID,
     val playerName: String,
-    val balance: BigDecimal
+    val balance: Long
 )
 
 data class CreatePlayerAccountRequest(
     val playerName: String,
-    val initialBalance: BigDecimal = BigDecimal.ZERO
+    val initialBalance: Long = 0L
 )
 
 data class AssetDto(
@@ -24,4 +23,21 @@ data class AssetDto(
 data class CreateAssetRequest(
     val symbol: String,
     val quantity: Long
+)
+
+data class ClearTradeRequest(
+    val buyerName: String,
+    val sellerName: String,
+    val symbol: String,
+    val quantity: Long,
+    val price: Long
+)
+
+data class ClearTradeResponse(
+    val buyerAccountId: UUID,
+    val sellerAccountId: UUID,
+    val symbol: String,
+    val quantity: Long,
+    val price: Long,
+    val total: Long
 )
