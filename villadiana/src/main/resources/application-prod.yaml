@@ -14,26 +14,26 @@ spring:
         registration:
           keycloak:
             client-id: villadiana
-            client-secret: ${KEYCLOAK_SECRET:6w8HibfpYVEQIgMTKAFXFPMC8NgaOHBU}
+            client-secret: ${KEYCLOAK_SECRET}
             authorization-grant-type: authorization_code
             scope: openid,profile,email
             provider: keycloak
-          axillaris-client:
-            client-id: villadiana
-            client-secret: ${KEYCLOAK_SECRET:6w8HibfpYVEQIgMTKAFXFPMC8NgaOHBU}
-            authorization-grant-type: client_credentials
-            scope: petunias.read,petunias.write
-            provider: keycloak
-management:
-  otlp:
-    metrics:
-      export:
-        url: "http://otel-collector:4318/v1/metrics"
-        step: 10s
-        enabled: false
-  metrics:
-    tags:
-      service.name: villadiana
+#          axillaris-client:
+#            client-id: villadiana
+#            client-secret: ${KEYCLOAK_SECRET}
+#            authorization-grant-type: client_credentials
+#            scope: petunias.read,petunias.write
+#            provider: keycloak
+#management:
+#  otlp:
+#    metrics:
+#      export:
+#        url: "http://otel-collector:4318/v1/metrics"
+#        step: 10s
+#        enabled: false
+#  metrics:
+#    tags:
+#      service.name: villadiana
 
   endpoints:
     web:

@@ -19,43 +19,43 @@ spec:
           - name: KEYCLOAK_ISSUER_URI
             valueFrom:
               configMapKeyRef:
-                name: villadiana-config
+                name: villadiana
                 key: KEYCLOAK_ISSUER_URI
           - name: KEYCLOAK_TOKEN_URI
             valueFrom:
               configMapKeyRef:
-                name: villadiana-config
+                name: villadiana
                 key: KEYCLOAK_TOKEN_URI
           - name: NAKADI_URI
             valueFrom:
               configMapKeyRef:
-                name: villadiana-config
+                name: villadiana
                 key: NAKADI_URI
           - name: ALLOWED_ORIGINS
             valueFrom:
               configMapKeyRef:
-                name: villadiana-config
+                name: villadiana
                 key: ALLOWED_ORIGINS
           - name: POST_LOGOUT_REDIRECT
             valueFrom:
               configMapKeyRef:
-                name: villadiana-config
+                name: villadiana
                 key: POST_LOGOUT_REDIRECT
           - name: POST_LOGIN_REDIRECT
             valueFrom:
               configMapKeyRef:
-                name: villadiana-config
+                name: villadiana
                 key: POST_LOGIN_REDIRECT
-          - name: AXILLARIS_URI
-            valueFrom:
-              configMapKeyRef:
-                name: villadiana-config
-                key: AXILLARIS_URI
+#          - name: AXILLARIS_URI
+#            valueFrom:
+#              configMapKeyRef:
+#                name: villadiana
+#                key: AXILLARIS_URI
           - name: KEYCLOAK_SECRET
             valueFrom:
-              secretKeyRef:
-                name: petunia
-                key: keycloak-villadiana-secret
+              configMapKeyRef:
+                name: villadiana
+                key: keycloak-secret
         ports:
         - name: www
           containerPort: 8080
