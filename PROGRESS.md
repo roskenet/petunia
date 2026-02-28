@@ -22,13 +22,14 @@ The ProjectPetunia core architecture has been transitioned to a monolithic struc
 - **Directory**: `/engine`
 - **Port**: 8080
 - **Dependencies**: Spring Web, Spring Data JPA, PostgreSQL Driver, Flyway, Cucumber (for testing).
-- **Entry Point**: `de.roskenet.petunia.bank.BankApplication.kt`
+- **Entry Point**: `de.roskenet.petunia.PetuniaEngine`
+- **Package structure**: `de.roskenet.petunia` (Main class moved from `de.roskenet.petunia.bank`)
 
 #### Central Bank Microservice
 - **Directory**: `/central-bank`
 - **Port**: 8083
 - **Dependencies**: Spring Web, Spring Data JPA, PostgreSQL Driver.
-- **Entry Point**: `de.roskenet.petunia.centralbank.CentralBankApplication.kt`
+- **Entry Point**: `de.roskenet.petunia.centralbank.CentralBankApplication`
 
 ### 3. Build Verification
 - Successfully ran `./mvnw compile -DskipTests` to ensure the engine and the parent project build correctly with JDK 25.
@@ -48,6 +49,7 @@ The ProjectPetunia core architecture has been transitioned to a monolithic struc
 ├── engine/
 │   ├── pom.xml
 │   └── src/main/kotlin/de/roskenet/petunia/
+│       ├── PetuniaEngine.kt
 │       ├── bank/
 │       └── exchange/
 ├── central-bank/

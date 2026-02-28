@@ -1,11 +1,11 @@
-package de.roskenet.petunia.bank
+package de.roskenet.petunia
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class BankApplication
+class PetuniaEngine
 
 fun main(args: Array<String>) {
-    runApplication<BankApplication>(*args)
+    runApplication<PetuniaEngine>(*args)
 }
