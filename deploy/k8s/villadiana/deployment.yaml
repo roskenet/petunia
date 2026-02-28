@@ -55,7 +55,7 @@ spec:
             valueFrom:
               configMapKeyRef:
                 name: villadiana
-                key: keycloak-secret
+                key: KEYCLOAK_SECRET
         ports:
         - name: www
           containerPort: 8080
