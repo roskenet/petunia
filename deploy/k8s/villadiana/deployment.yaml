@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: villadiana
-        image: roskenet/villadiana:3.29.0
+        image: roskenet/villadiana:3.30.0
         env:
           - name: KEYCLOAK_ISSUER_URI
             valueFrom:
