@@ -4,5 +4,5 @@ metadata:
   name: valkey-config
 data:
   valkey.conf: |
-    requirepass mypassword
+    requirepass password
 

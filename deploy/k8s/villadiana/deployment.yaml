@@ -26,11 +26,6 @@ spec:
               configMapKeyRef:
                 name: villadiana
                 key: KEYCLOAK_TOKEN_URI
-#          - name: NAKADI_URI
-#            valueFrom:
-#              configMapKeyRef:
-#                name: villadiana
-#                key: NAKADI_URI
           - name: ALLOWED_ORIGINS
             valueFrom:
               configMapKeyRef:
