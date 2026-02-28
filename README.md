@@ -1,115 +1,117 @@
-# ProjectPetunia Overview
+# 🚀 ProjectPetunia
 
-**ProjectPetunia** is an online stock market simulation game.
+![Project Status](https://img.shields.io/badge/status-Alpha-orange)  
+![Tech Stack](https://img.shields.io/badge/stack-React%2FNext.js%20|%20SpringBoot%2FKotlin-blue)  
+![Database](https://img.shields.io/badge/database-PostgreSQL-lightgrey)
 
-## Game Concept
+**ProjectPetunia** is an online stock market simulation game, where football meets finance.
 
-The game simulates the trading of securities on the fictional stock exchange “Petunia”.
+---
 
-The securities represent shares in teams from Germany’s 1st Football Bundesliga.  
-The economic performance of the companies in the game is driven by their real-world sporting success or failure.
+## 📖 Table of Contents
 
-This creates a link between real-world events and the online game, while also introducing — indirectly — an element similar to sports betting.
+- [Game Concept](#game-concept)  
+- [Game Elements](#game-elements)  
+  - [Players](#players)  
+  - [Shares](#shares)  
+  - [Dividends](#dividends)  
+- [Implementation](#implementation)  
+  - [Exchange](#exchange)  
+  - [Bank](#bank)  
+  - [Central Bank](#central-bank)  
+- [Technical Implementation](#technical-implementation)  
+  - [Deployment](#deployment)  
 
-## Game Elements
+---
 
-The game consists of the following components:
+## 🎯 Game Concept
+
+The game simulates trading of securities on the fictional stock exchange **Petunia**.
+
+The securities represent shares in teams from Germany’s **1st Football Bundesliga**.  
+The economic performance of these “companies” is driven by their **real-world sporting success or failure**.
+
+> ⚡ Fun fact: This links real-world events with an online game, while subtly introducing a sports betting element.
+
+---
+
+## 🕹️ Game Elements
 
 ### Players
 
-Players are the market participants on the exchange.
+Players are the market participants of the exchange.  
 
-They can join the game at any time and receive a certain amount of virtual starting capital.
-
-Just like in the real world, they are given:
-
-- an online account  
-- an online securities portfolio  
-
-There they can view their balance and holdings, and place buy and sell orders for shares.
+- Can join anytime  
+- Receive a set amount of virtual starting capital  
+- Have an online account and portfolio  
+- Can view balances, holdings, and place buy/sell orders  
 
 ### Shares
 
-On the fictional exchange, virtual shares of Bundesliga teams can be traded.
+Virtual shares represent Bundesliga teams.  
 
-At the start of the game, each team has a fixed number of shares available for trading.
+- Each team has a fixed number of shares at game start  
+- Players can freely trade shares  
 
 ### Dividends
 
-Dividends are paid out after real Bundesliga match days.
+Dividends are paid after **real Bundesliga match days**.  
 
-The dividend amount depends on the team’s sporting performance on that match day.
+- Based on team performance  
+- Formula factors include:
+  - Opponent’s league position  
+  - Goal difference  
+  - Home vs away match  
 
-A formula (to be defined) will take into account factors such as:
+> 💡 Note: Formula is still to be defined, keeping room for tuning game balance.
 
-- the opponent’s league position  
-- goal difference  
-- whether the match was played at home or away  
+---
 
-## Implementation
-
-The following institutions are required for implementation:
+## 🏛️ Implementation
 
 ### Exchange
 
-The exchange manages the order book and acts as the trading venue.
+The exchange acts as the **trading venue**:
 
-It:
-
-- receives buy and sell orders from players  
-- executes trades  
-- acts as the price broker  
-- determines and stores share prices  
+- Receives buy/sell orders  
+- Executes trades  
+- Determines and stores share prices  
 
 ### Bank
 
-The bank manages player accounts and portfolios.
+The bank handles **player accounts and portfolios**:
 
-It acts as the clearing entity responsible for transferring:
-
-- securities  
-- funds  
-
-between players and portfolios.
-
-Players interact with the game exclusively through the bank.
-
-After each real match day, the bank receives the football results and calculates the dividends to be paid to shareholders.
+- Acts as a clearing house for securities and funds  
+- Calculates and pays dividends after match days  
+- Players interact exclusively through the bank  
 
 ### Central Bank
 
-The central bank serves as the game’s core engine.
+The central bank is the **game engine**:
 
-Its responsibilities go far beyond those of a real-world central bank.
+- Steers the game indirectly  
+- Can regulate market via interest rates or other interventions (e.g., inflation control)  
+- May act as a trader to maintain liquidity  
 
-It indirectly steers the game and can regulate the market through:
+> ⚠️ Its powers extend far beyond a real-world central bank — it’s the puppet master of Petunia.
 
-- interest rates  
-- other interventions  
+---
 
-for example to combat inflation.
+## 💻 Technical Implementation
 
-It may also act as a trader itself in order to maintain market liquidity.
-
-## Technical Implementation
-
-Frontends will be built using:
-
-- React / Next.js  
-- TypeScript  
-
-All microservices are Spring Boot / Kotlin web applications, typically communicating via REST interfaces.
-
-Data is generally stored in a PostgreSQL database.
-
-A Nakadi server or additional databases may be used for specific purposes.
-
-User management and authentication will be handled via a Keycloak server.
+- **Frontend**: React / Next.js, TypeScript  
+- **Microservices**: Spring Boot / Kotlin, REST interfaces  
+- **Database**: PostgreSQL (additional databases or Nakadi server optional)  
+- **Auth & Users**: Keycloak  
 
 ### Deployment
 
-- Local testing → minikube  
-- Live operation → k3s  
+- Local testing → `minikube`  
+- Production → `k3s`  
 
-Each technical component has its own detailed specification in its respective subdirectory.
+> 📁 Each component has its own detailed spec in respective subfolders.
+
+---
+
+Made with ❤️  by felix@roskenet.de 
 
