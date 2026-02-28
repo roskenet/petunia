@@ -26,7 +26,21 @@ The project has transitioned from a microservices approach to a consolidated mon
 - **Communication**: REST (Synchronous), OpenAPI/Swagger
 - **Database**: PostgreSQL (managed via Flyway migrations)
 - **Testing**: JUnit 5, Cucumber (Gherkin)
-- **Infrastructure**: Docker (Jib), Minikube/K3s
+- **Infrastructure**: Docker (Jib), Minikube/K3s, Valkey (Redis)
+
+---
+
+## 🚀 Deployment
+
+The project uses Kubernetes for deployment. Configuration files are located in the `deploy/` directory and within individual modules.
+
+### Global Infrastructure
+- **Valkey**: Located in `deploy/k8s/valkey/`. Provides a Redis-compatible data store used by services like `villadiana`.
+
+### Module Deployment
+Each module contains its own `deploy/` or `Makefile` for deployment:
+- **Alpicola**: `alpicola/deploy/` (Kubernetes manifests) and `alpicola/Makefile`.
+- **Villadiana**: `villadiana/deploy/` (Kubernetes manifests and environment configurations).
 
 ---
 
@@ -65,6 +79,7 @@ Calculated based on real-world Bundesliga match results. Factors include opponen
 │   └── src/             # React components and pages
 ├── villadiana/          # Backend-for-Frontend (BFF)
 ├── central-bank/        # Market Regulation service
+├── deploy/              # Global deployment configurations (e.g., Valkey)
 ├── pom.xml              # Parent Maven POM
 └── PROGRESS.md          # Real-time status tracker
 ```

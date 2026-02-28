@@ -127,8 +127,18 @@ It is built with React and Next.js.
 
 ### Deployment
 
-- Local testing → `minikube`  
-- Production → `k3s`  
+The project is designed to run on Kubernetes (K8s).
+
+- **Local Development**: Use `minikube`.
+- **Production**: Use `k3s`.
+- **Infrastructure**: Shared services like **Valkey** (Redis) are located in the root `deploy/` directory.
+- **Component Deployment**: Each component (`alpicola`, `villadiana`) has its own `deploy/` subfolder with specific Kubernetes manifests.
+
+For example, to deploy Alpicola to minikube:
+```bash
+cd alpicola
+make deploy
+```
 
 > 📁 Each component has its own detailed spec in respective subfolders.
 

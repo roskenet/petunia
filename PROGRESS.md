@@ -46,7 +46,13 @@ The ProjectPetunia core architecture has been transitioned to a monolithic struc
 - Updated documentation to include `villadiana`'s role in the architecture.
 - Added `villadiana` as a module in the root `pom.xml`.
 
-### 6. Exchange Order Book Implementation (now in Engine)
+### 6. Deployment Infrastructure
+- Added root `deploy/` directory with Kubernetes manifests.
+- Implemented **Valkey** (Redis) deployment in `deploy/k8s/valkey/`.
+- Integrated component-specific deployment scripts in `alpicola/deploy/` and `villadiana/deploy/`.
+- Added `Makefile` in `alpicola/` for simplified deployment tasks.
+
+### 7. Exchange Order Book Implementation (now in Engine)
 - Implemented `Order` entity, `OrderSide`, and `OrderStatus` enums.
 - Created `OrderRepository` for database access.
 - Implemented `OrderBookService` to handle order placement.
@@ -61,6 +67,7 @@ The ProjectPetunia core architecture has been transitioned to a monolithic struc
 │   └── src/
 ├── villadiana/
 ├── central-bank/
+├── deploy/
 ├── pom.xml
 └── README.md
 ```
