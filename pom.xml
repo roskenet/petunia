@@ -19,6 +19,7 @@
     <properties>
         <java.version>25</java.version>
         <kotlin.version>2.3.10</kotlin.version>
+        <jib.maven.plugin.version>3.5.1</jib.maven.plugin.version>
     </properties>
 
     <modules>
@@ -70,6 +71,22 @@
                         <version>${kotlin.version}</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>com.google.cloud.tools</groupId>
+                <artifactId>jib-maven-plugin</artifactId>
+                <version>${jib.maven.plugin.version}</version>
+                <configuration>
+                    <from>
+                        <image>eclipse-temurin:25-jre-alpine</image>
+                    </from>
+                    <to>
+                        <image>petunia/${project.artifactId}:${project.version}</image>
+                    </to>
+                    <container>
+                        <creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+                    </container>
+                </configuration>
             </plugin>
         </plugins>
     </build>
