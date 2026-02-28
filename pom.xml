@@ -8,9 +8,10 @@
         <version>4.0.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>com.projectpetunia</groupId>
     <artifactId>project-petunia</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>pom</packaging>
     <name>ProjectPetunia</name>
     <description>Online stock market simulation game</description>
