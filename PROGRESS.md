@@ -41,7 +41,12 @@ The ProjectPetunia core architecture has been transitioned to a monolithic struc
 - Updated root `.gitignore` with Next.js and Node.js entries.
 - Updated project documentation (`README.md`, `DESIGN.md`) to include the frontend.
 
-### 5. Exchange Order Book Implementation (now in Engine)
+### 5. Backend-for-Frontend (BFF) Integration
+- Added `villadiana` (Spring Boot/Java BFF) to the project.
+- Updated documentation to include `villadiana`'s role in the architecture.
+- Added `villadiana` as a module in the root `pom.xml`.
+
+### 6. Exchange Order Book Implementation (now in Engine)
 - Implemented `Order` entity, `OrderSide`, and `OrderStatus` enums.
 - Created `OrderRepository` for database access.
 - Implemented `OrderBookService` to handle order placement.
@@ -54,6 +59,7 @@ The ProjectPetunia core architecture has been transitioned to a monolithic struc
 ├── engine/
 ├── alpicola/
 │   └── src/
+├── villadiana/
 ├── central-bank/
 ├── pom.xml
 └── README.md

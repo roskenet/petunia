@@ -26,6 +26,8 @@
     <modules>
         <module>engine</module>
         <module>central-bank</module>
+<!--        villadiana is not correctly set up for now  keep it separately -->
+<!--        <module>villadiana</module>                                  -->
     </modules>
 
     <dependencyManagement>

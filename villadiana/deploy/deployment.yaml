@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: villadiana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: villadiana
+  template:
+    metadata:
+      labels:
+        app: villadiana
+    spec:
+      containers:
+      - name: villadiana
+        image: roskenet/villadiana:3.28.0
+        env:
+          - name: KEYCLOAK_ISSUER_URI
+            valueFrom:
+              configMapKeyRef:
+                name: villadiana-config
+                key: KEYCLOAK_ISSUER_URI
+          - name: KEYCLOAK_TOKEN_URI
+            valueFrom:
+              configMapKeyRef:
+                name: villadiana-config
+                key: KEYCLOAK_TOKEN_URI
+          - name: NAKADI_URI
+            valueFrom:
+              configMapKeyRef:
+                name: villadiana-config
+                key: NAKADI_URI
+          - name: ALLOWED_ORIGINS
+            valueFrom:
+              configMapKeyRef:
+                name: villadiana-config
+                key: ALLOWED_ORIGINS
+          - name: POST_LOGOUT_REDIRECT
+            valueFrom:
+              configMapKeyRef:
+                name: villadiana-config
+                key: POST_LOGOUT_REDIRECT
+          - name: POST_LOGIN_REDIRECT
+            valueFrom:
+              configMapKeyRef:
+                name: villadiana-config
+                key: POST_LOGIN_REDIRECT
+          - name: AXILLARIS_URI
+            valueFrom:
+              configMapKeyRef:
+                name: villadiana-config
+                key: AXILLARIS_URI
+          - name: KEYCLOAK_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: petunia
+                key: keycloak-villadiana-secret
+        ports:
+        - name: www
+          containerPort: 8080

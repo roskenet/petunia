@@ -18,6 +18,7 @@
 - [Implementation](#implementation)  
   - [Petunia Engine](#petunia-engine)
   - [Central Bank](#central-bank)
+  - [Villadiana Backend-for-Frontend](#villadiana-backend-for-frontend)
   - [Alpicola Frontend](#alpicola-frontend)
 - [Technical Implementation](#technical-implementation)  
   - [Deployment](#deployment)  
@@ -88,6 +89,16 @@ The central bank is the **game engine**:
 
 > ⚠️ Its powers extend far beyond a real-world central bank — it’s the puppet master of Petunia.
 
+### Villadiana Backend-for-Frontend
+
+The **Villadiana** is the Backend-for-Frontend (BFF) service that mediates between the **Alpicola Frontend** and the game core:
+
+- Manages user sessions and authentication via Keycloak (OAuth2).
+- Provides a WebSocket interface for real-time updates from the game engine.
+- Bridges the frontend and backend microservices, simplifying data flow.
+
+It is implemented as a Spring Boot application using Java.
+
 ### Alpicola Frontend
 
 The **Alpicola** is the frontend application where players can:
@@ -109,6 +120,7 @@ It is built with React and Next.js.
 > All Maven commands must use the wrapper: `./mvnw`
 
 - **Frontend**: React / Next.js, TypeScript  
+- **Backend-for-Frontend**: Spring Boot / Java, WebSocket, OAuth2
 - **Microservices**: Spring Boot / Kotlin, REST interfaces  
 - **Database**: PostgreSQL (additional databases or Nakadi server optional)  
 - **Auth & Users**: Keycloak  

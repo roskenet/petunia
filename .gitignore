@@ -56,14 +56,6 @@ runConfigurations/
 ### Next.js / Frontend ###
 node_modules/
 .next/
-/alpicola/node_modules/
-/alpicola/.next/
-/alpicola/out/
-/alpicola/build/
-/alpicola/coverage/
-/alpicola/.vercel/
-/alpicola/*.tsbuildinfo
-/alpicola/next-env.d.ts
 
 # Misc
 .DS_Store
@@ -73,3 +65,4 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 .env*
+
