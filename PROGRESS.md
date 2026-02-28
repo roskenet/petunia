@@ -20,19 +20,19 @@ Each microservice was initialized with its respective directory structure, `pom.
 - **Directory**: `/exchange`
 - **Port**: 8081
 - **Dependencies**: Spring Web, Spring Data JPA, PostgreSQL Driver.
-- **Entry Point**: `com.projectpetunia.exchange.ExchangeApplication.kt`
+- **Entry Point**: `de.roskenet.petunia.exchange.ExchangeApplication.kt`
 
 #### Bank Microservice
 - **Directory**: `/bank`
 - **Port**: 8082
 - **Dependencies**: Spring Web, Spring Data JPA, PostgreSQL Driver.
-- **Entry Point**: `com.projectpetunia.bank.BankApplication.kt`
+- **Entry Point**: `de.roskenet.petunia.bank.BankApplication.kt`
 
 #### Central Bank Microservice
 - **Directory**: `/central-bank`
 - **Port**: 8083
 - **Dependencies**: Spring Web, Spring Data JPA, PostgreSQL Driver.
-- **Entry Point**: `com.projectpetunia.centralbank.CentralBankApplication.kt`
+- **Entry Point**: `de.roskenet.petunia.centralbank.CentralBankApplication.kt`
 
 ### 3. Build Verification
 - Successfully ran `mvn compile -DskipTests` to ensure all modules and the parent project build correctly with JDK 21.
