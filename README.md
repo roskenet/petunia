@@ -103,7 +103,7 @@ The central bank is the **game engine**:
 
 > 🛠️ **Environment Setup**: Before interacting with the code, switch to the correct Java SDK:
 > ```bash
-> sdk use java 21.0.7-zulu
+> sdk use java 25.0.2-tem
 > ```
 > All Maven commands must use the wrapper: `./mvnw`
 

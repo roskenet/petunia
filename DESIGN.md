@@ -20,7 +20,7 @@ ProjectPetunia is built as a microservices-based distributed system.
 
 ### Technical Stack
 
-- **Language**: Kotlin 2.1.10 (targeting Java 21)
+- **Language**: Kotlin 2.3.10 (targeting Java 25)
 - **Framework**: Spring Boot 3.2.3
 - **Communication**: REST (Synchronous), potential Nakadi (Asynchronous)
 - **Database**: PostgreSQL
