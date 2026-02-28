@@ -21,7 +21,7 @@ ProjectPetunia is built as a microservices-based distributed system.
 ### Technical Stack
 
 - **Language**: Kotlin 2.3.10 (targeting Java 25)
-- **Framework**: Spring Boot 3.2.3
+- **Framework**: Spring Boot 4.0.3
 - **Communication**: REST (Synchronous), potential Nakadi (Asynchronous)
 - **Database**: PostgreSQL
 - **Security**: Keycloak (Authentication & User Management)
@@ -51,7 +51,7 @@ Paid out after each real-world match day. The amount is calculated by the **Bank
 ### Prerequisites
 - **Java SDK**: Switch to the correct SDK version:
   ```bash
-  sdk use java 21.0.7-zulu
+  sdk use java 25.0.2-tem
   ```
 - **Maven**: All interactions with the code must use the wrapper: `./mvnw`
 - Docker & PostgreSQL
