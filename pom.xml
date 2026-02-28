@@ -24,7 +24,6 @@
     </properties>
 
     <modules>
-        <module>exchange</module>
         <module>bank</module>
         <module>central-bank</module>
     </modules>
