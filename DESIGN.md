@@ -1,5 +1,7 @@
 # ProjectPetunia - Online Stock Market Simulation
 
+> 🤖 **AI Tool Note**: This `DESIGN.md` is primarily meant to be read by AI tools. Humans should refer to [README.md](README.md).
+
 **ProjectPetunia** is an online stock market simulation game where players trade virtual shares of teams from the German 1st Football Bundesliga. The economic performance of the "companies" (teams) is driven by their real-world sporting results.
 
 ---
@@ -18,7 +20,7 @@ ProjectPetunia is built as a microservices-based distributed system.
 
 ### Technical Stack
 
-- **Language**: Kotlin 1.9.25 (targeting Java 21)
+- **Language**: Kotlin 2.1.10 (targeting Java 21)
 - **Framework**: Spring Boot 3.2.3
 - **Communication**: REST (Synchronous), potential Nakadi (Asynchronous)
 - **Database**: PostgreSQL
@@ -47,8 +49,11 @@ Paid out after each real-world match day. The amount is calculated by the **Bank
 ## 🛠️ Development Guide
 
 ### Prerequisites
-- JDK 21
-- Maven 3.9+
+- **Java SDK**: Switch to the correct SDK version:
+  ```bash
+  sdk use java 21.0.7-zulu
+  ```
+- **Maven**: All interactions with the code must use the wrapper: `./mvnw`
 - Docker & PostgreSQL
 
 ### Project Structure
@@ -65,12 +70,12 @@ Paid out after each real-world match day. The amount is calculated by the **Bank
 ### Build and Run
 To build the entire project:
 ```bash
-mvn clean install
+./mvnw clean install
 ```
 
 To run a specific service:
 ```bash
-mvn spring-boot:run -pl <module-name>
+./mvnw spring-boot:run -pl <module-name>
 ```
 
 ---

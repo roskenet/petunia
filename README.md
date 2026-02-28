@@ -1,5 +1,7 @@
 # 🚀 ProjectPetunia
 
+> 📘 **Note**: This `README.md` is intended for human readers. For AI tools, see [DESIGN.md](DESIGN.md).
+
 ![Project Status](https://img.shields.io/badge/status-Alpha-orange)  
 ![Tech Stack](https://img.shields.io/badge/stack-React%2FNext.js%20|%20SpringBoot%2FKotlin-blue)  
 ![Database](https://img.shields.io/badge/database-PostgreSQL-lightgrey)
@@ -98,6 +100,12 @@ The central bank is the **game engine**:
 ---
 
 ## 💻 Technical Implementation
+
+> 🛠️ **Environment Setup**: Before interacting with the code, switch to the correct Java SDK:
+> ```bash
+> sdk use java 21.0.7-zulu
+> ```
+> All Maven commands must use the wrapper: `./mvnw`
 
 - **Frontend**: React / Next.js, TypeScript  
 - **Microservices**: Spring Boot / Kotlin, REST interfaces  
