@@ -1,5 +1,5 @@
-JDBC_URL: jdbc:postgresql://localhost:5432/bank
-JDBC_USER: postgres
-JCBC_PASSWORD: postgres
+JDBC_URL: jdbc:postgresql://localhost:5432/petunia
+JDBC_USER: petunia
+JCBC_PASSWORD: petunia
 
 API_PORT: 8080
