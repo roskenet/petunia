@@ -6,8 +6,6 @@ data:
   KEYCLOAK_ISSUER_URI: https://auth.roskenet.de/realms/petunia
   KEYCLOAK_TOKEN_URI: https://auth.roskenet.de/realms/petunia/protocol/openid-connect/token
   KEYCLOAK_SECRET: {{{PROD_VILLADIANA_KEYCLOAK_SECRET}}}
-  NAKADI_URI: http://nakadi
   ALLOWED_ORIGINS: https://petunia.roskenet.de
   POST_LOGOUT_REDIRECT: https://petunia.roskenet.de
   POST_LOGIN_REDIRECT: https://petunia.roskenet.de/petunias
-  AXILLARIS_URI: http://axillaris

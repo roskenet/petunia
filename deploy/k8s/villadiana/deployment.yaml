@@ -46,11 +46,6 @@ spec:
               configMapKeyRef:
                 name: villadiana
                 key: POST_LOGIN_REDIRECT
-#          - name: AXILLARIS_URI
-#            valueFrom:
-#              configMapKeyRef:
-#                name: villadiana
-#                key: AXILLARIS_URI
           - name: KEYCLOAK_SECRET
             valueFrom:
               configMapKeyRef:
