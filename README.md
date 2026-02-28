@@ -1,7 +1,5 @@
 # 🚀 ProjectPetunia
 
-> 📘 **Note**: This `README.md` is intended for human readers. For AI tools, see [DESIGN.md](DESIGN.md).
-
 ![Project Status](https://img.shields.io/badge/status-Alpha-orange)  
 ![Tech Stack](https://img.shields.io/badge/stack-React%2FNext.js%20|%20SpringBoot%2FKotlin-blue)  
 ![Database](https://img.shields.io/badge/database-PostgreSQL-lightgrey)

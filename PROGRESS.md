@@ -40,6 +40,13 @@ Each microservice was initialized with its respective directory structure, `pom.
 - Verified Docker image creation for all services (`bank`, `exchange`, `central-bank`) using `mvn jib:dockerBuild`.
 - Added `springdoc-openapi-starter-webmvc-ui` version 3.0.1 to all microservices for Swagger UI support.
 
+### 4. Exchange Order Book Implementation
+- Implemented `Order` entity, `OrderSide`, and `OrderStatus` enums.
+- Created `OrderRepository` for database access.
+- Implemented `OrderBookService` to handle order placement.
+- Added `OrderController` with REST endpoints for placing and listing orders.
+- Configured Flyway for database migrations and added initial schema.
+
 ## Project Structure Overview
 ```text
 .
@@ -57,8 +64,7 @@ Each microservice was initialized with its respective directory structure, `pom.
 ```
 
 ## Next Steps
-- Implement domain models and JPA entities for each service.
-- Set up PostgreSQL database configurations.
-- Implement REST controllers for basic functionalities.
-- Configure inter-service communication (REST/Nakadi).
+- Implement matching engine in Exchange service.
+- Implement inter-service communication between Exchange and Bank for trade settlement.
+- Implement domain models and JPA entities for Central Bank service.
 - Configure CI/CD pipeline for automatic Docker image builds.
