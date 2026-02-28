@@ -18,6 +18,7 @@
 - [Implementation](#implementation)  
   - [Petunia Engine](#petunia-engine)
   - [Central Bank](#central-bank)
+  - [Alpicola Frontend](#alpicola-frontend)
 - [Technical Implementation](#technical-implementation)  
   - [Deployment](#deployment)  
 
@@ -86,6 +87,16 @@ The central bank is the **game engine**:
 - May act as a trader to maintain liquidity  
 
 > ⚠️ Its powers extend far beyond a real-world central bank — it’s the puppet master of Petunia.
+
+### Alpicola Frontend
+
+The **Alpicola** is the frontend application where players can:
+
+- View their account balances and portfolios.
+- Place buy and sell orders.
+- See current market data and share prices.
+
+It is built with React and Next.js.
 
 ---
 

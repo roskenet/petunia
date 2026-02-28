@@ -36,7 +36,12 @@ The ProjectPetunia core architecture has been transitioned to a monolithic struc
 - Integrated `jib-maven-plugin` version 3.5.1 for Docker image creation.
 - Verified Docker image creation using `./mvnw jib:dockerBuild`.
 
-### 4. Exchange Order Book Implementation (now in Engine)
+### 4. Frontend Integration
+- Copied `alpicola` (Next.js/TypeScript frontend) into the root project.
+- Updated root `.gitignore` with Next.js and Node.js entries.
+- Updated project documentation (`README.md`, `DESIGN.md`) to include the frontend.
+
+### 5. Exchange Order Book Implementation (now in Engine)
 - Implemented `Order` entity, `OrderSide`, and `OrderStatus` enums.
 - Created `OrderRepository` for database access.
 - Implemented `OrderBookService` to handle order placement.
@@ -47,14 +52,9 @@ The ProjectPetunia core architecture has been transitioned to a monolithic struc
 ```text
 .
 ├── engine/
-│   ├── pom.xml
-│   └── src/main/kotlin/de/roskenet/petunia/
-│       ├── PetuniaEngine.kt
-│       ├── bank/
-│       └── exchange/
+├── alpicola/
+│   └── src/
 ├── central-bank/
-│   ├── pom.xml
-│   └── src/main/kotlin/de/roskenet/petunia/centralbank/CentralBankApplication.kt
 ├── pom.xml
 └── README.md
 ```

@@ -16,6 +16,7 @@ The project has transitioned from a microservices approach to a consolidated mon
 | :--- | :--- |
 | **Petunia Engine** (`/engine`) | The core monolith. Combines **Exchange** (order book, trade execution) and **Bank** (player accounts, portfolios, clearing). |
 | **Central Bank** (`/central-bank`) | Regulates the market, manages interest rates, and performs market interventions. |
+| **Alpicola Frontend** (`/alpicola`) | Next.js frontend for players to interact with the game. |
 
 ### Technical Stack
 
@@ -59,9 +60,8 @@ Calculated based on real-world Bundesliga match results. Factors include opponen
 ```text
 .
 ├── engine/              # Main Monolith (Exchange + Bank)
-│   └── src/main/kotlin/de/roskenet/petunia/
-│       ├── bank/        # Account & Portfolio logic
-│       └── exchange/    # Trading & Order Book logic
+├── alpicola/            # Next.js Frontend
+│   └── src/             # React components and pages
 ├── central-bank/        # Market Regulation service
 ├── pom.xml              # Parent Maven POM
 └── PROGRESS.md          # Real-time status tracker

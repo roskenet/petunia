@@ -52,3 +52,24 @@ runConfigurations/
 ### Kotlin ###
 # Kotlin incremental compilation
 .kotlin/
+
+### Next.js / Frontend ###
+node_modules/
+.next/
+/alpicola/node_modules/
+/alpicola/.next/
+/alpicola/out/
+/alpicola/build/
+/alpicola/coverage/
+/alpicola/.vercel/
+/alpicola/*.tsbuildinfo
+/alpicola/next-env.d.ts
+
+# Misc
+.DS_Store
+*.pem
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.env*
