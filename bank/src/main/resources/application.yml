@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: ${ENVIRONMENT:local}
   application:
     name: bank
   datasource:
