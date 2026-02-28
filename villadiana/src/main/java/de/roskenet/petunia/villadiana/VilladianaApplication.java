@@ -1,4 +1,4 @@
-package de.petunia.villadiana;
+package de.roskenet.petunia.villadiana;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

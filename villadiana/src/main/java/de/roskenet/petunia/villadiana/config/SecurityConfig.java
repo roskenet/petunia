@@ -1,4 +1,4 @@
-package de.petunia.villadiana.config;
+package de.roskenet.petunia.villadiana.config;
 
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package de.petunia.villadiana.config;
+package de.roskenet.petunia.villadiana.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

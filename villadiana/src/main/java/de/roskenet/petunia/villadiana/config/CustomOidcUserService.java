@@ -1,4 +1,4 @@
-package de.petunia.villadiana.config;
+package de.roskenet.petunia.villadiana.config;
 
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;

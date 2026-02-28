@@ -12,14 +12,9 @@
 
     <artifactId>villadiana</artifactId>
     <name>Villadiana</name>
-    <version>3.28.0</version>
+    <version>1.0.0</version>
     <description>Backend for Frontend</description>
 
-    <properties>
-        <docker.from>eclipse-temurin:25-jre-alpine</docker.from>
-        <docker.maintainer>Felix Roske</docker.maintainer>
-        <docker.repo>roskenet</docker.repo>
-    </properties>
 
     <dependencies>
         <dependency>
@@ -72,34 +67,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-websocket</artifactId>
-        </dependency>
+        </dependency><dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-webmvc-test</artifactId>
+  <scope>test</scope>
+</dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>io.fabric8</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>0.31.0</version>
-                <configuration>
-                    <images>
-                        <image>
-                            <name>${docker.repo}/${project.name}:${project.version}</name>
-                            <build>
-                                <from>${docker.from}</from>
-                                <labels>
-                                    <maintainer>${docker.maintainer}</maintainer>
-                                </labels>
-                                <assembly>
-                                    <descriptorRef>artifact</descriptorRef>
-                                </assembly>
-                                <cmd>java -jar $JAVA_OPTS maven/${project.build.finalName}.jar</cmd>
-                            </build>
-                        </image>
-                    </images>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

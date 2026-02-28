@@ -1,4 +1,4 @@
-package de.petunia.villadiana.config;
+package de.roskenet.petunia.villadiana.config;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
