@@ -1,5 +1,5 @@
 # Build Stage – nur um static site zu exportieren
-FROM node:20-alpine AS builder
+FROM node:24-alpine AS builder
 WORKDIR /app
 
 # Build argument to determine what to build
