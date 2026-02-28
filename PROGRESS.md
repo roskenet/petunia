@@ -38,6 +38,7 @@ Each microservice was initialized with its respective directory structure, `pom.
 - Successfully ran `mvn compile -DskipTests` to ensure all modules and the parent project build correctly with JDK 25.
 - Integrated `jib-maven-plugin` version 3.5.1 for Docker image creation.
 - Verified Docker image creation for all services (`bank`, `exchange`, `central-bank`) using `mvn jib:dockerBuild`.
+- Added `springdoc-openapi-starter-webmvc-ui` version 3.0.1 to all microservices for Swagger UI support.
 
 ## Project Structure Overview
 ```text
