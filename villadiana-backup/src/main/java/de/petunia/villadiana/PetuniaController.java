@@ -21,8 +21,8 @@ import java.util.List;
 @Slf4j
 public class PetuniaController {
 
-    @Autowired
-    private AxillarisGateway axillarisGateway;
+//    @Autowired
+//    private AxillarisGateway axillarisGateway;
 
 //    @Autowired
 //    private NotificationDemo notificationDemo;
@@ -31,7 +31,7 @@ public class PetuniaController {
     public List<PetuniaSpecies> getPetuniaSpecies() {
         var authentication= SecurityContextHolder.getContext().getAuthentication();
 //        notificationDemo.startSendNotification(authentication);
-        return axillarisGateway.getAllPetunias();
+//        return axillarisGateway.getAllPetunias();
     }
 
     @PostMapping("/petunias")

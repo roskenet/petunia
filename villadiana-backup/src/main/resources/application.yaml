@@ -17,8 +17,8 @@ nakadi:
   uri: ${NAKADI_URI:http://nakadi.minikube}
 
 app:
-  client:
-    axillaris-url: ${AXILLARIS_URI:http://axillaris}
+#  client:
+#    axillaris-url: ${AXILLARIS_URI:http://axillaris}
   security:
     allowed-origin-patterns:
       - ${ALLOWED_ORIGINS:https://petunia.roskenet.de}
