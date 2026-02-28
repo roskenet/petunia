@@ -1,95 +1,89 @@
 # ProjectPetunia - Online Stock Market Simulation
 
-> 🤖 **AI Tool Note**: This `DESIGN.md` is primarily meant to be read by AI tools. Humans should refer to [README.md](README.md).
+> 🤖 **AI Tool Note**: This `DESIGN.md` is a context-rich specification optimized for AI agents. Humans should refer to [README.md](README.md) for a general overview.
 
-**ProjectPetunia** is an online stock market simulation game where players trade virtual shares of teams from the German 1st Football Bundesliga. The economic performance of the "companies" (teams) is driven by their real-world sporting results.
+**ProjectPetunia** is an online stock market simulation game where players trade virtual shares of teams from the German 1st Football Bundesliga. Market performance is driven by real-world sporting results.
 
 ---
 
-## 🧩 System Architecture
+## 🏗️ System Architecture
 
-ProjectPetunia is built as a microservices-based distributed system.
+The project has transitioned from a microservices approach to a consolidated monolithic core for the main game logic, while maintaining a separate service for central bank functions.
 
-### Core Components
+### Core Modules
 
-| Component | Responsibility |
+| Module | Responsibility |
 | :--- | :--- |
-| **Exchange** | Manages the order book, executes trades, and serves as the price broker. |
-| **Bank** | Manages player accounts and portfolios; acts as the clearing house for funds and securities. |
-| **Central Bank** | The game's engine; regulates the market via interest rates and interventions. |
+| **Petunia Engine** (`/engine`) | The core monolith. Combines **Exchange** (order book, trade execution) and **Bank** (player accounts, portfolios, clearing). |
+| **Central Bank** (`/central-bank`) | Regulates the market, manages interest rates, and performs market interventions. |
 
 ### Technical Stack
 
-- **Language**: Kotlin 2.3.10 (targeting Java 25)
+- **Language**: Kotlin 2.3.10 (Java 25)
 - **Framework**: Spring Boot 4.0.3
-- **Communication**: REST (Synchronous), potential Nakadi (Asynchronous)
-- **Database**: PostgreSQL
-- **Security**: Keycloak (Authentication & User Management)
-- **Frontend**: React / Next.js with TypeScript
-- **Infrastructure**: Minikube (Local), K3s (Production)
+- **Communication**: REST (Synchronous), OpenAPI/Swagger
+- **Database**: PostgreSQL (managed via Flyway migrations)
+- **Testing**: JUnit 5, Cucumber (Gherkin)
+- **Infrastructure**: Docker (Jib), Minikube/K3s
+
+---
+
+## 📜 Functional Requirements & Testing
+
+All functional requirements are defined as executable specifications.
+- **Methodology**: Behavior-Driven Development (BDD).
+- **Format**: Gherkin `*.feature` files.
+- **Location**: `engine/src/test/resources/features/`
+- **Verification**: All features MUST be tested via these Gherkin files to ensure business logic correctness.
 
 ---
 
 ## 🕹️ Game Mechanics
 
-### 1. Players
-Participants receive virtual starting capital. They interact with the game primarily through the **Bank** to manage their account and portfolio.
+### 1. Players & Accounts
+Players receive virtual starting capital. The **Petunia Engine** manages `PlayerAccount` and `Asset` (portfolio) entities.
 
-### 2. Shares
-Virtual shares representing real Bundesliga teams. Each team has a fixed supply of shares available at the start.
+### 2. Trading (Exchange)
+The Exchange component within the Engine manages the `Order` lifecycle (Place -> Match -> Execute). 
+- **Orders**: Buy/Sell, Market/Limit (to be expanded).
+- **Matching**: Handled by `OrderBookService`.
 
 ### 3. Dividends
-Paid out after each real-world match day. The amount is calculated by the **Bank** based on a formula considering:
-- Opponent's league position
-- Goal difference
-- Match venue (Home/Away)
+Calculated based on real-world Bundesliga match results. Factors include opponent strength, goal difference, and venue.
 
 ---
 
-## 🛠️ Development Guide
-
-### Prerequisites
-- **Java SDK**: Switch to the correct SDK version:
-  ```bash
-  sdk use java 25.0.2-tem
-  ```
-- **Maven**: All interactions with the code must use the wrapper: `./mvnw`
-- Docker & PostgreSQL
+## 🛠️ Development Context
 
 ### Project Structure
 ```text
 .
-├── bank/             # Bank microservice
-├── central-bank/     # Central Bank microservice
-├── exchange/         # Exchange microservice
-├── pom.xml           # Root Maven descriptor
-├── PROGRESS.md       # Current project status and roadmap
-└── README.md         # This file
+├── engine/              # Main Monolith (Exchange + Bank)
+│   └── src/main/kotlin/de/roskenet/petunia/
+│       ├── bank/        # Account & Portfolio logic
+│       └── exchange/    # Trading & Order Book logic
+├── central-bank/        # Market Regulation service
+├── pom.xml              # Parent Maven POM
+└── PROGRESS.md          # Real-time status tracker
 ```
 
-### Build and Run
-To build the entire project:
-```bash
-./mvnw clean install
-```
+### Entry Points
+- **Petunia Engine**: `de.roskenet.petunia.PetuniaEngine` (Port 8080)
+- **Central Bank**: `de.roskenet.petunia.centralbank.CentralBankApplication` (Port 8083)
 
-To run a specific service:
-```bash
-./mvnw spring-boot:run -pl <module-name>
-```
+### Database Schema
+- **Flyway**: Migrations are located in `src/main/resources/db/migration/` within each module.
+- **Engine Schema**: Combines both bank and exchange tables.
 
 ---
 
-## 🤖 AI Agent Context
+## 🤖 AI Agent Guidelines
 
-When working on this project, please adhere to the following:
-- **Module Boundary**: Ensure strict separation of concerns between Exchange, Bank, and Central Bank.
-- **Entry Points**: Each service has a standard Spring Boot entry point in `src/main/kotlin/com/projectpetunia/<module>/<Module>Application.kt`.
-- **Database**: Each service has its own database schema (configured in `application.yml`).
-- **Dependencies**: Shared configurations are managed in the root `pom.xml`.
-- **Specs**: Refer to subdirectories for specific logic or specs related to each component (once implemented).
+1. **Monolith Boundary**: Although merged into `engine`, maintain logical separation between `de.roskenet.petunia.bank` and `de.roskenet.petunia.exchange` packages.
+2. **Context First**: Always check `PROGRESS.md` for the latest implementation status before suggesting changes.
+3. **Test-Driven**: When implementing new features, start by defining the Gherkin feature in a `.feature` file.
+4. **Style**: Follow Kotlin idiomatic patterns and Spring Boot best practices.
 
 ---
-
 Made with ❤️ by [felix@roskenet.de](mailto:felix@roskenet.de)
 
