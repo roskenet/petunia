@@ -16,7 +16,7 @@
   - [Shares](#shares)  
   - [Dividends](#dividends)  
 - [Implementation](#implementation)  
-  - [Petunia Monolith](#petunia-monolith)
+  - [Petunia Engine](#petunia-engine)
   - [Central Bank](#central-bank)
 - [Technical Implementation](#technical-implementation)  
   - [Deployment](#deployment)  
@@ -68,14 +68,14 @@ Dividends are paid after **real Bundesliga match days**.
 
 ## 🏛️ Implementation
 
-### Petunia Monolith
+### Petunia Engine
 
-The Petunia Monolith is the core of the game. It combines the functionality of the **Exchange** and the **Bank**:
+The Petunia Engine is the core of the game. It combines the functionality of the **Exchange** and the **Bank**:
 
 - **Exchange**: Acts as the trading venue, receives buy/sell orders, executes trades, and determines share prices.
 - **Bank**: Handles player accounts and portfolios, acts as a clearing house, and calculates dividends.
 
-Players interact with the game through the monolithic API.
+Players interact with the game through the engine API.
 
 ### Central Bank
 

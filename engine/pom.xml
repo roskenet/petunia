@@ -8,9 +8,9 @@
         <version>1.0.0</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>bank</artifactId>
-    <name>Petunia Monolith</name>
-    <description>Monolithic backend for ProjectPetunia</description>
+    <artifactId>engine</artifactId>
+    <name>Petunia Engine</name>
+    <description>Monolithic engine for ProjectPetunia</description>
 
     <properties>
         <cucumber.version>7.15.0</cucumber.version>

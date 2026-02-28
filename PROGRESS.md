@@ -1,7 +1,7 @@
 # ProjectPetunia Progress Report
 
 ## Summary
-The ProjectPetunia core architecture has been transitioned to a monolithic structure for the main game logic. The `exchange` and `bank` submodules were merged into a single `bank` module, now referred to as the **Petunia Monolith**.
+The ProjectPetunia core architecture has been transitioned to a monolithic structure for the main game logic. The `exchange` and `bank` submodules were merged into a single module, now referred to as the **Petunia Engine**.
 
 ## Completed Tasks
 
@@ -16,10 +16,10 @@ The ProjectPetunia core architecture has been transitioned to a monolithic struc
 ### 2. Monolith Transition
 - Merged `exchange` submodule into `bank`.
 - Combined `exchange` and `bank` source code and resources.
-- Updated `bank` module to serve as the main monolith.
+- Renamed the combined module to `engine` to serve as the main monolith.
 
-#### Petunia Monolith (formerly Bank)
-- **Directory**: `/bank`
+#### Petunia Engine (formerly Bank/Exchange)
+- **Directory**: `/engine`
 - **Port**: 8080
 - **Dependencies**: Spring Web, Spring Data JPA, PostgreSQL Driver, Flyway, Cucumber (for testing).
 - **Entry Point**: `de.roskenet.petunia.bank.BankApplication.kt`
@@ -31,11 +31,11 @@ The ProjectPetunia core architecture has been transitioned to a monolithic struc
 - **Entry Point**: `de.roskenet.petunia.centralbank.CentralBankApplication.kt`
 
 ### 3. Build Verification
-- Successfully ran `./mvnw compile -DskipTests` to ensure the monolith and the parent project build correctly with JDK 25.
+- Successfully ran `./mvnw compile -DskipTests` to ensure the engine and the parent project build correctly with JDK 25.
 - Integrated `jib-maven-plugin` version 3.5.1 for Docker image creation.
 - Verified Docker image creation using `./mvnw jib:dockerBuild`.
 
-### 4. Exchange Order Book Implementation (now in Monolith)
+### 4. Exchange Order Book Implementation (now in Engine)
 - Implemented `Order` entity, `OrderSide`, and `OrderStatus` enums.
 - Created `OrderRepository` for database access.
 - Implemented `OrderBookService` to handle order placement.
@@ -45,7 +45,7 @@ The ProjectPetunia core architecture has been transitioned to a monolithic struc
 ## Project Structure Overview
 ```text
 .
-├── bank/
+├── engine/
 │   ├── pom.xml
 │   └── src/main/kotlin/de/roskenet/petunia/
 │       ├── bank/
@@ -58,6 +58,6 @@ The ProjectPetunia core architecture has been transitioned to a monolithic struc
 ```
 
 ## Next Steps
-- Implement matching engine within the monolith.
+- Implement matching engine within the Petunia Engine.
 - Refactor internal communication between exchange and bank components to use direct service calls.
 - Implement domain models and JPA entities for Central Bank service.

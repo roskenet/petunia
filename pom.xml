@@ -24,7 +24,7 @@
     </properties>
 
     <modules>
-        <module>bank</module>
+        <module>engine</module>
         <module>central-bank</module>
     </modules>
 
