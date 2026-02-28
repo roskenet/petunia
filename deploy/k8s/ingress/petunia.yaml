@@ -3,20 +3,11 @@ kind: Ingress
 metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    meta.helm.sh/release-name: ingress
-    meta.helm.sh/release-namespace: default
     nginx.ingress.kubernetes.io/enable-websocket: "true"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
     nginx.ingress.kubernetes.io/rewrite-target: /
-  creationTimestamp: "2025-08-08T07:47:34Z"
-  generation: 2
-  labels:
-    app.kubernetes.io/managed-by: Helm
   name: petunia
-  namespace: default
-  resourceVersion: "1258740"
-  uid: 6ec0a606-e66f-4ff7-8ab3-3485c89c1f26
 spec:
   ingressClassName: nginx
   rules:
@@ -98,7 +89,3 @@ spec:
     - petunia.roskenet.de
     - auth.roskenet.de
     secretName: petunia-tls
-status:
-  loadBalancer:
-    ingress:
-    - ip: 217.154.117.238
