@@ -12,16 +12,16 @@ spring:
         registration:
           keycloak:
             client-id: villadiana
-            client-secret: 6w8HibfpYVEQIgMTKAFXFPMC8NgaOHBU
+            client-secret: miqtl8qIoEuLXXEOzvDmwP63xFWXaNje
             authorization-grant-type: authorization_code
             scope: openid,profile,email
             provider: keycloak
-          axillaris-client:
-            client-id: villadiana
-            client-secret: 6w8HibfpYVEQIgMTKAFXFPMC8NgaOHBU
-            authorization-grant-type: client_credentials
-            scope: petunias.read,petunias.write
-            provider: keycloak
+#          axillaris-client:
+#            client-id: villadiana
+#            client-secret: 6w8HibfpYVEQIgMTKAFXFPMC8NgaOHBU
+#            authorization-grant-type: client_credentials
+#            scope: petunias.read,petunias.write
+#            provider: keycloak
 
 management:
   otlp:
@@ -31,5 +31,5 @@ management:
 
 NAKADI_URI: http://nakadi
 ALLOWED_ORIGINS: http://localhost:3000
-POST_LOGOUT_REDIRECT: https://localhost:3000
-POST_LOGIN_REDIRECT: https://localhost:3000/petunias
+POST_LOGOUT_REDIRECT: http://localhost:3000
+POST_LOGIN_REDIRECT: http://localhost:3000/petunias
