@@ -21,8 +21,8 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres
-                  key: postgres-root-password
+                  name: petunia-secret
+                  key: POSTGRES_MASTER_PASSWORD
           command:
             - sh
             - -c
@@ -62,7 +62,7 @@ spec:
       volumes:
         - name: postgres-config
           configMap:
-            name: postgres
+            name: postgres-config
         - name: postgres-data
           persistentVolumeClaim:
             claimName: postgres-data
