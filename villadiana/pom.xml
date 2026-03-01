@@ -12,7 +12,7 @@
 
     <artifactId>villadiana</artifactId>
     <name>Villadiana</name>
-    <version>3.51.0</version>
+    <version>3.52.0</version>
     <description>Backend for Frontend</description>
 
     <dependencies>
