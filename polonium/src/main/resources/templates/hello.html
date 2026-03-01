@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello World</title>
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        .petunia-image {
+            width: 20%;
+            height: auto;
+            margin: 20px 0;
+        }
+        h1 {
+            margin-top: 40px;
+        }
+        p {
+            margin: 20px 0;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        footer {
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container center-align">
+        <div class="row">
+            <div class="col s12">
+                <h1 class="purple-text text-darken-2">Willkommen!</h1>
+                
+                <img src="/img/single.png" alt="Abstract Petunia" class="petunia-image responsive-img z-depth-1">
+                
+                <p class="flow-text"><em>Project Petunia</em> findest Du hier:<br />
+                <a href="https://petunia.roskenet.de" class="purple-text text-darken-2 waves-effect waves-light">https://petunia.roskenet.de</a></p>
+                
+                <footer class="section">
+                    &copy; 2025 <a href="https://www.felix-roske.de" class="purple-text text-darken-2">Felix Roske</a>
+                </footer>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <!-- Initialize Materialize components -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            M.AutoInit();
+        });
+    </script>
+</body>
+</html>
