@@ -4,7 +4,7 @@ metadata:
   name: villadiana
 data:
   KEYCLOAK_ISSUER_URI: https://auth.roskenet.de/realms/petunia
-  KEYCLOAK_TOKEN_URI: https://auth.roskenet.de/realms/petunia/protocol/openid-connect/token
+  KEYCLOAK_TOKEN_URI: http://keycloak/realms/petunia/protocol/openid-connect/token
   POST_LOGOUT_REDIRECT_URI: https://petunia.roskenet.de
   DEFAULT_LOGIN_SUCCESS_URL: https://petunia.roskenet.de/petunias
   ALLOWED_ORIGIN_PATTERNS: https://petunia.roskenet.de
