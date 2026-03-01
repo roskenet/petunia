@@ -1,7 +1,7 @@
 spring:
   autoconfigure:
     exclude:
-      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.data.redis.autoconfigure.DataRedisAutoConfiguration
   security:
     oauth2:
       client:
@@ -16,12 +16,6 @@ spring:
             authorization-grant-type: authorization_code
             scope: openid,profile,email
             provider: keycloak
-#          axillaris-client:
-#            client-id: villadiana
-#            client-secret: 6w8HibfpYVEQIgMTKAFXFPMC8NgaOHBU
-#            authorization-grant-type: client_credentials
-#            scope: petunias.read,petunias.write
-#            provider: keycloak
 
 management:
   otlp:

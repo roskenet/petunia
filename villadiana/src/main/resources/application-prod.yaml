@@ -9,12 +9,12 @@ spring:
       client:
         provider:
           keycloak:
-            issuer-uri: ${KEYCLOAK_ISSUER_URI:http://keycloak/realms/petunia}
-            token-uri: ${KEYCLOAK_TOKEN_URI:http://keycloak/realms/petunia/protocol/openid-connect/token}
+            issuer-uri: ${KEYCLOAK_ISSUER_URI:https://auth.roskenet.de/realms/petunia}
+            token-uri: ${KEYCLOAK_TOKEN_URI:https://auth.roskenet.de/realms/petunia/protocol/openid-connect/token}
         registration:
           keycloak:
             client-id: villadiana
-            client-secret: ${KEYCLOAK_SECRET}
+            client-secret: ${KEYCLOAK_CLIENT_SECRET}
             authorization-grant-type: authorization_code
             scope: openid,profile,email
             provider: keycloak
