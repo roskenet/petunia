@@ -20,3 +20,13 @@ spec:
               number: 8080
         path: /
         pathType: Prefix
+  - host: petunia
+    http:
+      paths:
+        - backend:
+            service:
+              name: alpicola
+              port:
+                number: 80
+          path: /
+          pathType: Prefix
