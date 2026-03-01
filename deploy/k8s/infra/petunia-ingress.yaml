@@ -90,7 +90,3 @@ spec:
     - petunia.roskenet.de
     - auth.roskenet.de
     secretName: petunia-tls
-status:
-  loadBalancer:
-    ingress:
-    - ip: 217.154.117.238
