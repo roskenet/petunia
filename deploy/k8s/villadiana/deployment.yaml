@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: villadiana
-        image: roskenet/villadiana:3.39.0
+        image: roskenet/villadiana:3.48.0
         env:
           - name: KEYCLOAK_ISSUER_URI
             valueFrom:
@@ -26,11 +26,11 @@ spec:
               configMapKeyRef:
                 name: villadiana
                 key: KEYCLOAK_TOKEN_URI
-          - name: ALLOWED_ORIGINS
-            valueFrom:
-              configMapKeyRef:
-                name: villadiana
-                key: ALLOWED_ORIGINS
+#          - name: ALLOWED_ORIGINS
+#            valueFrom:
+#              configMapKeyRef:
+#                name: villadiana
+#                key: ALLOWED_ORIGINS
           - name: POST_LOGOUT_REDIRECT
             valueFrom:
               configMapKeyRef:

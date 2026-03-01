@@ -1,6 +1,8 @@
 spring:
   application:
     name: villadiana
+  autoconfigure:
+    exclude: org.springframework.boot.data.redis.autoconfigure.DataRedisAutoConfiguration
   profiles:
     default: prod
   session:
@@ -12,15 +14,37 @@ spring:
     property-naming-strategy: SNAKE_CASE
   data:
     redis:
-      host: ${VALKEY_HOST:localhost}
-#      port: ${VALKEY_PORT:6379}
-      password: ${VALKEY_PASSWORD:password}
-#server:
-#  forward-headers-strategy: native
+      host: localhost
+      password: password
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: ${KEYCLOAK_ISSUER_URI:https://auth.roskenet.de/realms/petunia}
+            token-uri: ${KEYCLOAK_TOKEN_URI:https://auth.roskenet.de/realms/petunia/protocol/openid-connect/token}
+        registration:
+          keycloak:
+            client-id: villadiana
+            client-secret: ${KEYCLOAK_SECRET:miqtl8qIoEuLXXEOzvDmwP63xFWXaNje}
+            authorization-grant-type: authorization_code
+            scope: openid,profile,email
+            provider: keycloak
+
 
 app:
   security:
     allowed-origin-patterns:
-      - ${ALLOWED_ORIGINS:https://petunia.roskenet.de}
-    post-logout-redirect-uri: ${POST_LOGOUT_REDIRECT:https://petunia.roskenet.de}
-    default-login-success-url: ${POST_LOGIN_REDIRECT:https://petunia.roskenet.de/petunias}
+      - http://alpicola
+      - https://petunia.roskenet.de
+    post-logout-redirect-uri: https://petunia.roskenet.de
+    default-login-success-url: https://petunia.roskenet.de/petunias
+
+server:
+  forward-headers-strategy: framework
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

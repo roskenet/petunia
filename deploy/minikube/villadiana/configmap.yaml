@@ -6,6 +6,5 @@ data:
   KEYCLOAK_ISSUER_URI: http://keycloak/realms/petunia
   KEYCLOAK_TOKEN_URI: http://keycloak/realms/petunia/protocol/openid-connect/token
   KEYCLOAK_SECRET: miqtl8qIoEuLXXEOzvDmwP63xFWXaNje
-  ALLOWED_ORIGINS: http://alpicola
   POST_LOGOUT_REDIRECT: http://alpicola
   POST_LOGIN_REDIRECT: http://alpicola/petunias
