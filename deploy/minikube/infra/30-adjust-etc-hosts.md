@@ -1,1 +1,3 @@
 # Add your domains to /etc/hosts
+
+$(minikube ip) keycloak

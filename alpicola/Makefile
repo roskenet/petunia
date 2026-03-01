@@ -10,7 +10,7 @@ build:
 	docker build -t $(IMAGE_NAME) .
 
 build-minikube:
-	docker build --build-arg BUILD_ENV=minikube -t $(IMAGE_NAME) .
+	docker build --build-arg BUILD_ENV=minikube -t $(IMAGE_NAME)-minikube .
 
 run:
 	docker run -d --rm \

@@ -27,6 +27,17 @@ spec:
           envFrom:
             - configMapRef:
                 name: keycloak-config
+          env:
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: petunia-secret
+                  key: KEYCLOAK_ADMIN_PASSWORD
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: petunia-secret
+                  key: KEYCLOAK_DB_PASSWORD
 
           ports:
             - name: service
