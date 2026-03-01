@@ -12,12 +12,12 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: alpicola
+  - host: petunia
     http:
       paths:
       - backend:
           service:
-            name: alpicola
+            name: petunia
             port:
               number: 80
         path: /
@@ -32,16 +32,6 @@ spec:
               number: 80
         path: /
         pathType: Prefix
-  - host: polonium
-    http:
-      paths:
-      - backend:
-          service:
-            name: polonium
-            port:
-              number: 8080
-        path: /
-        pathType: Prefix
   - host: villadiana
     http:
       paths:
@@ -49,41 +39,41 @@ spec:
           service:
             name: villadiana
             port:
-              number: 8080
+              number: 80
         path: /ws
         pathType: Prefix
       - backend:
           service:
             name: villadiana
             port:
-              number: 8080
+              number: 80
         path: /api
         pathType: Prefix
       - backend:
           service:
             name: villadiana
             port:
-              number: 8080
+              number: 80
         path: /oauth2
         pathType: Prefix
       - backend:
           service:
             name: villadiana
             port:
-              number: 8080
+              number: 80
         path: /login
         pathType: Prefix
       - backend:
           service:
             name: villadiana
             port:
-              number: 8080
+              number: 80
         path: /logout
         pathType: Prefix
       - backend:
           service:
             name: villadiana
             port:
-              number: 8080
+              number: 80
         path: /me
         pathType: Prefix
