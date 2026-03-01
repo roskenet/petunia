@@ -1,6 +1,6 @@
-ALLOWED_ORIGINS: https://petunia.roskenet.de
-POST_LOGOUT_REDIRECT: https://petunia.roskenet.de
-POST_LOGIN_REDIRECT: https://petunia.roskenet.de/petunias
-
-KEYCLOAK_ISSUER_URI: https://auth.roskenet.de/realms/petunia
-KEYCLOAK_TOKEN_URI: https://auth.roskenet.de/realms/petunia/protocol/openid-connect/token
+#ALLOWED_ORIGINS: https://petunia.roskenet.de
+#POST_LOGOUT_REDIRECT: https://petunia.roskenet.de
+#POST_LOGIN_REDIRECT: https://petunia.roskenet.de/petunias
+#
+#KEYCLOAK_ISSUER_URI: https://auth.roskenet.de/realms/petunia
+#KEYCLOAK_TOKEN_URI: https://auth.roskenet.de/realms/petunia/protocol/openid-connect/token

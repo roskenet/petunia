@@ -34,8 +34,9 @@ app:
     allowed-origin-patterns:
       - http://alpicola
       - https://petunia.roskenet.de
-    post-logout-redirect-uri: https://petunia.roskenet.de
-    default-login-success-url: https://petunia.roskenet.de/petunias
+      - http://petunia
+    post-logout-redirect-uri: ${POST_LOGOUT_REDIRECT_URI}
+    default-login-success-url: ${DEFAULT_LOGIN_SUCCESS_URL}
 
 #server:
 #  forward-headers-strategy: framework
