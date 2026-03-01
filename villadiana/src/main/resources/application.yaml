@@ -2,7 +2,7 @@ spring:
   application:
     name: villadiana
   profiles:
-    default: prod
+    default: ${ENVIRONMENT}
   session:
     store-type: redis
     redis:
@@ -31,10 +31,7 @@ spring:
 
 app:
   security:
-    allowed-origin-patterns:
-      - http://alpicola
-      - https://petunia.roskenet.de
-      - http://petunia
+    allowed-origin-patterns: ${ALLOWED_ORIGIN_PATTERNS}
     post-logout-redirect-uri: ${POST_LOGOUT_REDIRECT_URI}
     default-login-success-url: ${DEFAULT_LOGIN_SUCCESS_URL}
 

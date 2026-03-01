@@ -7,3 +7,5 @@ data:
   KEYCLOAK_TOKEN_URI: http://keycloak/realms/petunia/protocol/openid-connect/token
   POST_LOGOUT_REDIRECT_URI: http://alpicola
   DEFAULT_LOGIN_SUCCESS_URL: http://alpicola/petunias
+  ALLOWED_ORIGIN_PATTERNS: http://alpicola,https://petunia.roskenet.de,http://petunia
+  ENVIRONMENT: prod

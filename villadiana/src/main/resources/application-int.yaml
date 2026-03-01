@@ -1,6 +1,7 @@
-ALLOWED_ORIGINS: http://localhost:3000
-POST_LOGOUT_REDIRECT: http://localhost:3000
+ALLOWED_ORIGIN_PATTERNS: http://localhost:3000
+POST_LOGOUT_REDIRECT_URI: http://localhost:3000
 POST_LOGIN_REDIRECT: http://localhost:3000/petunias
+DEFAULT_LOGIN_SUCCESS_URL: http://localhost:3000/petunias
 
 KEYCLOAK_ISSUER_URI: http://keycloak/realms/petunia
 KEYCLOAK_TOKEN_URI: http://keycloak/realms/petunia/protocol/openid-connect/token
