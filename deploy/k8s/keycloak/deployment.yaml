@@ -24,35 +24,20 @@ spec:
             - "--db=${DB_VENDOR}"
             - "--db-username=${DB_USER}"
             - "--db-password=${DB_PASSWORD}"
+          envFrom:
+            - configMapRef:
+                name: keycloak-config
           env:
-            - name: JDBC_URL
-              value: "jdbc:postgresql://postgres/keycloak"
-            - name: HOSTNAME
-              value: https://auth.roskenet.de
-            - name: KEYCLOAK_ADMIN
-              value: keycloak
             - name: KEYCLOAK_ADMIN_PASSWORD
-              value: keycloak
-            - name: DB_VENDOR
-              value: "postgres"
-            - name: DB_ADDR
-              value: "postgres"
-            - name: DB_PORT
-              value: "5432"
-            - name: DB_USER
-              value: keycloak
+              valueFrom:
+                secretKeyRef:
+                  name: petunia-secret
+                  key: KEYCLOAK_ADMIN_PASSWORD
             - name: DB_PASSWORD
-              value: keycloak
-            - name: DB_DATABASE
-              value: keycloak
-            - name: KC_HOSTNAME
-              value: https://auth.roskenet.de
-            - name: KC_PROXY
-              value: "edge"
-            - name: KC_HTTP_ENABLED
-              value: "true"
-            - name: KC_HOSTNAME_STRICT
-              value: "false"
+              valueFrom:
+                secretKeyRef:
+                  name: petunia-secret
+                  key: KEYCLOAK_DB_PASSWORD
 
           ports:
             - name: service

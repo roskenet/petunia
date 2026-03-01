@@ -22,16 +22,6 @@ spec:
             name: keycloak
             port:
               number: 80
-  - host: www.roskenet.de
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: polonium
-            port:
-              number: 8080
   - host: petunia.roskenet.de
     http:
       paths:
@@ -86,7 +76,6 @@ spec:
               number: 80
   tls:
   - hosts:
-    - www.roskenet.de
     - petunia.roskenet.de
     - auth.roskenet.de
     secretName: petunia-tls

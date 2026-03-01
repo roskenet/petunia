@@ -14,38 +14,21 @@ spec:
     spec:
       containers:
       - name: villadiana
-        image: roskenet/villadiana:3.48.0
-        env:
-          - name: KEYCLOAK_ISSUER_URI
-            valueFrom:
-              configMapKeyRef:
-                name: villadiana
-                key: KEYCLOAK_ISSUER_URI
-          - name: KEYCLOAK_TOKEN_URI
-            valueFrom:
-              configMapKeyRef:
-                name: villadiana
-                key: KEYCLOAK_TOKEN_URI
-#          - name: ALLOWED_ORIGINS
-#            valueFrom:
-#              configMapKeyRef:
-#                name: villadiana
-#                key: ALLOWED_ORIGINS
-          - name: POST_LOGOUT_REDIRECT
-            valueFrom:
-              configMapKeyRef:
-                name: villadiana
-                key: POST_LOGOUT_REDIRECT
-          - name: POST_LOGIN_REDIRECT
-            valueFrom:
-              configMapKeyRef:
-                name: villadiana
-                key: POST_LOGIN_REDIRECT
-          - name: KEYCLOAK_SECRET
-            valueFrom:
-              configMapKeyRef:
-                name: villadiana
-                key: KEYCLOAK_SECRET
+        image: roskenet/villadiana:3.52.0
         ports:
         - name: www
           containerPort: 8080
+        envFrom:
+        - configMapRef:
+            name: villadiana
+        env:
+        - name: KEYCLOAK_VILLADIANA_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: petunia-secret
+              key: KEYCLOAK_VILLADIANA_SECRET
+        - name: VALKEY_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: petunia-secret
+              key: VALKEY_PASSWORD

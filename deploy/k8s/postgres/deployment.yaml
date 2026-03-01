@@ -21,8 +21,8 @@ spec:
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres
-                  key: postgres-root-password
+                  name: petunia-secret
+                  key: POSTGRES_MASTER_PASSWORD
           command:
             - sh
             - -c
@@ -53,6 +53,12 @@ spec:
         - name: postgres
           image: postgres:17
           imagePullPolicy: "IfNotPresent"
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: petunia-secret
+                  key: POSTGRES_MASTER_PASSWORD
           command: ["postgres", "-c", "config_file=/etc/postgres-config/postgresql.conf"]
           volumeMounts:
             - name: postgres-config
@@ -65,4 +71,4 @@ spec:
             name: postgres
         - name: postgres-data
           persistentVolumeClaim:
-            claimName: postgres-data
+            claimName: postgres

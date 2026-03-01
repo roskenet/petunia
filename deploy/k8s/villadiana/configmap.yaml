@@ -5,7 +5,7 @@ metadata:
 data:
   KEYCLOAK_ISSUER_URI: https://auth.roskenet.de/realms/petunia
   KEYCLOAK_TOKEN_URI: https://auth.roskenet.de/realms/petunia/protocol/openid-connect/token
-  KEYCLOAK_SECRET: EYGbTMu3YVn4RZWNEcsgfaeJgbppcNwD
-#  ALLOWED_ORIGINS: https://petunia.roskenet.de
-  POST_LOGOUT_REDIRECT: https://petunia.roskenet.de
-  POST_LOGIN_REDIRECT: https://petunia.roskenet.de/petunias
+  POST_LOGOUT_REDIRECT_URI: https://petunia.roskenet.de
+  DEFAULT_LOGIN_SUCCESS_URL: https://petunia.roskenet.de/petunias
+  ALLOWED_ORIGIN_PATTERNS: https://petunia.roskenet.de
+  ENVIRONMENT: prod
