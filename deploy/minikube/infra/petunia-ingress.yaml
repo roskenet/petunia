@@ -5,28 +5,63 @@ metadata:
     nginx.ingress.kubernetes.io/enable-websocket: "true"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
-    nginx.ingress.kubernetes.io/rewrite-target: /
+#    nginx.ingress.kubernetes.io/rewrite-target: /
   name: petunia
 spec:
   ingressClassName: nginx
   rules:
-  - host: keycloak
+  - host: keycloak.local
     http:
       paths:
-      - backend:
+      - path: /
+        pathType: Prefix
+        backend:
           service:
             name: keycloak
             port:
-              number: 8080
-        path: /
-        pathType: Prefix
-  - host: petunia
+              number: 80
+  - host: petunia.local
     http:
       paths:
-        - backend:
+        - path: /
+          pathType: Prefix
+          backend:
             service:
               name: alpicola
               port:
                 number: 80
-          path: /
+        - path: /me
           pathType: Prefix
+          backend:
+            service:
+              name: villadiana
+              port:
+                number: 80
+        - path: /oauth2
+          pathType: Prefix
+          backend:
+            service:
+              name: villadiana
+              port:
+                number: 80
+        - path: /logout
+          pathType: Prefix
+          backend:
+            service:
+              name: villadiana
+              port:
+                number: 80
+        - path: /login
+          pathType: Prefix
+          backend:
+            service:
+              name: villadiana
+              port:
+                number: 80
+        - path: /api
+          pathType: Prefix
+          backend:
+            service:
+              name: villadiana
+              port:
+                number: 80
