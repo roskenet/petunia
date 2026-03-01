@@ -4,3 +4,4 @@ POST_LOGIN_REDIRECT: http://localhost:3000/petunias
 
 KEYCLOAK_ISSUER_URI: http://keycloak/realms/petunia
 KEYCLOAK_TOKEN_URI: http://keycloak/realms/petunia/protocol/openid-connect/token
+KEYCLOAK_VILLADIANA_SECRET:

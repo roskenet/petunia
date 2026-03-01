@@ -1,8 +1,6 @@
 spring:
   application:
     name: villadiana
-  autoconfigure:
-    exclude: org.springframework.boot.data.redis.autoconfigure.DataRedisAutoConfiguration
   profiles:
     default: prod
   session:
@@ -15,22 +13,21 @@ spring:
   data:
     redis:
       host: localhost
-      password: password
+      password: ${VALKEY_PASSWORD}
   security:
     oauth2:
       client:
         provider:
           keycloak:
-            issuer-uri: ${KEYCLOAK_ISSUER_URI:https://auth.roskenet.de/realms/petunia}
-            token-uri: ${KEYCLOAK_TOKEN_URI:https://auth.roskenet.de/realms/petunia/protocol/openid-connect/token}
+            issuer-uri: ${KEYCLOAK_ISSUER_URI}
+            token-uri: ${KEYCLOAK_TOKEN_URI}
         registration:
           keycloak:
             client-id: villadiana
-            client-secret: ${KEYCLOAK_SECRET:miqtl8qIoEuLXXEOzvDmwP63xFWXaNje}
+            client-secret: ${KEYCLOAK_VILLADIANA_SECRET}
             authorization-grant-type: authorization_code
             scope: openid,profile,email
             provider: keycloak
-
 
 app:
   security:
@@ -40,11 +37,15 @@ app:
     post-logout-redirect-uri: https://petunia.roskenet.de
     default-login-success-url: https://petunia.roskenet.de/petunias
 
-server:
-  forward-headers-strategy: framework
+#server:
+#  forward-headers-strategy: framework
 
 management:
   endpoints:
     web:
       exposure:
         include: health,info
+  otlp:
+    metrics:
+      export:
+        enabled: off
