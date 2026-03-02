@@ -68,8 +68,9 @@ export default function Home() {
                 Go to Petunias
               </Button>
 
-              <Footer style={{ textAlign: 'center', background: 'transparent', color: '#bfbfbf' }}>
-                Felix Roske ©2026 — Dedicated to the art of providing no value.
+              <Footer style={{textAlign: 'center', background: 'transparent', color: '#bfbfbf'}}>
+                <Typography.Link href="mailto:felix@roskenet.de" style={{color: 'inherit', textDecoration: 'none'}}>Felix
+                  Roske</Typography.Link> ©2026 — Dedicated to the art of providing no value.
               </Footer>
             </Space>
           </Card>
