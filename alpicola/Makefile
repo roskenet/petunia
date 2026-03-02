@@ -1,13 +1,16 @@
 APP_NAME=alpicola
-APP_VERSION=2.91.1
+APP_VERSION=2.91.2
 IMAGE_NAME=roskenet/$(APP_NAME):${APP_VERSION}
 CONTAINER_NAME=$(APP_NAME)
 PORT=80
 
-.PHONY: build build-minikube run stop dev logs deploy clean
+.PHONY: build push build-minikube run stop dev logs deploy clean
 
 build:
 	docker build -t $(IMAGE_NAME) .
+
+push:
+	docker push $(IMAGE_NAME)
 
 build-minikube:
 	docker build --build-arg BUILD_ENV=minikube -t $(IMAGE_NAME)-minikube .
