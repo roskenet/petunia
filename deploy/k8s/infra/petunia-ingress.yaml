@@ -31,7 +31,7 @@ spec:
             service:
               name: polonium
               port:
-                number: 8080
+                number: 80
   - host: petunia.roskenet.de
     http:
       paths:
