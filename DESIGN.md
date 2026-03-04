@@ -20,28 +20,25 @@ The project has transitioned from a microservices approach to a consolidated mon
 | **Villadiana BFF** (`/villadiana`) | Backend-for-Frontend, handles sessions, authentication, and WebSocket communication. |
 | **Alpicola Frontend** (`/alpicola`) | Next.js frontend for players to interact with the game. |
 
+The **polonium** project is a legacy landing page for the domain. It is currently a standalone project, not integrated into the main Maven build or the Kubernetes deployment structure.
+
 ### Technical Stack
 
 - **Language**: Kotlin 2.3.10 (Java 25)
 - **Framework**: Spring Boot 4.0.3
-- **Communication**: REST (Synchronous), OpenAPI/Swagger
+- **Communication**: REST (Synchronous), OpenAPI/Swagger (SpringDoc 3.0.1)
 - **Database**: PostgreSQL (managed via Flyway migrations)
+- **Caching**: Valkey (Redis-compatible)
 - **Testing**: JUnit 5, Cucumber (Gherkin)
-- **Infrastructure**: Docker (Jib), Minikube/K3s, Valkey (Redis)
+- **Infrastructure**: Docker (Jib), Kubernetes (Local: Minikube; Prod: IONOS k3s)
 
 ---
 
 ## 🚀 Deployment
 
-The project uses Kubernetes for deployment. Configuration files are located in the `deploy/` directory and within individual modules.
+The project uses Kubernetes for deployment. 
 
-### Global Infrastructure
-- **Valkey**: Located in `deploy/k8s/valkey/`. Provides a Redis-compatible data store used by services like `villadiana`.
-
-### Module Deployment
-Each module contains its own `deploy/` or `Makefile` for deployment:
-- **Alpicola**: `alpicola/deploy/` (Kubernetes manifests) and `alpicola/Makefile`.
-- **Villadiana**: `villadiana/deploy/` (Kubernetes manifests and environment configurations).
+Global infrastructure and module deployment manifests are in `deploy/k8s` for production deployment in IONOS k3s cluster, and `deploy/minikube` for local test deployment.
 
 ---
 
@@ -50,7 +47,7 @@ Each module contains its own `deploy/` or `Makefile` for deployment:
 All functional requirements are defined as executable specifications.
 - **Methodology**: Behavior-Driven Development (BDD).
 - **Format**: Gherkin `*.feature` files.
-- **Location**: `engine/src/test/resources/features/`
+- **Location**: `<module>/src/test/resources/features/`
 - **Verification**: All features MUST be tested via these Gherkin files to ensure business logic correctness.
 
 ---
@@ -61,12 +58,15 @@ All functional requirements are defined as executable specifications.
 Players receive virtual starting capital. The **Petunia Engine** manages `PlayerAccount` and `Asset` (portfolio) entities.
 
 ### 2. Trading (Exchange)
-The Exchange component within the Engine manages the `Order` lifecycle (Place -> Match -> Execute). 
-- **Orders**: Buy/Sell, Market/Limit (to be expanded).
-- **Matching**: Handled by `OrderBookService`.
+The **Exchange** component manages the `Order` lifecycle.
+- **Order Lifecycle**: Place -> Match (Planned) -> Execute/Settle (via Clearing).
+- **Orders**: Buy/Sell, Market/Limit.
+- **Matching**: Currently a placeholder in `OrderBookService`; full matching engine implementation is pending.
 
-### 3. Dividends
-Calculated based on real-world Bundesliga match results. Factors include opponent strength, goal difference, and venue.
+### 3. Settlement & Clearing
+The **Bank** component handles the movement of assets and funds.
+- **Clearing**: `ClearingService` provides `clearTrade()` to atomically update buyer/seller balances and asset quantities.
+- **Dividends**: Calculated based on real-world Bundesliga match results.
 
 ---
 
@@ -98,10 +98,12 @@ Calculated based on real-world Bundesliga match results. Factors include opponen
 
 ## 🤖 AI Agent Guidelines
 
-1. **Monolith Boundary**: Although merged into `engine`, maintain logical separation between `de.roskenet.petunia.bank` and `de.roskenet.petunia.exchange` packages.
-2. **Context First**: Always check `PROGRESS.md` for the latest implementation status before suggesting changes.
-3. **Test-Driven**: When implementing new features, start by defining the Gherkin feature in a `.feature` file.
-4. **Style**: Follow Kotlin idiomatic patterns and Spring Boot best practices.
+1. **Maintain Logical Boundaries**: Although merged into the `engine` monolith, strictly maintain package separation between `de.roskenet.petunia.bank` and `de.roskenet.petunia.exchange`.
+2. **Service Interaction**: Since these packages may eventually split into microservices, minimize direct cross-package dependency. Communicate via clearly defined service interfaces.
+3. **API-First**: Always maintain and extend the REST APIs in the `engine`. This ensures the monolith remains compatible with the `villadiana` BFF and future service clients.
+4. **Context First**: Consult `PROGRESS.md` before making changes to understand the current implementation state.
+5. **Test-Driven (BDD)**: When implementing business logic, start by defining Gherkin features in `<module>/src/test/resources/features/`.
+6. **Code Style**: Use idiomatic Kotlin and Spring Boot best practices. Ensure all new JPA entities include appropriate Flyway migrations.
 
 ---
 Made with ❤️ by [felix@roskenet.de](mailto:felix@roskenet.de)
