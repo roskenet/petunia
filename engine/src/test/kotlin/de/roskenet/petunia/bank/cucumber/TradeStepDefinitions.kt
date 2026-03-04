@@ -1,6 +1,6 @@
 package de.roskenet.petunia.bank.cucumber
 
-import de.roskenet.petunia.bank.api.dto.ClearTradeRequest
+import de.roskenet.petunia.dto.ClearTradeRequest
 import de.roskenet.petunia.bank.domain.Asset
 import de.roskenet.petunia.bank.domain.PlayerAccount
 import de.roskenet.petunia.bank.repository.AssetRepository

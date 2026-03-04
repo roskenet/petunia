@@ -14,6 +14,7 @@ The project has transitioned from a microservices approach to a consolidated mon
 
 | Module | Responsibility |
 | :--- | :--- |
+| **Petunia Commons** (`/petunia-commons`) | Shared DTOs and enums between microservices. |
 | **Petunia Engine** (`/engine`) | The core monolith. Combines **Exchange** (order book, trade execution) and **Bank** (player accounts, portfolios, clearing). |
 | **Central Bank** (`/central-bank`) | Regulates the market, manages interest rates, and performs market interventions. |
 | **Villadiana BFF** (`/villadiana`) | Backend-for-Frontend, handles sessions, authentication, and WebSocket communication. |
@@ -74,6 +75,7 @@ Calculated based on real-world Bundesliga match results. Factors include opponen
 ### Project Structure
 ```text
 .
+├── petunia-commons/     # Shared DTOs and Enums
 ├── engine/              # Main Monolith (Exchange + Bank)
 ├── alpicola/            # Next.js Frontend
 │   └── src/             # React components and pages

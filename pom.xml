@@ -24,6 +24,7 @@
     </properties>
 
     <modules>
+        <module>petunia-commons</module>
         <module>engine</module>
         <module>central-bank</module>
         <module>villadiana</module>

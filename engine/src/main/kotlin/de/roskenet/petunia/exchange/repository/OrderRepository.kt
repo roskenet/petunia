@@ -1,7 +1,7 @@
 package de.roskenet.petunia.exchange.repository
 
 import de.roskenet.petunia.exchange.domain.Order
-import de.roskenet.petunia.exchange.domain.OrderStatus
+import de.roskenet.petunia.enums.OrderStatus
 import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 

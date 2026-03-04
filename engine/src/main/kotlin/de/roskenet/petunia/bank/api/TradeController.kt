@@ -1,7 +1,7 @@
 package de.roskenet.petunia.bank.api
 
-import de.roskenet.petunia.bank.api.dto.ClearTradeRequest
-import de.roskenet.petunia.bank.api.dto.ClearTradeResponse
+import de.roskenet.petunia.dto.ClearTradeRequest
+import de.roskenet.petunia.dto.ClearTradeResponse
 import de.roskenet.petunia.bank.service.ClearingService
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody

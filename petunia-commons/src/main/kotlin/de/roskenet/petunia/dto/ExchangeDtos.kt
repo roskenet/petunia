@@ -1,7 +1,7 @@
-package de.roskenet.petunia.exchange.api.dto
+package de.roskenet.petunia.dto
 
-import de.roskenet.petunia.exchange.domain.OrderSide
-import de.roskenet.petunia.exchange.domain.OrderStatus
+import de.roskenet.petunia.enums.OrderSide
+import de.roskenet.petunia.enums.OrderStatus
 import java.time.OffsetDateTime
 import java.util.*
 

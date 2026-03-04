@@ -1,5 +1,7 @@
 package de.roskenet.petunia.exchange.domain
 
+import de.roskenet.petunia.enums.OrderSide
+import de.roskenet.petunia.enums.OrderStatus
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp

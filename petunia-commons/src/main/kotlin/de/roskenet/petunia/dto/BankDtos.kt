@@ -1,4 +1,4 @@
-package de.roskenet.petunia.bank.api.dto
+package de.roskenet.petunia.dto
 
 import java.util.UUID
 

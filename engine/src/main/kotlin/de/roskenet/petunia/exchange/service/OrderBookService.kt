@@ -1,8 +1,8 @@
 package de.roskenet.petunia.exchange.service
 
 import de.roskenet.petunia.exchange.domain.Order
-import de.roskenet.petunia.exchange.domain.OrderSide
-import de.roskenet.petunia.exchange.domain.OrderStatus
+import de.roskenet.petunia.enums.OrderSide
+import de.roskenet.petunia.enums.OrderStatus
 import de.roskenet.petunia.exchange.repository.OrderRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional

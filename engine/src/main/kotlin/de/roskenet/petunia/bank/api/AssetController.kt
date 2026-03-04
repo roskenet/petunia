@@ -1,7 +1,7 @@
 package de.roskenet.petunia.bank.api
 
-import de.roskenet.petunia.bank.api.dto.AssetDto
-import de.roskenet.petunia.bank.api.dto.CreateAssetRequest
+import de.roskenet.petunia.dto.AssetDto
+import de.roskenet.petunia.dto.CreateAssetRequest
 import de.roskenet.petunia.bank.service.ClearingService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*

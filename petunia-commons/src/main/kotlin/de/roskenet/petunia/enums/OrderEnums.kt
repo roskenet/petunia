@@ -1,4 +1,4 @@
-package de.roskenet.petunia.exchange.domain
+package de.roskenet.petunia.enums
 
 enum class OrderSide {
     BUY, SELL

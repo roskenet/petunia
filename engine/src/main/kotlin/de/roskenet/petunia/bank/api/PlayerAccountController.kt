@@ -1,7 +1,7 @@
 package de.roskenet.petunia.bank.api
 
-import de.roskenet.petunia.bank.api.dto.CreatePlayerAccountRequest
-import de.roskenet.petunia.bank.api.dto.PlayerAccountDto
+import de.roskenet.petunia.dto.CreatePlayerAccountRequest
+import de.roskenet.petunia.dto.PlayerAccountDto
 import de.roskenet.petunia.bank.service.ClearingService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
