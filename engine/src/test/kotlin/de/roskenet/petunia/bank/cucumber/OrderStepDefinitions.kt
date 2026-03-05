@@ -148,12 +148,6 @@ class OrderStepDefinitions(
         assertEquals(HttpStatus.OK, response.statusCode)
     }
 
-    @Then("This order should not be cleared")
-    fun orderShouldNotBeCleared() {
-        val orders = orderRepository.findAll()
-        assertFalse(orders.isEmpty(), "Expected orders to be present")
-    }
-
     @Then("The order book is empty")
     fun orderBookIsEmpty() {
         val orders = orderRepository.findAll()
