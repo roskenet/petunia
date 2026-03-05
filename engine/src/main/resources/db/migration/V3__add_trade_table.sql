@@ -1,9 +1,0 @@
-CREATE TABLE IF NOT EXISTS trades (
-    id UUID PRIMARY KEY,
-    buyer_name VARCHAR(255) NOT NULL,
-    seller_name VARCHAR(255) NOT NULL,
-    symbol VARCHAR(10) NOT NULL,
-    quantity BIGINT NOT NULL,
-    price BIGINT NOT NULL,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
-);
