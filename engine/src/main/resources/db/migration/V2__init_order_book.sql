@@ -1,5 +1,6 @@
 CREATE TYPE order_side AS ENUM ('BUY', 'SELL');
 CREATE TYPE order_status AS ENUM ('OPEN', 'COMPLETED', 'CANCELLED');
+CREATE TYPE order_type AS ENUM ('LIMIT', 'MARKET');
 
 CREATE TABLE IF NOT EXISTS orders (
     id UUID PRIMARY KEY,
@@ -9,6 +10,7 @@ CREATE TABLE IF NOT EXISTS orders (
     remaining_quantity BIGINT NOT NULL,
     price BIGINT NOT NULL,
     side order_side NOT NULL,
+    type order_type NOT NULL DEFAULT 'LIMIT',
     status order_status NOT NULL DEFAULT 'OPEN',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP

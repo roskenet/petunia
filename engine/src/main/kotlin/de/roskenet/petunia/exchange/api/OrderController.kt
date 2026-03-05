@@ -18,7 +18,8 @@ class OrderController(
             symbol = request.symbol,
             quantity = request.quantity,
             price = request.price,
-            side = request.side
+            side = request.side,
+            type = request.type
         )
         return order.toResponse()
     }
@@ -41,6 +42,7 @@ class OrderController(
         remainingQuantity = this.remainingQuantity,
         price = this.price,
         side = this.side,
+        type = this.type,
         status = this.status,
         createdAt = this.createdAt
     )

@@ -7,6 +7,7 @@ import de.roskenet.petunia.bank.repository.PlayerAccountRepository
 import de.roskenet.petunia.dto.PlaceOrderRequest
 import de.roskenet.petunia.enums.OrderSide
 import de.roskenet.petunia.enums.OrderStatus
+import de.roskenet.petunia.enums.OrderType
 import de.roskenet.petunia.exchange.repository.OrderRepository
 import de.roskenet.petunia.exchange.repository.TradeRepository
 import io.cucumber.datatable.DataTable
@@ -99,6 +100,55 @@ class OrderStepDefinitions(
         assertEquals(HttpStatus.OK, response.statusCode)
     }
 
+    @Given("{word} has placed a market order to buy {long} shares of {word} with time priority {int}")
+    fun playerHasPlacedMarketBuyOrderWithPriority(playerName: String, quantity: Long, symbol: String, priority: Int) {
+        playerHasPlacedMarketBuyOrder(playerName, quantity, symbol)
+    }
+
+    @Given("{word} has placed a market order to buy {long} shares of {word}")
+    fun playerHasPlacedMarketBuyOrder(playerName: String, quantity: Long, symbol: String) {
+        ensurePlayerExists(playerName)
+        val request = PlaceOrderRequest(
+            playerName = playerName,
+            symbol = symbol,
+            quantity = quantity,
+            price = 0, // Price is ignored for market orders
+            side = OrderSide.BUY,
+            type = OrderType.MARKET
+        )
+        val response = restTemplate.postForEntity("/api/orders", request, String::class.java)
+        assertEquals(HttpStatus.OK, response.statusCode)
+    }
+
+    @Given("{word} has placed a market order to sell {long} shares of {word} with time priority {int}")
+    fun playerHasPlacedMarketSellOrderWithPriority(playerName: String, quantity: Long, symbol: String, priority: Int) {
+        playerHasPlacedMarketSellOrder(playerName, quantity, symbol)
+    }
+
+    @Given("{word} has placed a market order to sell {long} shares of {word}")
+    fun playerHasPlacedMarketSellOrder(playerName: String, quantity: Long, symbol: String) {
+        ensurePlayerExists(playerName)
+        // Ensure seller has the assets to sell
+        val account = playerAccountRepository.findByPlayerName(playerName)!!
+        val existingAsset = assetRepository.findByAccountIdAndSymbol(account.id, symbol)
+        if (existingAsset == null) {
+            assetRepository.save(Asset(account = account, symbol = symbol, quantity = quantity))
+        } else if (existingAsset.quantity < quantity) {
+            assetRepository.save(existingAsset.copy(quantity = quantity))
+        }
+
+        val request = PlaceOrderRequest(
+            playerName = playerName,
+            symbol = symbol,
+            quantity = quantity,
+            price = 0, // Price is ignored for market orders
+            side = OrderSide.SELL,
+            type = OrderType.MARKET
+        )
+        val response = restTemplate.postForEntity("/api/orders", request, String::class.java)
+        assertEquals(HttpStatus.OK, response.statusCode)
+    }
+
     @Then("This order should not be cleared")
     fun orderShouldNotBeCleared() {
         val orders = orderRepository.findAll()
@@ -123,6 +173,7 @@ class OrderStepDefinitions(
             val side = OrderSide.valueOf(expected["Side"]!!)
             val symbol = expected["Symbol"]!!
             val price = expected["Price"]!!.toLong()
+            val type = OrderType.valueOf(expected["Type"]!!)
             val quantity = expected["Quantity"]!!.toLong()
 
             val actual = actualOrders.find {
@@ -130,8 +181,9 @@ class OrderStepDefinitions(
                         it.side == side &&
                         it.symbol == symbol &&
                         it.price == price &&
+                        it.type == type &&
                         it.remainingQuantity == quantity
-            } ?: fail("Order not found: $playerName $side $symbol $price $quantity")
+            } ?: fail("Order not found: $playerName $side $symbol $price $type $quantity")
         }
     }
 

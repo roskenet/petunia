@@ -2,6 +2,7 @@ package de.roskenet.petunia.exchange.domain
 
 import de.roskenet.petunia.enums.OrderSide
 import de.roskenet.petunia.enums.OrderStatus
+import de.roskenet.petunia.enums.OrderType
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
@@ -32,6 +33,10 @@ class Order(
     @Enumerated(EnumType.STRING)
     @Column(name = "side", nullable = false)
     val side: OrderSide,
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "type", nullable = false)
+    val type: OrderType,
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)

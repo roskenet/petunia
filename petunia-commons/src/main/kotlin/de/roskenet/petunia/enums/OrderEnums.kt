@@ -7,3 +7,7 @@ enum class OrderSide {
 enum class OrderStatus {
     OPEN, COMPLETED, CANCELLED
 }
+
+enum class OrderType {
+    LIMIT, MARKET
+}

@@ -5,6 +5,7 @@ import de.roskenet.petunia.exchange.domain.Order
 import de.roskenet.petunia.exchange.domain.Trade
 import de.roskenet.petunia.enums.OrderSide
 import de.roskenet.petunia.enums.OrderStatus
+import de.roskenet.petunia.enums.OrderType
 import de.roskenet.petunia.exchange.repository.OrderRepository
 import de.roskenet.petunia.exchange.repository.TradeRepository
 import org.springframework.stereotype.Service
@@ -22,7 +23,8 @@ class OrderBookService(
         symbol: String,
         quantity: Long,
         price: Long,
-        side: OrderSide
+        side: OrderSide,
+        type: OrderType = OrderType.LIMIT
     ): Order {
         val order = Order(
             playerName = playerName,
@@ -31,6 +33,7 @@ class OrderBookService(
             remainingQuantity = quantity,
             price = price,
             side = side,
+            type = type,
             status = OrderStatus.OPEN
         )
         
@@ -49,7 +52,9 @@ class OrderBookService(
                 .filter { it.id != newOrder.id }
                 .filter { it.side == oppositeSide }
                 .filter {
-                    if (newOrder.side == OrderSide.BUY) {
+                    if (newOrder.type == OrderType.MARKET) {
+                        true
+                    } else if (newOrder.side == OrderSide.BUY) {
                         it.price <= newOrder.price
                     } else {
                         it.price >= newOrder.price
@@ -97,13 +102,24 @@ class OrderBookService(
             
             if (newOrder.remainingQuantity == 0L) {
                 newOrder.status = OrderStatus.COMPLETED
+            } else if (newOrder.type == OrderType.MARKET) {
+                // Market orders are "Fill or Kill" / "Immediate or Cancel" in this implementation
+                // If they can't be fully filled, the remaining part is cancelled.
+                newOrder.status = OrderStatus.CANCELLED
             }
+            
             if (match.remainingQuantity == 0L) {
                 match.status = OrderStatus.COMPLETED
             }
             
             orderRepository.save(newOrder)
             orderRepository.save(match)
+        }
+        
+        // If a market order was not matched at all, it should be cancelled
+        if (newOrder.type == OrderType.MARKET && newOrder.remainingQuantity > 0) {
+            newOrder.status = OrderStatus.CANCELLED
+            orderRepository.save(newOrder)
         }
     }
 
