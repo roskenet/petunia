@@ -4,10 +4,6 @@ enum class OrderSide {
     BUY, SELL
 }
 
-enum class OrderStatus {
-    OPEN, COMPLETED, CANCELLED
-}
-
 enum class OrderType {
     LIMIT, MARKET
 }

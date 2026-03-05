@@ -6,7 +6,6 @@ import de.roskenet.petunia.bank.repository.AssetRepository
 import de.roskenet.petunia.bank.repository.PlayerAccountRepository
 import de.roskenet.petunia.dto.PlaceOrderRequest
 import de.roskenet.petunia.enums.OrderSide
-import de.roskenet.petunia.enums.OrderStatus
 import de.roskenet.petunia.enums.OrderType
 import de.roskenet.petunia.exchange.repository.OrderRepository
 import de.roskenet.petunia.exchange.repository.TradeRepository
@@ -152,19 +151,19 @@ class OrderStepDefinitions(
     @Then("This order should not be cleared")
     fun orderShouldNotBeCleared() {
         val orders = orderRepository.findAll()
-        assertTrue(orders.all { it.status == OrderStatus.OPEN }, "Some orders were cleared but should not be")
+        assertFalse(orders.isEmpty(), "Expected orders to be present")
     }
 
     @Then("The order book is empty")
     fun orderBookIsEmpty() {
-        val orders = orderRepository.findByStatus(OrderStatus.OPEN)
+        val orders = orderRepository.findAll()
         assertTrue(orders.isEmpty(), "Order book is not empty: $orders")
     }
 
     @Then("The order book contains")
     fun orderBookContains(dataTable: DataTable) {
         val expectedRows = dataTable.asMaps()
-        val actualOrders = orderRepository.findByStatus(OrderStatus.OPEN)
+        val actualOrders = orderRepository.findAll()
 
         assertEquals(expectedRows.size, actualOrders.size, "Order book size mismatch")
 

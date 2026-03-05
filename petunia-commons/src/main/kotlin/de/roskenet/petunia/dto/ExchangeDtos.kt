@@ -1,7 +1,6 @@
 package de.roskenet.petunia.dto
 
 import de.roskenet.petunia.enums.OrderSide
-import de.roskenet.petunia.enums.OrderStatus
 import de.roskenet.petunia.enums.OrderType
 import java.time.OffsetDateTime
 import java.util.*
@@ -24,6 +23,5 @@ data class OrderResponse(
     val price: Long,
     val side: OrderSide,
     val type: OrderType,
-    val status: OrderStatus,
     val createdAt: OffsetDateTime?
 )

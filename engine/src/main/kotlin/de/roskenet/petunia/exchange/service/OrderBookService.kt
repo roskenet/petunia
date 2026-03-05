@@ -4,7 +4,6 @@ import de.roskenet.petunia.bank.service.ClearingService
 import de.roskenet.petunia.exchange.domain.Order
 import de.roskenet.petunia.exchange.domain.Trade
 import de.roskenet.petunia.enums.OrderSide
-import de.roskenet.petunia.enums.OrderStatus
 import de.roskenet.petunia.enums.OrderType
 import de.roskenet.petunia.exchange.repository.OrderRepository
 import de.roskenet.petunia.exchange.repository.TradeRepository
@@ -33,8 +32,7 @@ class OrderBookService(
             remainingQuantity = quantity,
             price = price,
             side = side,
-            type = type,
-            status = OrderStatus.OPEN
+            type = type
         )
         
         val savedOrder = orderRepository.save(order)
@@ -48,7 +46,7 @@ class OrderBookService(
         val oppositeSide = if (newOrder.side == OrderSide.BUY) OrderSide.SELL else OrderSide.BUY
         
         while (newOrder.remainingQuantity > 0) {
-            val matchingOrders = orderRepository.findBySymbolAndStatus(newOrder.symbol, OrderStatus.OPEN)
+            val matchingOrders = orderRepository.findBySymbol(newOrder.symbol)
                 .filter { it.id != newOrder.id }
                 .filter { it.side == oppositeSide }
                 .filter {
@@ -100,34 +98,31 @@ class OrderBookService(
             newOrder.remainingQuantity -= tradeQuantity
             match.remainingQuantity -= tradeQuantity
             
-            if (newOrder.remainingQuantity == 0L) {
-                newOrder.status = OrderStatus.COMPLETED
-            } else if (newOrder.type == OrderType.MARKET) {
-                // Market orders are "Fill or Kill" / "Immediate or Cancel" in this implementation
-                // If they can't be fully filled, the remaining part is cancelled.
-                newOrder.status = OrderStatus.CANCELLED
-            }
-            
             if (match.remainingQuantity == 0L) {
-                match.status = OrderStatus.COMPLETED
+                orderRepository.delete(match)
+            } else {
+                orderRepository.save(match)
             }
-            
-            orderRepository.save(newOrder)
-            orderRepository.save(match)
+
+            if (newOrder.remainingQuantity == 0L) {
+                orderRepository.delete(newOrder)
+            } else {
+                orderRepository.save(newOrder)
+            }
         }
         
-        // If a market order was not matched at all, it should be cancelled
+        // If a market order was not fully matched, it should be removed (Fill or Kill)
         if (newOrder.type == OrderType.MARKET && newOrder.remainingQuantity > 0) {
-            newOrder.status = OrderStatus.CANCELLED
-            orderRepository.save(newOrder)
+            orderRepository.delete(newOrder)
+            newOrder.remainingQuantity = 0
         }
     }
 
     fun getOpenOrders(): List<Order> {
-        return orderRepository.findByStatus(OrderStatus.OPEN)
+        return orderRepository.findAll()
     }
 
     fun getOpenOrdersBySymbol(symbol: String): List<Order> {
-        return orderRepository.findBySymbolAndStatus(symbol, OrderStatus.OPEN)
+        return orderRepository.findBySymbol(symbol)
     }
 }

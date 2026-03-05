@@ -53,9 +53,11 @@ The ProjectPetunia core architecture has been transitioned to a monolithic struc
 - Added `Makefile` in `alpicola/` for simplified deployment tasks.
 
 ### 7. Exchange Order Book Implementation (now in Engine)
-- Implemented `Order` entity, `OrderSide`, and `OrderStatus` enums.
+- Implemented `Order` entity, `OrderSide`, and `OrderType` enums.
+- Removed `OrderStatus` and refactored the system to delete completed or cancelled orders from the order book, maintaining only open orders in the `orders` table.
 - Created `OrderRepository` for database access.
-- Implemented `OrderBookService` to handle order placement.
+- Implemented `OrderBookService` with a matching engine supporting price-time priority for Limit and Market orders.
+- Market orders follow "Fill or Kill" logic, where any unfilled portion is immediately removed.
 - Added `OrderController` with REST endpoints for placing and listing orders.
 - Configured Flyway for database migrations and consolidated schemas.
 
@@ -73,6 +75,5 @@ The ProjectPetunia core architecture has been transitioned to a monolithic struc
 ```
 
 ## Next Steps
-- Implement matching engine within the Petunia Engine.
 - Refactor internal communication between exchange and bank components to use direct service calls.
 - Implement domain models and JPA entities for Central Bank service.

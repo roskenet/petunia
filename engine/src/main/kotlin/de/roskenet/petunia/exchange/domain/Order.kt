@@ -1,7 +1,6 @@
 package de.roskenet.petunia.exchange.domain
 
 import de.roskenet.petunia.enums.OrderSide
-import de.roskenet.petunia.enums.OrderStatus
 import de.roskenet.petunia.enums.OrderType
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
@@ -37,10 +36,6 @@ class Order(
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
     val type: OrderType,
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
-    var status: OrderStatus = OrderStatus.OPEN,
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

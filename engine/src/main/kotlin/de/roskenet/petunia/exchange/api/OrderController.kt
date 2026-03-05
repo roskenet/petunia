@@ -43,7 +43,6 @@ class OrderController(
         price = this.price,
         side = this.side,
         type = this.type,
-        status = this.status,
         createdAt = this.createdAt
     )
 }
