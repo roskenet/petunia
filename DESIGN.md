@@ -61,7 +61,7 @@ Players receive virtual starting capital. The **Petunia Engine** manages `Player
 The **Exchange** component manages the `Order` lifecycle.
 - **Order Lifecycle**: Place -> Match -> Execute/Settle (via Clearing).
 - **Orders**: Buy/Sell, Market/Limit.
-- **Matching**: Currently a placeholder in `OrderBookService`; full matching engine implementation is pending.
+- **Matching**: Implemented in `OrderBookService` with price-time priority as described below.
 
 #### Order Book
 The Order Book is a table that stores incoming orders:
