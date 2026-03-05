@@ -2,7 +2,8 @@ Feature: Orders are placed and matched
 
   This feature file describes the core order matching rules of the Petunia Stock Exchange.
 
-  The Petunia Stock Exchange Engine uses a continuous price–time priority matching model, similar to the mechanisms used by modern electronic exchanges such as NASDAQ, Deutsche Börse’s XETRA system, and the London Stock Exchange.
+  The Petunia Stock Exchange Engine uses a continuous price–time priority matching model, similar to the mechanisms used by modern electronic exchanges.
+  See: https://www.cashmarket.deutsche-boerse.com/cash-en/trading/order-types
 
   Orders are matched continuously as they arrive. Whenever compatible buy and sell orders exist, trades are executed immediately.
 
@@ -70,9 +71,9 @@ Feature: Orders are placed and matched
       | Alice   | 0            | 500             |
       | Bob     | 50           | 0               |
       | Charlie | 50           | 0               |
-    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 5 with time priority 1
-    And Charlie has placed an order to sell 50 shares of BAY at a minimum price of 4 with time priority 2
-    And Alice has placed an order to buy 50 shares of BAY at a maximum price of 5 with time priority 3
+    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 5
+    And Charlie has placed an order to sell 50 shares of BAY at a minimum price of 4
+    And Alice has placed an order to buy 50 shares of BAY at a maximum price of 5
     Then The trade book contains
       | Buyer | Seller  | Symbol | Quantity | Price/Share |
       | Alice | Charlie | BAY    | 50       | 4           |
@@ -91,9 +92,9 @@ Feature: Orders are placed and matched
       | Alice   | 0            | 500             |
       | Bob     | 50           | 0               |
       | Charlie | 50           | 0               |
-    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 5 with time priority 1
-    And Charlie has placed an order to sell 50 shares of BAY at a minimum price of 5 with time priority 2
-    And Alice has placed an order to buy 50 shares of BAY at a maximum price of 5 with time priority 3
+    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 5
+    And Charlie has placed an order to sell 50 shares of BAY at a minimum price of 5
+    And Alice has placed an order to buy 50 shares of BAY at a maximum price of 5
     Then The trade book contains
       | Buyer | Seller | Symbol | Quantity | Price/Share |
       | Alice | Bob    | BAY    | 50       | 5           |
@@ -107,9 +108,9 @@ Feature: Orders are placed and matched
       | Alice   | 0            | 500             |
       | Bob     | 50           | 0               |
       | Charlie | 50           | 0               |
-    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 4 with time priority 1
-    And Charlie has placed an order to sell 50 shares of BAY at a minimum price of 5 with time priority 2
-    And Alice has placed an order to buy 100 shares of BAY at a maximum price of 5 with time priority 3
+    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 4
+    And Charlie has placed an order to sell 50 shares of BAY at a minimum price of 5
+    And Alice has placed an order to buy 100 shares of BAY at a maximum price of 5
     Then The trade book contains
       | Buyer | Seller  | Symbol | Quantity | Price/Share |
       | Alice | Bob     | BAY    | 50       | 4           |
@@ -122,9 +123,9 @@ Feature: Orders are placed and matched
       | Alice   | 50           | 500             |
       | Bob     | 0            | 250             |
       | Charlie | 0            | 250             |
-    Given Bob has placed an order to buy 50 shares of BAY at a maximum price of 5 with time priority 1
-    And Charlie has placed an order to buy 50 shares of BAY at a maximum price of 4 with time priority 2
-    And Alice has placed an order to sell 100 shares of BAY at a minimum price of 4 with time priority 3
+    Given Bob has placed an order to buy 50 shares of BAY at a maximum price of 5
+    And Charlie has placed an order to buy 50 shares of BAY at a maximum price of 4
+    And Alice has placed an order to sell 100 shares of BAY at a minimum price of 4
     Then The trade book contains
       | Buyer   | Seller | Symbol | Quantity | Price/Share |
       | Bob     | Alice  | BAY    | 50       | 5           |
@@ -136,8 +137,8 @@ Feature: Orders are placed and matched
       | Name  | Shares (BAY) | Account Balance |
       | Alice | 0            | 500             |
       | Bob   | 50           | 0               |
-    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 4 with time priority 1
-    And Alice has placed an order to buy 100 shares of BAY at a maximum price of 5 with time priority 2
+    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 4
+    And Alice has placed an order to buy 100 shares of BAY at a maximum price of 5
     Then The trade book contains
       | Buyer | Seller | Symbol | Quantity | Price/Share |
       | Alice | Bob    | BAY    | 50       | 4           |
@@ -150,8 +151,8 @@ Feature: Orders are placed and matched
       | Name  | Shares (BAY) | Account Balance |
       | Alice | 0            | 500             |
       | Bob   | 50           | 0               |
-    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 6 with time priority 1
-    And Alice has placed an order to buy 50 shares of BAY at a maximum price of 5 with time priority 2
+    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 6
+    And Alice has placed an order to buy 50 shares of BAY at a maximum price of 5
     Then The trade book is empty
     And The order book contains
       | Player | Side | Symbol | Price | Type  | Quantity |
@@ -164,9 +165,9 @@ Feature: Orders are placed and matched
       | Alice   | 0            | 500             |
       | Bob     | 50           | 0               |
       | Charlie | 50           | 0               |
-    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 4 with time priority 1
-    And Charlie has placed an order to sell 50 shares of BAY at a minimum price of 6 with time priority 2
-    And Alice has placed an order to buy 50 shares of BAY at a maximum price of 5 with time priority 3
+    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 4
+    And Charlie has placed an order to sell 50 shares of BAY at a minimum price of 6
+    And Alice has placed an order to buy 50 shares of BAY at a maximum price of 5
     Then The trade book contains
       | Buyer | Seller | Symbol | Quantity | Price/Share |
       | Alice | Bob    | BAY    | 50       | 4           |
@@ -180,16 +181,15 @@ Feature: Orders are placed and matched
       | Alice   | 0            | 500             |
       | Bob     | 50           | 0               |
       | Charlie | 50           | 0               |
-    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 5 with time priority 1
-    And Charlie has placed an order to sell 50 shares of BAY at a minimum price of 4 with time priority 2
-    And Alice has placed an order to buy 50 shares of BAY at a maximum price of 5 with time priority 3
+    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 5
+    And Charlie has placed an order to sell 50 shares of BAY at a minimum price of 4
+    And Alice has placed an order to buy 50 shares of BAY at a maximum price of 5
     Then The trade book contains
       | Buyer | Seller  | Symbol | Quantity | Price/Share |
       | Alice | Charlie | BAY    | 50       | 4           |
     And The order book contains
       | Player | Side | Symbol | Price | Type  | Quantity |
       | Bob    | SELL | BAY    | 5     | LIMIT | 50       |
-
 
   Scenario: 9. Buy order sweeps multiple price levels
     Given The following accounts exist:
@@ -198,10 +198,10 @@ Feature: Orders are placed and matched
       | Bob     | 50           | 0               |
       | Charlie | 50           | 0               |
       | Dave    | 50           | 0               |
-    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 3 with time priority 1
-    And Charlie has placed an order to sell 50 shares of BAY at a minimum price of 4 with time priority 2
-    And Dave has placed an order to sell 50 shares of BAY at a minimum price of 5 with time priority 3
-    And Alice has placed an order to buy 120 shares of BAY at a maximum price of 5 with time priority 4
+    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 3
+    And Charlie has placed an order to sell 50 shares of BAY at a minimum price of 4
+    And Dave has placed an order to sell 50 shares of BAY at a minimum price of 5
+    And Alice has placed an order to buy 120 shares of BAY at a maximum price of 5
     Then The trade book contains
       | Buyer | Seller  | Symbol | Quantity | Price/Share |
       | Alice | Bob     | BAY    | 50       | 3           |
@@ -217,9 +217,9 @@ Feature: Orders are placed and matched
       | Alice   | 0            | 500             |
       | Bob     | 50           | 0               |
       | Charlie | 50           | 0               |
-    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 5 with time priority 1
-    And Charlie has placed an order to sell 50 shares of BAY at a minimum price of 5 with time priority 2
-    And Alice has placed an order to buy 80 shares of BAY at a maximum price of 5 with time priority 3
+    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 5
+    And Charlie has placed an order to sell 50 shares of BAY at a minimum price of 5
+    And Alice has placed an order to buy 80 shares of BAY at a maximum price of 5
     Then The trade book contains
       | Buyer | Seller  | Symbol | Quantity | Price/Share |
       | Alice | Bob     | BAY    | 50       | 5           |
@@ -233,8 +233,8 @@ Feature: Orders are placed and matched
       | Name  | Shares (BAY) | Account Balance |
       | Alice | 0            | 500             |
       | Bob   | 50           | 0               |
-    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 5 with time priority 1
-    And Alice has placed a market order to buy 50 shares of BAY with time priority 2
+    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 5
+    And Alice has placed a market order to buy 50 shares of BAY
     Then The trade book contains
       | Buyer | Seller | Symbol | Quantity | Price/Share |
       | Alice | Bob    | BAY    | 50       | 5           |
@@ -246,9 +246,9 @@ Feature: Orders are placed and matched
       | Alice   | 0            | 500             |
       | Bob     | 50           | 0               |
       | Charlie | 50           | 0               |
-    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 4 with time priority 1
-    And Charlie has placed an order to sell 50 shares of BAY at a minimum price of 5 with time priority 2
-    And Alice has placed a market order to buy 100 shares of BAY with time priority 3
+    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 4
+    And Charlie has placed an order to sell 50 shares of BAY at a minimum price of 5
+    And Alice has placed a market order to buy 100 shares of BAY
     Then The trade book contains
       | Buyer | Seller  | Symbol | Quantity | Price/Share |
       | Alice | Bob     | BAY    | 50       | 4           |
@@ -260,8 +260,8 @@ Feature: Orders are placed and matched
       | Name  | Shares (BAY) | Account Balance |
       | Alice | 0            | 500             |
       | Bob   | 50           | 0               |
-    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 5 with time priority 1
-    And Alice has placed a market order to buy 100 shares of BAY with time priority 2
+    Given Bob has placed an order to sell 50 shares of BAY at a minimum price of 5
+    And Alice has placed a market order to buy 100 shares of BAY
     Then The trade book contains
       | Buyer | Seller | Symbol | Quantity | Price/Share |
       | Alice | Bob    | BAY    | 50       | 5           |
@@ -272,8 +272,8 @@ Feature: Orders are placed and matched
       | Name  | Shares (BAY) | Account Balance |
       | Alice | 100          | 0               |
       | Bob   | 0            | 500             |
-    Given Bob has placed an order to buy 100 shares of BAY at a maximum price of 5 with time priority 1
-    And Alice has placed a market order to sell 100 shares of BAY with time priority 2
+    Given Bob has placed an order to buy 100 shares of BAY at a maximum price of 5
+    And Alice has placed a market order to sell 100 shares of BAY
     Then The trade book contains
       | Buyer | Seller | Symbol | Quantity | Price/Share |
       | Bob   | Alice  | BAY    | 100      | 5           |
@@ -285,9 +285,9 @@ Feature: Orders are placed and matched
       | Alice   | 50           | 0               |
       | Bob     | 0            | 300             |
       | Charlie | 0            | 300             |
-    Given Bob has placed an order to buy 50 shares of BAY at a maximum price of 6 with time priority 1
-    And Charlie has placed an order to buy 50 shares of BAY at a maximum price of 5 with time priority 2
-    And Alice has placed a market order to sell 100 shares of BAY with time priority 3
+    Given Bob has placed an order to buy 50 shares of BAY at a maximum price of 6
+    And Charlie has placed an order to buy 50 shares of BAY at a maximum price of 5
+    And Alice has placed a market order to sell 100 shares of BAY
     Then The trade book contains
       | Buyer   | Seller | Symbol | Quantity | Price/Share |
       | Bob     | Alice  | BAY    | 50       | 6           |
@@ -298,7 +298,7 @@ Feature: Orders are placed and matched
     Given The following accounts exist:
       | Name  | Shares (BAY) | Account Balance |
       | Alice | 0            | 500             |
-    Given Alice has placed a market order to buy 100 shares of BAY with time priority 1
+    Given Alice has placed a market order to buy 100 shares of BAY
     Then The trade book is empty
     And The order book is empty
 
@@ -309,10 +309,10 @@ Feature: Orders are placed and matched
       | Bob     | 20           | 0               |
       | Charlie | 30           | 0               |
       | Dave    | 50           | 0               |
-    Given Bob has placed an order to sell 20 shares of BAY at a minimum price of 4 with time priority 1
-    And Charlie has placed an order to sell 30 shares of BAY at a minimum price of 5 with time priority 2
-    And Dave has placed an order to sell 50 shares of BAY at a minimum price of 6 with time priority 3
-    And Alice has placed a market order to buy 100 shares of BAY with time priority 4
+    Given Bob has placed an order to sell 20 shares of BAY at a minimum price of 4
+    And Charlie has placed an order to sell 30 shares of BAY at a minimum price of 5
+    And Dave has placed an order to sell 50 shares of BAY at a minimum price of 6
+    And Alice has placed a market order to buy 100 shares of BAY
     Then The trade book contains
       | Buyer | Seller  | Symbol | Quantity | Price/Share |
       | Alice | Bob     | BAY    | 20       | 4           |
@@ -326,9 +326,9 @@ Feature: Orders are placed and matched
       | Alice   | 0            | 1000            |
       | Bob     | 40           | 0               |
       | Charlie | 30           | 0               |
-    Given Bob has placed an order to sell 40 shares of BAY at a minimum price of 4 with time priority 1
-    And Charlie has placed an order to sell 30 shares of BAY at a minimum price of 5 with time priority 2
-    And Alice has placed a market order to buy 200 shares of BAY with time priority 3
+    Given Bob has placed an order to sell 40 shares of BAY at a minimum price of 4
+    And Charlie has placed an order to sell 30 shares of BAY at a minimum price of 5
+    And Alice has placed a market order to buy 200 shares of BAY
     Then The trade book contains
       | Buyer | Seller  | Symbol | Quantity | Price/Share |
       | Alice | Bob     | BAY    | 40       | 4           |

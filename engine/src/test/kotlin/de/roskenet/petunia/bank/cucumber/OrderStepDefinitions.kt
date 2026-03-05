@@ -49,13 +49,6 @@ class OrderStepDefinitions(
         }
     }
 
-    @Given("{word} has placed an order to buy {long} shares of {word} at a maximum price of {long} with time priority {int}")
-    fun playerHasPlacedBuyOrderWithPriority(playerName: String, quantity: Long, symbol: String, price: Long, priority: Int) {
-        // We ignore priority for now as it is handled by createdAt in the real system, 
-        // but for testing we might need to simulate it if we want exact control.
-        // For now, let's just place the order.
-        playerHasPlacedBuyOrder(playerName, quantity, symbol, price)
-    }
 
     @Given("{word} has placed an order to buy {long} shares of {word} at a maximum price of {long}")
     fun playerHasPlacedBuyOrder(playerName: String, quantity: Long, symbol: String, price: Long) {
@@ -71,10 +64,6 @@ class OrderStepDefinitions(
         assertEquals(HttpStatus.OK, response.statusCode)
     }
 
-    @Given("{word} has placed an order to sell {long} shares of {word} at a minimum price of {long} with time priority {int}")
-    fun playerHasPlacedSellOrderWithPriority(playerName: String, quantity: Long, symbol: String, price: Long, priority: Int) {
-        playerHasPlacedSellOrder(playerName, quantity, symbol, price)
-    }
 
     @Given("{word} has placed an order to sell {long} shares of {word} at a minimum price of {long}")
     fun playerHasPlacedSellOrder(playerName: String, quantity: Long, symbol: String, price: Long) {
@@ -99,10 +88,6 @@ class OrderStepDefinitions(
         assertEquals(HttpStatus.OK, response.statusCode)
     }
 
-    @Given("{word} has placed a market order to buy {long} shares of {word} with time priority {int}")
-    fun playerHasPlacedMarketBuyOrderWithPriority(playerName: String, quantity: Long, symbol: String, priority: Int) {
-        playerHasPlacedMarketBuyOrder(playerName, quantity, symbol)
-    }
 
     @Given("{word} has placed a market order to buy {long} shares of {word}")
     fun playerHasPlacedMarketBuyOrder(playerName: String, quantity: Long, symbol: String) {
@@ -119,10 +104,6 @@ class OrderStepDefinitions(
         assertEquals(HttpStatus.OK, response.statusCode)
     }
 
-    @Given("{word} has placed a market order to sell {long} shares of {word} with time priority {int}")
-    fun playerHasPlacedMarketSellOrderWithPriority(playerName: String, quantity: Long, symbol: String, priority: Int) {
-        playerHasPlacedMarketSellOrder(playerName, quantity, symbol)
-    }
 
     @Given("{word} has placed a market order to sell {long} shares of {word}")
     fun playerHasPlacedMarketSellOrder(playerName: String, quantity: Long, symbol: String) {
