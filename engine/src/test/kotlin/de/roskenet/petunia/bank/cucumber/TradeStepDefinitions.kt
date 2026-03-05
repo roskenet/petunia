@@ -5,6 +5,7 @@ import de.roskenet.petunia.bank.domain.Asset
 import de.roskenet.petunia.bank.domain.PlayerAccount
 import de.roskenet.petunia.bank.repository.AssetRepository
 import de.roskenet.petunia.bank.repository.PlayerAccountRepository
+import de.roskenet.petunia.exchange.repository.OrderRepository
 import io.cucumber.datatable.DataTable
 import io.cucumber.java.Before
 import io.cucumber.java.en.Given
@@ -18,6 +19,7 @@ import java.util.UUID
 class TradeStepDefinitions(
     private val playerAccountRepository: PlayerAccountRepository,
     private val assetRepository: AssetRepository,
+    private val orderRepository: OrderRepository,
     private val restTemplate: TestRestTemplate
 ) {
     private val initialBalances = mutableMapOf<String, Long>()
@@ -26,9 +28,10 @@ class TradeStepDefinitions(
     private lateinit var trade: TradeInput
 
     @Before
-    fun resetState() {
-        assetRepository.deleteAll()
-        playerAccountRepository.deleteAll()
+    fun setup() {
+        orderRepository.deleteAllInBatch()
+        assetRepository.deleteAllInBatch()
+        playerAccountRepository.deleteAllInBatch()
         initialBalances.clear()
         initialShares.clear()
         accountIds.clear()
@@ -36,17 +39,28 @@ class TradeStepDefinitions(
 
     @Given("The following players exist:")
     fun theFollowingPlayersExist(dataTable: DataTable) {
-        val initialBalance = 100000L // 1000.00 euros as 100000 cents
         dataTable.asMaps().forEach { row ->
             val name = row["Name"]?.trim().orEmpty()
+            val balance = row["Account Balance"]?.trim()?.toLong() ?: 100000L
             val shares = row["Shares (BAY)"]?.trim().orEmpty().toLong()
-            val account = playerAccountRepository.save(
-                PlayerAccount(playerName = name, balance = initialBalance)
-            )
+            
+            var account = playerAccountRepository.findByPlayerName(name)
+            if (account == null) {
+                account = playerAccountRepository.save(
+                    PlayerAccount(playerName = name, balance = balance)
+                )
+            } else {
+                account = playerAccountRepository.save(account.copy(balance = balance))
+            }
+            
             accountIds[name] = account.id
             initialBalances[name] = account.balance
             initialShares[name] = shares
-            if (shares > 0) {
+            
+            val existingAsset = assetRepository.findByAccountIdAndSymbol(account.id, "BAY")
+            if (existingAsset != null) {
+                assetRepository.save(existingAsset.copy(quantity = shares))
+            } else if (shares > 0) {
                 assetRepository.save(Asset(account = account, symbol = "BAY", quantity = shares))
             }
         }
