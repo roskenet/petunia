@@ -8,5 +8,5 @@ import java.util.UUID
 @Repository
 interface AssetRepository : JpaRepository<Asset, UUID> {
     fun findByAccountId(accountId: UUID): List<Asset>
-    fun findByAccountIdAndSymbol(accountId: UUID, symbol: String): Asset?
+    fun findByAccountIdAndSecuritySymbol(accountId: UUID, symbol: String): Asset?
 }

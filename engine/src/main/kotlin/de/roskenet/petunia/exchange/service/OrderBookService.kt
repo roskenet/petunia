@@ -1,12 +1,13 @@
 package de.roskenet.petunia.exchange.service
 
 import de.roskenet.petunia.bank.service.ClearingService
-import de.roskenet.petunia.exchange.domain.Order
-import de.roskenet.petunia.exchange.domain.Trade
 import de.roskenet.petunia.enums.OrderSide
 import de.roskenet.petunia.enums.OrderType
+import de.roskenet.petunia.exchange.domain.Order
+import de.roskenet.petunia.exchange.domain.Trade
 import de.roskenet.petunia.exchange.repository.OrderRepository
 import de.roskenet.petunia.exchange.repository.TradeRepository
+import de.roskenet.petunia.security.service.SecurityService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -14,7 +15,8 @@ import org.springframework.transaction.annotation.Transactional
 class OrderBookService(
     private val orderRepository: OrderRepository,
     private val tradeRepository: TradeRepository,
-    private val clearingService: ClearingService
+    private val clearingService: ClearingService,
+    private val securityService: SecurityService
 ) {
     @Transactional
     fun placeOrder(
@@ -25,28 +27,29 @@ class OrderBookService(
         side: OrderSide,
         type: OrderType = OrderType.LIMIT
     ): Order {
+        val security = securityService.requireBySymbol(symbol)
         val order = Order(
             playerName = playerName,
-            symbol = symbol,
+            security = security,
             quantity = quantity,
             remainingQuantity = quantity,
             price = price,
             side = side,
             type = type
         )
-        
+
         val savedOrder = orderRepository.save(order)
-        
+
         matchOrders(savedOrder)
-        
+
         return savedOrder
     }
 
     private fun matchOrders(newOrder: Order) {
         val oppositeSide = if (newOrder.side == OrderSide.BUY) OrderSide.SELL else OrderSide.BUY
-        
+
         while (newOrder.remainingQuantity > 0) {
-            val matchingOrders = orderRepository.findBySymbol(newOrder.symbol)
+            val matchingOrders = orderRepository.findBySecuritySymbol(newOrder.symbol)
                 .filter { it.id != newOrder.id }
                 .filter { it.side == oppositeSide }
                 .filter {
@@ -60,23 +63,21 @@ class OrderBookService(
                 }
                 .sortedWith(
                     if (newOrder.side == OrderSide.BUY) {
-                        // For a BUY order, we want the lowest SELL price first (maker's best offer)
                         compareBy<Order> { it.price }.thenBy { it.createdAt }
                     } else {
-                        // For a SELL order, we want the highest BUY price first (maker's best bid)
                         compareByDescending<Order> { it.price }.thenBy { it.createdAt }
                     }
                 )
 
             if (matchingOrders.isEmpty()) break
-            
+
             val match = matchingOrders.first()
             val tradeQuantity = Math.min(newOrder.remainingQuantity, match.remainingQuantity)
-            val tradePrice = match.price // Price-time priority: Match at maker's price
-            
+            val tradePrice = match.price
+
             val buyer = if (newOrder.side == OrderSide.BUY) newOrder else match
             val seller = if (newOrder.side == OrderSide.BUY) match else newOrder
-            
+
             clearingService.clearTrade(
                 buyerName = buyer.playerName,
                 sellerName = seller.playerName,
@@ -89,15 +90,15 @@ class OrderBookService(
                 Trade(
                     buyerName = buyer.playerName,
                     sellerName = seller.playerName,
-                    symbol = newOrder.symbol,
+                    security = newOrder.security,
                     quantity = tradeQuantity,
                     price = tradePrice
                 )
             )
-            
+
             newOrder.remainingQuantity -= tradeQuantity
             match.remainingQuantity -= tradeQuantity
-            
+
             if (match.remainingQuantity == 0L) {
                 orderRepository.delete(match)
             } else {
@@ -110,8 +111,7 @@ class OrderBookService(
                 orderRepository.save(newOrder)
             }
         }
-        
-        // If a market order was not fully matched, it should be removed (Fill or Kill)
+
         if (newOrder.type == OrderType.MARKET && newOrder.remainingQuantity > 0) {
             orderRepository.delete(newOrder)
             newOrder.remainingQuantity = 0
@@ -123,6 +123,6 @@ class OrderBookService(
     }
 
     fun getOpenOrdersBySymbol(symbol: String): List<Order> {
-        return orderRepository.findBySymbol(symbol)
+        return orderRepository.findBySecuritySymbol(symbol)
     }
 }

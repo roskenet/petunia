@@ -2,6 +2,7 @@ package de.roskenet.petunia.exchange.domain
 
 import de.roskenet.petunia.enums.OrderSide
 import de.roskenet.petunia.enums.OrderType
+import de.roskenet.petunia.security.domain.Security
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
 import org.hibernate.annotations.UpdateTimestamp
@@ -17,8 +18,9 @@ class Order(
     @Column(name = "player_name", nullable = false)
     val playerName: String,
 
-    @Column(name = "symbol", nullable = false)
-    val symbol: String,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "symbol", referencedColumnName = "symbol", nullable = false)
+    val security: Security,
 
     @Column(name = "quantity", nullable = false)
     val quantity: Long,
@@ -44,4 +46,7 @@ class Order(
     @UpdateTimestamp
     @Column(name = "updated_at")
     val updatedAt: OffsetDateTime? = null
-)
+) {
+    val symbol: String
+        get() = security.symbol
+}

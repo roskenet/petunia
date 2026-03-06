@@ -41,3 +41,17 @@ data class ClearTradeResponse(
     val price: Long,
     val total: Long
 )
+
+data class SecurityDto(
+    val symbol: String,
+    val name: String
+)
+
+data class CreateSecurityRequest(
+    val symbol: String,
+    val name: String
+)
+
+data class UpdateSecurityRequest(
+    val name: String
+)
