@@ -23,7 +23,8 @@ class ClearingService(
         playerAccountRepository.findByPlayerName(playerName)
 
     @Transactional
-    fun createAccount(playerSubject: UUID, playerName: String, initialBalance: Long): PlayerAccount {
+    fun createAccount(playerSubject: UUID, playerName: String): PlayerAccount {
+        val initialBalance = 42000_00L
         val account = PlayerAccount(id=playerSubject, playerName = playerName, balance = initialBalance)
         return playerAccountRepository.save(account)
     }

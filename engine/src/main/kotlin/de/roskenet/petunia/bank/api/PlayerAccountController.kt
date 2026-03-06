@@ -27,7 +27,7 @@ class PlayerAccountController(
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     fun createAccount(@RequestBody request: CreatePlayerAccountRequest): PlayerAccountDto {
-        val account = clearingService.createAccount(playerSubject = request.playerSubject, request.playerName, request.initialBalance)
+        val account = clearingService.createAccount(playerSubject = request.playerSubject, request.playerName)
         return PlayerAccountDto(account.id, account.playerName, account.balance)
     }
 

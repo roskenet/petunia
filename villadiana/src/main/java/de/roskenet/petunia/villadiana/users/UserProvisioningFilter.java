@@ -1,11 +1,14 @@
-package de.roskenet.petunia.villadiana.de.roskenet.petunia.villadiana.users;
+package de.roskenet.petunia.villadiana.users;
 
+import de.roskenet.petunia.dto.CreatePlayerAccountRequest;
 import de.roskenet.petunia.villadiana.routes.admin.AdminPlayersController;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.UUID;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -34,10 +37,9 @@ public class UserProvisioningFilter extends OncePerRequestFilter {
 
         if (auth != null && auth.getPrincipal() instanceof Jwt jwt) {
 
-            String keycloakId = jwt.getSubject();
+            UUID keycloakId = UUID.fromString(jwt.getSubject());
             String username = jwt.getClaimAsString("preferred_username");
-
-//            userService.ensureUserExists(keycloakId, username);
+            adminPlayersController.createPlayer(new CreatePlayerAccountRequest(keycloakId, username));
         }
 
         filterChain.doFilter(request, response);

@@ -9,3 +9,4 @@ data:
   DEFAULT_LOGIN_SUCCESS_URL: http://petunia.local/petunias
   ALLOWED_ORIGIN_PATTERNS: http://petunia.local
   ENVIRONMENT: int
+  ENGINE_BASE_URL: http://petunia-engine

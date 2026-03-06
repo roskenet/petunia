@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Configuration
 @Profile("dev")
@@ -61,13 +62,14 @@ public class DevSecurityConfig {
                                             HttpServletResponse response,
                                             FilterChain filterChain)
                     throws ServletException, IOException {
+                UUID keycloakId = UUID.fromString("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee");
 
                 OidcIdToken idToken = new OidcIdToken(
                         "mock-token",
                         Instant.now(),
                         Instant.now().plusSeconds(3600),
                         Map.of(
-                                "sub", "dev-user",
+                                "sub", keycloakId.toString(),
                                 "name", "James Bond",
                                 "email", "jbond@mifive.gov.uk"
                         )
