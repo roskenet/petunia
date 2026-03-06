@@ -4,6 +4,7 @@ import de.roskenet.petunia.bank.domain.Asset
 import de.roskenet.petunia.bank.domain.PlayerAccount
 import de.roskenet.petunia.bank.repository.AssetRepository
 import de.roskenet.petunia.bank.repository.PlayerAccountRepository
+import de.roskenet.petunia.security.service.SecurityService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.util.UUID
@@ -11,23 +12,34 @@ import java.util.UUID
 @Service
 class ClearingService(
     private val playerAccountRepository: PlayerAccountRepository,
-    private val assetRepository: AssetRepository
+    private val assetRepository: AssetRepository,
+    private val securityService: SecurityService
 ) {
     @Transactional(readOnly = true)
     fun getAllAccounts(): List<PlayerAccount> = playerAccountRepository.findAll()
 
     @Transactional(readOnly = true)
-    fun getAccountById(id: UUID): PlayerAccount? = playerAccountRepository.findById(id).orElse(null)
+    fun getAccountByPlayerName(playerName: String): PlayerAccount? =
+        playerAccountRepository.findByPlayerName(playerName)
 
     @Transactional
-    fun createAccount(playerName: String, initialBalance: Long): PlayerAccount {
-        val account = PlayerAccount(playerName = playerName, balance = initialBalance)
+    fun createAccount(playerSubject: UUID, playerName: String, initialBalance: Long): PlayerAccount {
+        val account = PlayerAccount(id=playerSubject, playerName = playerName, balance = initialBalance)
         return playerAccountRepository.save(account)
     }
 
     @Transactional
-    fun deleteAccount(id: UUID) {
-        playerAccountRepository.deleteById(id)
+    fun updateAccount(playerName: String, newPlayerName: String, balance: Long): PlayerAccount {
+        val existingAccount = playerAccountRepository.findByPlayerName(playerName)
+            ?: throw IllegalArgumentException("Account not found")
+
+        val updatedAccount = existingAccount.copy(playerName = newPlayerName, balance = balance)
+        return playerAccountRepository.save(updatedAccount)
+    }
+
+    @Transactional
+    fun deleteAccountByPlayerName(playerName: String) {
+        playerAccountRepository.deleteByPlayerName(playerName)
     }
 
     @Transactional(readOnly = true)
@@ -37,19 +49,20 @@ class ClearingService(
     fun addAsset(accountId: UUID, symbol: String, quantity: Long): Asset {
         val account = playerAccountRepository.findById(accountId)
             .orElseThrow { IllegalArgumentException("Account not found") }
+        val security = securityService.requireBySymbol(symbol)
 
-        val existingAsset = assetRepository.findByAccountIdAndSymbol(accountId, symbol)
+        val existingAsset = assetRepository.findByAccountIdAndSecuritySymbol(accountId, symbol)
         val asset = if (existingAsset != null) {
             existingAsset.copy(quantity = existingAsset.quantity + quantity)
         } else {
-            Asset(account = account, symbol = symbol, quantity = quantity)
+            Asset(account = account, security = security, quantity = quantity)
         }
         return assetRepository.save(asset)
     }
 
     @Transactional
     fun removeAsset(accountId: UUID, symbol: String, quantity: Long): Asset {
-        val asset = assetRepository.findByAccountIdAndSymbol(accountId, symbol)
+        val asset = assetRepository.findByAccountIdAndSecuritySymbol(accountId, symbol)
             ?: throw IllegalArgumentException("Asset not found")
 
         if (asset.quantity < quantity) {
@@ -68,11 +81,12 @@ class ClearingService(
         quantity: Long,
         price: Long
     ): TradeSettlement {
+        val security = securityService.requireBySymbol(symbol)
         val buyer = playerAccountRepository.findByPlayerName(buyerName)
             ?: throw IllegalArgumentException("Buyer not found")
         val seller = playerAccountRepository.findByPlayerName(sellerName)
             ?: throw IllegalArgumentException("Seller not found")
-        val sellerAsset = assetRepository.findByAccountIdAndSymbol(seller.id, symbol)
+        val sellerAsset = assetRepository.findByAccountIdAndSecuritySymbol(seller.id, symbol)
             ?: throw IllegalArgumentException("Seller asset not found")
         if (sellerAsset.quantity < quantity) {
             throw IllegalArgumentException("Insufficient asset quantity")
@@ -83,11 +97,11 @@ class ClearingService(
         }
         val updatedSellerAsset = sellerAsset.copy(quantity = sellerAsset.quantity - quantity)
         assetRepository.save(updatedSellerAsset)
-        val buyerAsset = assetRepository.findByAccountIdAndSymbol(buyer.id, symbol)
+        val buyerAsset = assetRepository.findByAccountIdAndSecuritySymbol(buyer.id, symbol)
         val updatedBuyerAsset = if (buyerAsset != null) {
             buyerAsset.copy(quantity = buyerAsset.quantity + quantity)
         } else {
-            Asset(account = buyer, symbol = symbol, quantity = quantity)
+            Asset(account = buyer, security = security, quantity = quantity)
         }
         assetRepository.save(updatedBuyerAsset)
         val updatedBuyer = buyer.copy(balance = buyer.balance - total)

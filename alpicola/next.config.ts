@@ -24,7 +24,8 @@ const loadEnvironmentConfig = () => {
 const nextConfig: NextConfig = {
   env: loadEnvironmentConfig(),
   reactStrictMode: true,
-  output: 'export',
+  // Enable static export only for production builds (not for 'next dev')
+  ...(process.env.NODE_ENV === 'production' && { output: 'export' }),
   trailingSlash: true, // wichtig für nginx oder andere static hosts
   images: {
     unoptimized: true, // falls du das Next.js image optimization nicht brauchst

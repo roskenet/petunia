@@ -102,6 +102,11 @@ Feature: Orders are placed and matched
     And The order book contains
       | Player  | Side | Symbol | Price | Type  | Quantity |
       | Charlie | SELL | BAY    | 5     | LIMIT | 50       |
+    And The account balances and holdings are:
+      | Name    | Shares (BAY) | Account Balance |
+      | Alice   | 50           | 250             |
+      | Bob     | 0            | 250             |
+      | Charlie | 50           | 0               |
 
   Scenario: 3. Buy order matches multiple sell orders
     Given The following accounts exist:

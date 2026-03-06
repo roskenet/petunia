@@ -1,5 +1,6 @@
 package de.roskenet.petunia.exchange.domain
 
+import de.roskenet.petunia.security.domain.Security
 import jakarta.persistence.*
 import org.hibernate.annotations.CreationTimestamp
 import java.time.OffsetDateTime
@@ -17,8 +18,9 @@ class Trade(
     @Column(name = "seller_name", nullable = false)
     val sellerName: String,
 
-    @Column(name = "symbol", nullable = false)
-    val symbol: String,
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "symbol", referencedColumnName = "symbol", nullable = false)
+    val security: Security,
 
     @Column(name = "quantity", nullable = false)
     val quantity: Long,
@@ -29,4 +31,7 @@ class Trade(
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     val createdAt: OffsetDateTime? = null
-)
+) {
+    val symbol: String
+        get() = security.symbol
+}

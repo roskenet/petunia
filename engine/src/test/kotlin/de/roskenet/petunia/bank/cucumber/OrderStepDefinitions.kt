@@ -9,6 +9,8 @@ import de.roskenet.petunia.enums.OrderSide
 import de.roskenet.petunia.enums.OrderType
 import de.roskenet.petunia.exchange.repository.OrderRepository
 import de.roskenet.petunia.exchange.repository.TradeRepository
+import de.roskenet.petunia.security.domain.Security
+import de.roskenet.petunia.security.repository.SecurityRepository
 import io.cucumber.datatable.DataTable
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
@@ -21,6 +23,7 @@ class OrderStepDefinitions(
     private val assetRepository: AssetRepository,
     private val orderRepository: OrderRepository,
     private val tradeRepository: TradeRepository,
+    private val securityRepository: SecurityRepository,
     private val restTemplate: TestRestTemplate
 ) {
 
@@ -30,6 +33,7 @@ class OrderStepDefinitions(
         tradeRepository.deleteAll()
         assetRepository.deleteAll()
         playerAccountRepository.deleteAll()
+        securityRepository.deleteAll()
 
         dataTable.asMaps().forEach { row ->
             val name = row["Name"]!!
@@ -42,8 +46,10 @@ class OrderStepDefinitions(
             row.keys.filter { it.startsWith("Shares (") }.forEach { key ->
                 val symbol = key.substringAfter("(").substringBefore(")")
                 val shares = row[key]!!.toLong()
+                ensureSecurityExists(symbol)
                 if (shares > 0) {
-                    assetRepository.save(Asset(account = account, symbol = symbol, quantity = shares))
+                    val security = securityRepository.findById(symbol).orElseThrow()
+                    assetRepository.save(Asset(account = account, security = security, quantity = shares))
                 }
             }
         }
@@ -53,6 +59,7 @@ class OrderStepDefinitions(
     @Given("{word} has placed an order to buy {long} shares of {word} at a maximum price of {long}")
     fun playerHasPlacedBuyOrder(playerName: String, quantity: Long, symbol: String, price: Long) {
         ensurePlayerExists(playerName)
+        ensureSecurityExists(symbol)
         val request = PlaceOrderRequest(
             playerName = playerName,
             symbol = symbol,
@@ -68,11 +75,13 @@ class OrderStepDefinitions(
     @Given("{word} has placed an order to sell {long} shares of {word} at a minimum price of {long}")
     fun playerHasPlacedSellOrder(playerName: String, quantity: Long, symbol: String, price: Long) {
         ensurePlayerExists(playerName)
+        ensureSecurityExists(symbol)
+        val security = securityRepository.findById(symbol).orElseThrow()
         // Ensure seller has the assets to sell
         val account = playerAccountRepository.findByPlayerName(playerName)!!
-        val existingAsset = assetRepository.findByAccountIdAndSymbol(account.id, symbol)
+        val existingAsset = assetRepository.findByAccountIdAndSecuritySymbol(account.id, symbol)
         if (existingAsset == null) {
-            assetRepository.save(Asset(account = account, symbol = symbol, quantity = quantity))
+            assetRepository.save(Asset(account = account, security = security, quantity = quantity))
         } else if (existingAsset.quantity < quantity) {
             assetRepository.save(existingAsset.copy(quantity = quantity))
         }
@@ -92,11 +101,12 @@ class OrderStepDefinitions(
     @Given("{word} has placed a market order to buy {long} shares of {word}")
     fun playerHasPlacedMarketBuyOrder(playerName: String, quantity: Long, symbol: String) {
         ensurePlayerExists(playerName)
+        ensureSecurityExists(symbol)
         val request = PlaceOrderRequest(
             playerName = playerName,
             symbol = symbol,
             quantity = quantity,
-            price = 0, // Price is ignored for market orders
+            price = 0,
             side = OrderSide.BUY,
             type = OrderType.MARKET
         )
@@ -108,11 +118,13 @@ class OrderStepDefinitions(
     @Given("{word} has placed a market order to sell {long} shares of {word}")
     fun playerHasPlacedMarketSellOrder(playerName: String, quantity: Long, symbol: String) {
         ensurePlayerExists(playerName)
+        ensureSecurityExists(symbol)
+        val security = securityRepository.findById(symbol).orElseThrow()
         // Ensure seller has the assets to sell
         val account = playerAccountRepository.findByPlayerName(playerName)!!
-        val existingAsset = assetRepository.findByAccountIdAndSymbol(account.id, symbol)
+        val existingAsset = assetRepository.findByAccountIdAndSecuritySymbol(account.id, symbol)
         if (existingAsset == null) {
-            assetRepository.save(Asset(account = account, symbol = symbol, quantity = quantity))
+            assetRepository.save(Asset(account = account, security = security, quantity = quantity))
         } else if (existingAsset.quantity < quantity) {
             assetRepository.save(existingAsset.copy(quantity = quantity))
         }
@@ -121,7 +133,7 @@ class OrderStepDefinitions(
             playerName = playerName,
             symbol = symbol,
             quantity = quantity,
-            price = 0, // Price is ignored for market orders
+            price = 0,
             side = OrderSide.SELL,
             type = OrderType.MARKET
         )
@@ -199,13 +211,13 @@ class OrderStepDefinitions(
 
             val account = playerAccountRepository.findByPlayerName(name)
                 ?: fail("Account for $name not found")
-            
+
             assertEquals(expectedBalance, account.balance, "Balance mismatch for $name")
 
             row.keys.filter { it.startsWith("Shares (") }.forEach { key ->
                 val symbol = key.substringAfter("(").substringBefore(")")
                 val expectedShares = row[key]!!.toLong()
-                val asset = assetRepository.findByAccountIdAndSymbol(account.id, symbol)
+                val asset = assetRepository.findByAccountIdAndSecuritySymbol(account.id, symbol)
                 assertEquals(expectedShares, asset?.quantity ?: 0L, "Shares mismatch for $symbol of $name")
             }
         }
@@ -215,6 +227,12 @@ class OrderStepDefinitions(
         val accounts = playerAccountRepository.findAll()
         if (accounts.none { it.playerName == playerName }) {
             playerAccountRepository.save(PlayerAccount(playerName = playerName, balance = 1000000L))
+        }
+    }
+
+    private fun ensureSecurityExists(symbol: String) {
+        if (!securityRepository.existsById(symbol)) {
+            securityRepository.save(Security(symbol = symbol, name = symbol))
         }
     }
 }

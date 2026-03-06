@@ -9,8 +9,14 @@ data class PlayerAccountDto(
 )
 
 data class CreatePlayerAccountRequest(
+    val playerSubject: UUID = UUID.randomUUID(),
     val playerName: String,
     val initialBalance: Long = 0L
+)
+
+data class UpdatePlayerAccountRequest(
+    val playerName: String,
+    val balance: Long
 )
 
 data class AssetDto(
@@ -40,4 +46,18 @@ data class ClearTradeResponse(
     val quantity: Long,
     val price: Long,
     val total: Long
+)
+
+data class SecurityDto(
+    val symbol: String,
+    val name: String
+)
+
+data class CreateSecurityRequest(
+    val symbol: String,
+    val name: String
+)
+
+data class UpdateSecurityRequest(
+    val name: String
 )

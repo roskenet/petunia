@@ -17,7 +17,8 @@ import java.util.List;
 public class PetuniaController {
     @GetMapping("/petunias")
     public List<PetuniaSpecies> getPetuniaSpecies() {
-        var authentication= SecurityContextHolder.getContext().getAuthentication();
+        // Du bekommst den eingelogten User hier:
+//        var authentication= SecurityContextHolder.getContext().getAuthentication();
         return Arrays.asList(
                 new PetuniaSpecies("Petunia", 1, "https://example.com/petunia.jpg")
         );

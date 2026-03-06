@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository
 import java.util.*
 
 interface OrderRepository : JpaRepository<Order, UUID> {
-    fun findBySymbol(symbol: String): List<Order>
+    fun findBySecuritySymbol(symbol: String): List<Order>
 }
