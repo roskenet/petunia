@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import { requestJson } from '@/lib/api';
 import { LogIn } from 'lucide-react';
 import LogoutButton from "@/components/LogoutButton";
 import { Layout, Typography, Space, Button } from 'antd';
@@ -16,17 +17,18 @@ type UserInfo = {
 export default function Header() {
     const [user, setUser] = useState<UserInfo | null>(null);
 
-    useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/me`, {
-            credentials: 'include',
-        })
-            .then((res) => {
-                if (!res.ok) throw new Error('Not authenticated');
-                return res.json();
-            })
-            .then((data) => setUser(data))
-            .catch(() => setUser(null));
+    const loadUserInfo = useCallback(async () => {
+        try {
+            const data = await requestJson<UserInfo>("/me");
+            setUser(data);
+        } catch (error) {
+            setUser(null);
+        }
     }, []);
+
+    useEffect(() => {
+        void loadUserInfo();
+    }, [loadUserInfo]);
 
     return (
         <AntHeader style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 16px', background: '#fff', borderBottom: '1px solid #f0f0f0' }}>

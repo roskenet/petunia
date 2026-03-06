@@ -17,6 +17,7 @@ import {
   message,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
+import { requestJson } from "@/lib/api";
 
 const { Content } = Layout;
 const { Title, Paragraph, Text } = Typography;
@@ -56,34 +57,6 @@ type UpdateSecurityPayload = {
   name: string;
 };
 
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
-
-async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
-  const response = await fetch(`${apiBaseUrl}${path}`, {
-    credentials: "include",
-    ...init,
-    headers: {
-      "Content-Type": "application/json",
-      ...(init?.headers ?? {}),
-    },
-  });
-
-  if (response.status === 401 || response.redirected) {
-    window.location.href = `${apiBaseUrl}/oauth2/authorization/keycloak`;
-    throw new Error("Not authenticated");
-  }
-
-  if (!response.ok) {
-    const text = await response.text();
-    throw new Error(text || `Request failed with status ${response.status}`);
-  }
-
-  if (response.status === 204) {
-    return undefined as T;
-  }
-
-  return (await response.json()) as T;
-}
 
 function PlayersTab() {
   const [form] = Form.useForm<PlayerFormValues>();

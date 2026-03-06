@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { requestJson } from '@/lib/api';
 
 export function useAuthenticatedFetch<T>(url: string) {
     const [data, setData] = useState<T | null>(null);
@@ -8,18 +9,11 @@ export function useAuthenticatedFetch<T>(url: string) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}${url}`, {
-            credentials: 'include',
-        })
-            .then((res) => {
-                if (res.status === 401 || res.redirected) {
-                    window.location.href = `${process.env.NEXT_PUBLIC_API_BASE_URL}/oauth2/authorization/keycloak`;
-                    return null;
-                }
-                return res.json();
-            })
+        setLoading(true);
+        requestJson<T>(url)
             .then((data) => {
-                if (data) setData(data);
+                setData(data);
+                setError(null);
             })
             .catch((err) => {
                 setError(err.message);
