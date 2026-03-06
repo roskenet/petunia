@@ -1,13 +1,33 @@
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
 
+function getCookie(name: string): string | undefined {
+  if (typeof document === "undefined") return undefined;
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(";").shift();
+  return undefined;
+}
+
 export async function authenticatedFetch(path: string, init?: RequestInit): Promise<Response> {
+  const headers: Record<string, string> = {
+    "Content-Type": "application/json",
+    ...(init?.headers as Record<string, string> ?? {}),
+  };
+
+  const method = init?.method?.toUpperCase() ?? "GET";
+  const isMutating = ["POST", "PUT", "DELETE", "PATCH"].includes(method);
+
+  if (isMutating) {
+    const csrfToken = getCookie("XSRF-TOKEN");
+    if (csrfToken) {
+      headers["X-XSRF-TOKEN"] = csrfToken;
+    }
+  }
+
   const response = await fetch(`${apiBaseUrl}${path}`, {
     credentials: "include",
     ...init,
-    headers: {
-      "Content-Type": "application/json",
-      ...(init?.headers ?? {}),
-    },
+    headers,
   });
 
   if (response.status === 401 || response.redirected) {
