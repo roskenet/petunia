@@ -3,9 +3,10 @@ Feature: Orders are placed and matched
   This feature file describes the core order matching rules of the Petunia Stock Exchange.
 
   The Petunia Stock Exchange Engine uses a continuous price–time priority matching model, similar to the mechanisms used by modern electronic exchanges.
-  See: https://www.cashmarket.deutsche-boerse.com/cash-en/trading/order-types
 
   Orders are matched continuously as they arrive. Whenever compatible buy and sell orders exist, trades are executed immediately.
+
+  Source: https://www.cashmarket.deutsche-boerse.com/cash-en/trading/order-types
 
   The exchange supports Limit Orders and Market Orders.
 
