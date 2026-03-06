@@ -2,6 +2,7 @@ package de.roskenet.petunia.bank.api
 
 import de.roskenet.petunia.dto.CreatePlayerAccountRequest
 import de.roskenet.petunia.dto.PlayerAccountDto
+import de.roskenet.petunia.dto.UpdatePlayerAccountRequest
 import de.roskenet.petunia.bank.service.ClearingService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
@@ -27,6 +28,15 @@ class PlayerAccountController(
     @ResponseStatus(HttpStatus.CREATED)
     fun createAccount(@RequestBody request: CreatePlayerAccountRequest): PlayerAccountDto {
         val account = clearingService.createAccount(request.playerName, request.initialBalance)
+        return PlayerAccountDto(account.id, account.playerName, account.balance)
+    }
+
+    @PutMapping("/{playerName}")
+    fun updateAccount(
+        @PathVariable playerName: String,
+        @RequestBody request: UpdatePlayerAccountRequest
+    ): PlayerAccountDto {
+        val account = clearingService.updateAccount(playerName, request.playerName, request.balance)
         return PlayerAccountDto(account.id, account.playerName, account.balance)
     }
 

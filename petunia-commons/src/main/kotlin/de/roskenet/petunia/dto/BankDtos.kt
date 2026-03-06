@@ -13,6 +13,11 @@ data class CreatePlayerAccountRequest(
     val initialBalance: Long = 0L
 )
 
+data class UpdatePlayerAccountRequest(
+    val playerName: String,
+    val balance: Long
+)
+
 data class AssetDto(
     val id: UUID,
     val accountId: UUID,
