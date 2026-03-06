@@ -9,6 +9,7 @@ data class PlayerAccountDto(
 )
 
 data class CreatePlayerAccountRequest(
+    val playerSubject: UUID = UUID.randomUUID(),
     val playerName: String,
     val initialBalance: Long = 0L
 )

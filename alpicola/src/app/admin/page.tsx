@@ -37,6 +37,25 @@ type CreatePlayerPayload = {
   initial_balance: number;
 };
 
+type SecurityDto = {
+  symbol: string;
+  name: string;
+};
+
+type SecurityFormValues = {
+  symbol: string;
+  name: string;
+};
+
+type CreateSecurityPayload = {
+  symbol: string;
+  name: string;
+};
+
+type UpdateSecurityPayload = {
+  name: string;
+};
+
 const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
 
 async function requestJson<T>(path: string, init?: RequestInit): Promise<T> {
@@ -268,6 +287,218 @@ function PlayersTab() {
   );
 }
 
+function SecuritiesTab() {
+  const [form] = Form.useForm<SecurityFormValues>();
+  const [securities, setSecurities] = useState<SecurityDto[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingSecurity, setEditingSecurity] = useState<SecurityDto | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [symbolFilter, setSymbolFilter] = useState("");
+
+  const filteredSecurities = useMemo(() => {
+    return securities.filter((security) => {
+      return security.symbol
+        .toLowerCase()
+        .includes(symbolFilter.trim().toLowerCase()) ||
+        security.name
+          .toLowerCase()
+          .includes(symbolFilter.trim().toLowerCase());
+    });
+  }, [securities, symbolFilter]);
+
+  const loadSecurities = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const response = await requestJson<SecurityDto[]>("/api/admin/securities");
+      setSecurities(response ?? []);
+    } catch (error) {
+      message.error((error as Error).message || "Could not load securities");
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    void loadSecurities();
+  }, [loadSecurities]);
+
+  const columns: ColumnsType<SecurityDto> = useMemo(
+    () => [
+      {
+        title: "Symbol",
+        dataIndex: "symbol",
+        key: "symbol",
+      },
+      {
+        title: "Name",
+        dataIndex: "name",
+        key: "name",
+      },
+      {
+        title: "Actions",
+        key: "actions",
+        render: (_, record) => (
+          <Space>
+            <Button onClick={() => openEditModal(record)}>Edit</Button>
+            <Popconfirm
+              title={`Delete ${record.symbol}?`}
+              description="This cannot be undone."
+              okText="Delete"
+              cancelText="Cancel"
+              onConfirm={() => void handleDelete(record.symbol)}
+            >
+              <Button danger>Delete</Button>
+            </Popconfirm>
+          </Space>
+        ),
+      },
+    ],
+    []
+  );
+
+  const openCreateModal = () => {
+    setEditingSecurity(null);
+    form.setFieldsValue({ symbol: "", name: "" });
+    setIsModalOpen(true);
+  };
+
+  const openEditModal = (security: SecurityDto) => {
+    setEditingSecurity(security);
+    form.setFieldsValue({
+      symbol: security.symbol,
+      name: security.name,
+    });
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setEditingSecurity(null);
+    form.resetFields();
+  };
+
+  const handleSave = async () => {
+    const values = await form.validateFields();
+    setIsSaving(true);
+
+    try {
+      if (editingSecurity) {
+        const payload: UpdateSecurityPayload = {
+          name: values.name,
+        };
+        await requestJson<SecurityDto>(`/api/admin/securities/${encodeURIComponent(editingSecurity.symbol)}`, {
+          method: "PUT",
+          body: JSON.stringify(payload),
+        });
+        message.success("Security updated");
+      } else {
+        const payload: CreateSecurityPayload = {
+          symbol: values.symbol,
+          name: values.name,
+        };
+        await requestJson<SecurityDto>("/api/admin/securities", {
+          method: "POST",
+          body: JSON.stringify(payload),
+        });
+        message.success("Security created");
+      }
+
+      closeModal();
+      await loadSecurities();
+    } catch (error) {
+      message.error((error as Error).message || "Could not save security");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleDelete = async (symbol: string) => {
+    try {
+      await requestJson<void>(`/api/admin/securities/${encodeURIComponent(symbol)}`, {
+        method: "DELETE",
+      });
+      message.success("Security deleted");
+      await loadSecurities();
+    } catch (error) {
+      message.error((error as Error).message || "Could not delete security");
+    }
+  };
+
+  return (
+    <Space direction="vertical" size="middle" style={{ width: "100%" }}>
+      <Space style={{ width: "100%", justifyContent: "space-between" }}>
+        <div>
+          <Title level={4} style={{ margin: 0 }}>
+            Securities
+          </Title>
+          <Text type="secondary">Create, edit and delete securities.</Text>
+        </div>
+        <Button type="primary" onClick={openCreateModal}>
+          New Security
+        </Button>
+      </Space>
+
+      <Space wrap style={{ width: "100%" }}>
+        <Input
+          allowClear
+          placeholder="Search symbol or name"
+          value={symbolFilter}
+          onChange={(event) => setSymbolFilter(event.target.value)}
+          style={{ width: 240 }}
+        />
+        <Button onClick={() => {
+          setSymbolFilter("");
+        }}>
+          Reset Filters
+        </Button>
+        <Text type="secondary">
+          {filteredSecurities.length}/{securities.length} shown
+        </Text>
+      </Space>
+
+      <Table<SecurityDto>
+        rowKey="symbol"
+        columns={columns}
+        dataSource={filteredSecurities}
+        loading={isLoading}
+        pagination={false}
+      />
+
+      <Modal
+        title={editingSecurity ? "Edit Security" : "Create Security"}
+        open={isModalOpen}
+        confirmLoading={isSaving}
+        onOk={() => void handleSave()}
+        onCancel={closeModal}
+        okText={editingSecurity ? "Save" : "Create"}
+      >
+        <Form<SecurityFormValues> form={form} layout="vertical">
+          <Form.Item
+            label="Symbol"
+            name="symbol"
+            rules={[{ required: true, message: "Please enter a symbol" }]}
+          >
+            <Input
+              placeholder="e.g. AAPL"
+              disabled={!!editingSecurity}
+              style={{ textTransform: "uppercase" }}
+            />
+          </Form.Item>
+
+          <Form.Item
+            label="Name"
+            name="name"
+            rules={[{ required: true, message: "Please enter a name" }]}
+          >
+            <Input placeholder="e.g. Apple Inc." />
+          </Form.Item>
+        </Form>
+      </Modal>
+    </Space>
+  );
+}
+
 const tabItems = [
   {
     key: "players",
@@ -277,15 +508,7 @@ const tabItems = [
   {
     key: "securities",
     label: "Securities",
-    children: (
-      <>
-        <Title level={4}>Securities</Title>
-        <Paragraph>
-          This section will list and manage available securities.
-        </Paragraph>
-        <Text type="secondary">No securities data connected yet.</Text>
-      </>
-    ),
+    children: <SecuritiesTab />,
   },
   {
     key: "orders",

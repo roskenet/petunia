@@ -1,4 +1,4 @@
-package de.roskenet.petunia.villadiana;
+package de.roskenet.petunia.villadiana.routes.admin;
 
 import de.roskenet.petunia.dto.CreatePlayerAccountRequest;
 import de.roskenet.petunia.dto.PlayerAccountDto;
