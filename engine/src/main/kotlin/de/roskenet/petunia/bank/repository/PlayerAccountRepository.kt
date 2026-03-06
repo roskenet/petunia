@@ -8,4 +8,5 @@ import java.util.UUID
 @Repository
 interface PlayerAccountRepository : JpaRepository<PlayerAccount, UUID> {
     fun findByPlayerName(playerName: String): PlayerAccount?
+    fun deleteByPlayerName(playerName: String)
 }

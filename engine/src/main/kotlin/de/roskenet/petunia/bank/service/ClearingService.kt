@@ -17,7 +17,8 @@ class ClearingService(
     fun getAllAccounts(): List<PlayerAccount> = playerAccountRepository.findAll()
 
     @Transactional(readOnly = true)
-    fun getAccountById(id: UUID): PlayerAccount? = playerAccountRepository.findById(id).orElse(null)
+    fun getAccountByPlayerName(playerName: String): PlayerAccount? =
+        playerAccountRepository.findByPlayerName(playerName)
 
     @Transactional
     fun createAccount(playerName: String, initialBalance: Long): PlayerAccount {
@@ -26,8 +27,8 @@ class ClearingService(
     }
 
     @Transactional
-    fun deleteAccount(id: UUID) {
-        playerAccountRepository.deleteById(id)
+    fun deleteAccountByPlayerName(playerName: String) {
+        playerAccountRepository.deleteByPlayerName(playerName)
     }
 
     @Transactional(readOnly = true)
