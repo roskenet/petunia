@@ -2,6 +2,7 @@ package de.roskenet.petunia.bank.service
 
 import de.roskenet.petunia.bank.domain.Asset
 import de.roskenet.petunia.bank.domain.PlayerAccount
+import de.roskenet.petunia.bank.config.GameProperties
 import de.roskenet.petunia.bank.repository.AssetRepository
 import de.roskenet.petunia.bank.repository.PlayerAccountRepository
 import de.roskenet.petunia.security.service.SecurityService
@@ -13,7 +14,8 @@ import java.util.UUID
 class ClearingService(
     private val playerAccountRepository: PlayerAccountRepository,
     private val assetRepository: AssetRepository,
-    private val securityService: SecurityService
+    private val securityService: SecurityService,
+    private val gameProperties: GameProperties
 ) {
     @Transactional(readOnly = true)
     fun getAllAccounts(): List<PlayerAccount> = playerAccountRepository.findAll()
@@ -24,7 +26,7 @@ class ClearingService(
 
     @Transactional
     fun createAccount(playerSubject: UUID, playerName: String): PlayerAccount {
-        val initialBalance = 42000_00L
+        val initialBalance = gameProperties.account.initialBalance
         val account = PlayerAccount(id=playerSubject, playerName = playerName, balance = initialBalance)
         return playerAccountRepository.save(account)
     }
