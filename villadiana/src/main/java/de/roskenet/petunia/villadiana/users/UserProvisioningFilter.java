@@ -39,7 +39,7 @@ public class UserProvisioningFilter extends OncePerRequestFilter {
 
             UUID keycloakId = UUID.fromString(jwt.getSubject());
             String username = jwt.getClaimAsString("preferred_username");
-            adminPlayersController.createPlayer(new CreatePlayerAccountRequest(keycloakId, username));
+//            adminPlayersController.createPlayer(new CreatePlayerAccountRequest(keycloakId, username));
         }
 
         filterChain.doFilter(request, response);
