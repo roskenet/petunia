@@ -11,6 +11,8 @@ import java.util.UUID;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -35,11 +37,12 @@ public class UserProvisioningFilter extends OncePerRequestFilter {
                 .getContext()
                 .getAuthentication();
 
-        if (auth != null && auth.getPrincipal() instanceof Jwt jwt) {
-
-            UUID keycloakId = UUID.fromString(jwt.getSubject());
-            String username = jwt.getClaimAsString("preferred_username");
-//            adminPlayersController.createPlayer(new CreatePlayerAccountRequest(keycloakId, username));
+        if (auth != null) {
+            DefaultOidcUser principal = (DefaultOidcUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            OidcUserInfo userInfo = principal.getUserInfo();
+            UUID keycloakId = UUID.fromString(userInfo.getClaimAsString("sub"));
+            String name = userInfo.getClaimAsString("name");
+            adminPlayersController.createPlayer(new CreatePlayerAccountRequest(keycloakId, name));
         }
 
         filterChain.doFilter(request, response);
