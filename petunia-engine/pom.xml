@@ -10,8 +10,9 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>engine</artifactId>
+    <artifactId>petunia-engine</artifactId>
     <name>Petunia Engine</name>
+    <version>1.0.0</version>
     <description>Monolithic engine for ProjectPetunia</description>
 
     <properties>

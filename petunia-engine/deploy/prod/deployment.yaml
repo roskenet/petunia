@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: petunia-engine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: petunia-engine
+  template:
+    metadata:
+      labels:
+        app: petunia-engine
+    spec:
+      containers:
+      - name: petunia-engine
+        image: roskenet/petunia-engine:1.0.0
+        ports:
+        - name: www
+          containerPort: 8080
+        envFrom:
+        - configMapRef:
+            name: petunia-engine

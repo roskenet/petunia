@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
-import { requestJson } from '@/lib/api';
+import { useEffect, useState } from 'react';
 import { LogIn } from 'lucide-react';
 import LogoutButton from "@/components/LogoutButton";
 import { Layout, Typography, Space, Button } from 'antd';
