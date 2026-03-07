@@ -26,7 +26,8 @@ spring:
             client-id: villadiana
             client-secret: ${KEYCLOAK_VILLADIANA_SECRET}
             authorization-grant-type: authorization_code
-            scope: openid,profile,email
+#            scope: openid,profile,email
+            scope: openid,roles,groups
             provider: keycloak
 
 app:

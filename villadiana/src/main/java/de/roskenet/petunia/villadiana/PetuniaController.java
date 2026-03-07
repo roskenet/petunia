@@ -1,7 +1,12 @@
 package de.roskenet.petunia.villadiana;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,9 +21,10 @@ import java.util.List;
 @Slf4j
 public class PetuniaController {
     @GetMapping("/petunias")
-    public List<PetuniaSpecies> getPetuniaSpecies() {
-        // Du bekommst den eingelogten User hier:
-//        var authentication= SecurityContextHolder.getContext().getAuthentication();
+//    @PreAuthorize("hasRole('trader')")
+    @PreAuthorize("hasAuthority('SCOPE_profile')")
+    public List<PetuniaSpecies> getPetuniaSpecies(@AuthenticationPrincipal OidcUser principal) {
+        System.out.println(principal);
         return Arrays.asList(
                 new PetuniaSpecies("Petunia", 1, "https://example.com/petunia.jpg")
         );
