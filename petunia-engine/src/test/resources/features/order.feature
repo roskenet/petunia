@@ -2,70 +2,65 @@ Feature: Orders are placed and matched
 
   This feature file describes the core order matching rules of the Petunia Stock Exchange.
 
-  The Petunia Stock Exchange Engine uses a continuous price–time priority matching model, similar to the mechanisms used by modern electronic exchanges.
+  The Petunia Stock Exchange Engine uses a continuous **price–time priority** matching model, similar to the mechanisms used by modern electronic exchanges.
 
   Orders are matched continuously as they arrive. Whenever compatible buy and sell orders exist, trades are executed immediately.
 
-  Source: https://www.cashmarket.deutsche-boerse.com/cash-en/trading/order-types
+  **Source:** [Deutsche Börse - Order Types](https://www.cashmarket.deutsche-boerse.com/cash-en/trading/order-types)
 
-  The exchange supports Limit Orders and Market Orders.
+  The exchange supports **Limit Orders** and **Market Orders**.
 
-  1. Continuous Matching
+  ### 1. Continuous Matching
 
   Orders are processed immediately when they arrive at the exchange.
 
   If a newly submitted order can be matched with an existing order on the opposite side of the order book, the trade is executed without delay. Otherwise, the order remains in the order book until it is matched or cancelled.
 
-  2. Price Priority
+  ### 2. Price Priority
 
   Orders offering the best price are always matched first.
 
-  For buy orders:
-  Higher prices have priority over lower prices.
+  *   **For buy orders:** Higher prices have priority over lower prices.
+  *   **For sell orders:** Lower prices have priority over higher prices.
 
-  For sell orders:
-  Lower prices have priority over higher prices.
+  ### 3. Time Priority
 
+  If multiple orders exist at the same price, the order that was submitted earlier has priority. This rule is often referred to as **FIFO** (First In, First Out).
 
-  3. Time Priority
-
-  If multiple orders exist at the same price, the order that was submitted earlier has priority.
-  This rule is often referred to as FIFO (First In, First Out).
-
-  4. Limit Orders (Scenarios 1 - 10)
+  ### 4. Limit Orders (Scenarios 1 - 10)
 
   A Limit Order specifies the worst acceptable price for a trade.
 
-  A buy limit order defines the maximum price the buyer is willing to pay.
-  A sell limit order defines the minimum price the seller is willing to accept.
+  *   A **buy limit order** defines the maximum price the buyer is willing to pay.
+  *   A **sell limit order** defines the minimum price the seller is willing to accept.
 
   Limit orders may:
+  *   execute immediately (fully or partially), or
+  *   remain in the order book until a matching order arrives.
 
-  * execute immediately (fully or partially), or
-  * remain in the order book until a matching order arrives.
-
-  5. Market Orders (Scenarios 11 - 18)
+  ### 5. Market Orders (Scenarios 11 - 18)
 
   A Market Order has no limit price and is executed against the best available prices in the order book.
 
   Market orders:
-
-  * consume liquidity starting from the best available price
-  * may match against multiple price levels
-  * may be partially filled if insufficient liquidity exists
+  *   consume liquidity starting from the best available price
+  *   may match against multiple price levels
+  *   may be partially filled if insufficient liquidity exists
 
   Any unfilled portion of a market order is cancelled immediately and does not remain in the order book.
 
-  6. Trade Price Determination
+  ### 6. Trade Price Determination
 
-  Trades occur at the price of the resting order in the order book.
+  Trades occur at the price of the resting order in the order book. This ensures that existing orders maintain their price guarantees.
 
-  This ensures that existing orders maintain their price guarantees.
-
-  7. Partial Execution
+  ### 7. Partial Execution
 
   If an order cannot be completely matched with a single counter-order, it may be executed in multiple trades.
 
+  ### 8. Remark
+  
+  The following scenarios are not mutually exclusive. While they cover standard matching logic, some are included specifically to help human readers understand the rules more clearly, even if they overlap from a purely technical testing perspective.
+  
   Scenario: 1. Price priority on the sell side
     Given The following accounts exist:
       | Name    | Shares (BAY) | Account Balance |
@@ -122,6 +117,11 @@ Feature: Orders are placed and matched
       | Alice | Bob     | BAY    | 50       | 4           |
       | Alice | Charlie | BAY    | 50       | 5           |
     And The order book is empty
+    And The account balances and holdings are:
+      | Name    | Shares (BAY) | Account Balance |
+      | Alice   | 100          | 50              |
+      | Bob     | 0            | 200             |
+      | Charlie | 0            | 250             |
 
   Scenario: 4. Sell order matches multiple buy orders
     Given The following accounts exist:
