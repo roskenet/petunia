@@ -10,24 +10,24 @@ Feature: Orders are placed and matched
 
   The exchange supports **Limit Orders** and **Market Orders**.
 
-  ### 1. Continuous Matching
+  1. Continuous Matching
 
   Orders are processed immediately when they arrive at the exchange.
 
   If a newly submitted order can be matched with an existing order on the opposite side of the order book, the trade is executed without delay. Otherwise, the order remains in the order book until it is matched or cancelled.
 
-  ### 2. Price Priority
+  2. Price Priority
 
   Orders offering the best price are always matched first.
 
   *   **For buy orders:** Higher prices have priority over lower prices.
   *   **For sell orders:** Lower prices have priority over higher prices.
 
-  ### 3. Time Priority
+  3. Time Priority
 
   If multiple orders exist at the same price, the order that was submitted earlier has priority. This rule is often referred to as **FIFO** (First In, First Out).
 
-  ### 4. Limit Orders (Scenarios 1 - 10)
+  4. Limit Orders (Scenarios 1 - 10)
 
   A Limit Order specifies the worst acceptable price for a trade.
 
@@ -38,7 +38,7 @@ Feature: Orders are placed and matched
   *   execute immediately (fully or partially), or
   *   remain in the order book until a matching order arrives.
 
-  ### 5. Market Orders (Scenarios 11 - 18)
+  5. Market Orders (Scenarios 11 - 18)
 
   A Market Order has no limit price and is executed against the best available prices in the order book.
 
@@ -49,18 +49,19 @@ Feature: Orders are placed and matched
 
   Any unfilled portion of a market order is cancelled immediately and does not remain in the order book.
 
-  ### 6. Trade Price Determination
+  6. Trade Price Determination
 
   Trades occur at the price of the resting order in the order book. This ensures that existing orders maintain their price guarantees.
 
-  ### 7. Partial Execution
+  7. Partial Execution
 
   If an order cannot be completely matched with a single counter-order, it may be executed in multiple trades.
 
-  ### 8. Remark
-  
-  The following scenarios are not mutually exclusive. While they cover standard matching logic, some are included specifically to help human readers understand the rules more clearly, even if they overlap from a purely technical testing perspective.
-  
+   8. Remark
+
+   The following scenarios are not mutually exclusive. While they cover standard matching logic, some are included specifically to help human readers understand the rules more clearly, even if they overlap from a purely technical
+ testing perspective.
+
   Scenario: 1. Price priority on the sell side
     Given The following accounts exist:
       | Name    | Shares (BAY) | Account Balance |
@@ -137,6 +138,11 @@ Feature: Orders are placed and matched
       | Bob     | Alice  | BAY    | 50       | 5           |
       | Charlie | Alice  | BAY    | 50       | 4           |
     And The order book is empty
+    And The account balances and holdings are:
+      | Name    | Shares (BAY) | Account Balance |
+      | Alice   | 0            | 950             |
+      | Bob     | 50           | 0               |
+      | Charlie | 50           | 50              |
 
   Scenario: 5. Partial fill leaves remaining order in book
     Given The following accounts exist:
