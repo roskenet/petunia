@@ -40,6 +40,14 @@ The project uses Kubernetes for deployment.
 
 Global infrastructure and module deployment manifests are in `deploy/k8s` for production deployment in IONOS k3s cluster, and `deploy/minikube` for local test deployment.
 
+Every deployment should have a configmap, deployment and service manifest.
+
+The environment variable `ENVIRONMENT` should be semantically equal to all services (read by Spring Boot):
+- `dev` for development (isolated local running services, no authentication, authorization)
+- `int` for minikube cluster
+- `prod` for production kubernetes cluster
+- `test` for unit and integration tests
+ 
 ---
 
 ## 📜 Functional Requirements & Testing
