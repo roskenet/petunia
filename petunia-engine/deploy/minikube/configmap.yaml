@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: petunia-engine
+data:
+  ENVIRONMENT: prod
+  JDBC_URL: jdbc:postgresql://postgres/petunia
+  JDBC_USER: petunia
+  JDBC_PASSWORD: petunia
