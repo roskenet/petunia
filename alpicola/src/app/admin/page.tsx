@@ -63,7 +63,6 @@ function PlayersTab() {
   const [players, setPlayers] = useState<PlayerDto[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingPlayer, setEditingPlayer] = useState<PlayerDto | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [playerNameFilter, setPlayerNameFilter] = useState("");
 
@@ -107,18 +106,15 @@ function PlayersTab() {
         title: "Actions",
         key: "actions",
         render: (_, record) => (
-          <Space>
-            <Button onClick={() => openEditModal(record)}>Edit</Button>
-            <Popconfirm
-              title={`Delete ${record.player_name}?`}
-              description="This cannot be undone."
-              okText="Delete"
-              cancelText="Cancel"
-              onConfirm={() => void handleDelete(record.player_name)}
-            >
-              <Button danger>Delete</Button>
-            </Popconfirm>
-          </Space>
+          <Popconfirm
+            title={`Delete ${record.player_name}?`}
+            description="This cannot be undone."
+            okText="Delete"
+            cancelText="Cancel"
+            onConfirm={() => void handleDelete(record.player_name)}
+          >
+            <Button danger>Delete</Button>
+          </Popconfirm>
         ),
       },
     ],
@@ -126,23 +122,12 @@ function PlayersTab() {
   );
 
   const openCreateModal = () => {
-    setEditingPlayer(null);
     form.setFieldsValue({ player_name: "", balance: 0 });
-    setIsModalOpen(true);
-  };
-
-  const openEditModal = (player: PlayerDto) => {
-    setEditingPlayer(player);
-    form.setFieldsValue({
-      player_name: player.player_name,
-      balance: player.balance,
-    });
     setIsModalOpen(true);
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setEditingPlayer(null);
     form.resetFields();
   };
 
@@ -151,23 +136,15 @@ function PlayersTab() {
     setIsSaving(true);
 
     try {
-      if (editingPlayer) {
-        await requestJson<PlayerDto>(`/api/admin/players/${encodeURIComponent(editingPlayer.player_name)}`, {
-          method: "PUT",
-          body: JSON.stringify(values),
-        });
-        message.success("Player updated");
-      } else {
-        const payload: CreatePlayerPayload = {
-          player_name: values.player_name,
-          initial_balance: values.balance,
-        };
-        await requestJson<PlayerDto>("/api/admin/players", {
-          method: "POST",
-          body: JSON.stringify(payload),
-        });
-        message.success("Player created");
-      }
+      const payload: CreatePlayerPayload = {
+        player_name: values.player_name,
+        initial_balance: values.balance,
+      };
+      await requestJson<PlayerDto>("/api/admin/players", {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+      message.success("Player created");
 
       closeModal();
       await loadPlayers();
@@ -197,7 +174,7 @@ function PlayersTab() {
           <Title level={4} style={{ margin: 0 }}>
             Players
           </Title>
-          <Text type="secondary">Create, edit and delete player accounts.</Text>
+          <Text type="secondary">Create and delete player accounts.</Text>
         </div>
         <Button type="primary" onClick={openCreateModal}>
           New Player
@@ -231,12 +208,12 @@ function PlayersTab() {
       />
 
       <Modal
-        title={editingPlayer ? "Edit Player" : "Create Player"}
+        title="Create Player"
         open={isModalOpen}
         confirmLoading={isSaving}
         onOk={() => void handleSave()}
         onCancel={closeModal}
-        okText={editingPlayer ? "Save" : "Create"}
+        okText="Create"
       >
         <Form<PlayerFormValues> form={form} layout="vertical">
           <Form.Item

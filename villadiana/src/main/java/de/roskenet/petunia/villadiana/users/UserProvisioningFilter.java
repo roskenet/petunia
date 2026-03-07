@@ -16,7 +16,9 @@ import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-
+/*
+Makes sure that a self signed user gets created in our system
+ */
 @Component
 public class UserProvisioningFilter extends OncePerRequestFilter {
 
