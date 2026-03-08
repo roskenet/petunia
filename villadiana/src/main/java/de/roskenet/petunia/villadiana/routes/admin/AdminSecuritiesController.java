@@ -5,6 +5,7 @@ import de.roskenet.petunia.dto.SecurityDto;
 import de.roskenet.petunia.dto.UpdateSecurityRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +34,7 @@ public class AdminSecuritiesController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('admin')")
     public List<SecurityDto> getSecurities() {
         try {
             SecurityDto[] securities = engineClient.get()
@@ -46,6 +48,7 @@ public class AdminSecuritiesController {
     }
 
     @GetMapping("/{symbol}")
+    @PreAuthorize("hasRole('admin')")
     public SecurityDto getSecurity(@PathVariable String symbol) {
         try {
             return engineClient.get()
@@ -58,6 +61,7 @@ public class AdminSecuritiesController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('admin')")
     public ResponseEntity<SecurityDto> createSecurity(@RequestBody CreateSecurityRequest request) {
         try {
             SecurityDto created = engineClient.post()
@@ -72,6 +76,7 @@ public class AdminSecuritiesController {
     }
 
     @PutMapping("/{symbol}")
+    @PreAuthorize("hasRole('admin')")
     public SecurityDto updateSecurity(
             @PathVariable String symbol,
             @RequestBody UpdateSecurityRequest request
@@ -88,6 +93,7 @@ public class AdminSecuritiesController {
     }
 
     @DeleteMapping("/{symbol}")
+    @PreAuthorize("hasRole('admin')")
     public ResponseEntity<Void> deleteSecurity(@PathVariable String symbol) {
         try {
             engineClient.delete()
