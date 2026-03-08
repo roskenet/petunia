@@ -10,7 +10,9 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.oauth2.client.OAuth2LoginConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserService;
 import org.springframework.security.oauth2.client.oidc.web.logout.OidcClientInitiatedLogoutSuccessHandler;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.web.SecurityFilterChain;
@@ -22,17 +24,25 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.Map;
+
 @Profile({"prod", "local", "int"})
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private ClientRegistrationRepository clientRegistrationRepository;
+    private final ClientRegistrationRepository clientRegistrationRepository;
+    private final SecurityProperties securityProperties;
+    private final OidcUserService oidcUserService;
 
-    @Autowired
-    private SecurityProperties securityProperties;
+    public SecurityConfig(ClientRegistrationRepository clientRegistrationRepository,
+                          SecurityProperties securityProperties,
+                          OidcUserService oidcUserService) {
+        this.clientRegistrationRepository = clientRegistrationRepository;
+        this.securityProperties = securityProperties;
+        this.oidcUserService = oidcUserService;
+    }
 
     private CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -62,7 +72,9 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
                 .oauth2Login(oauth -> oauth
                         .loginPage("/oauth2/authorization/keycloak")
-                        .defaultSuccessUrl(securityProperties.getDefaultLoginSuccessUrl(), true))
+                        .defaultSuccessUrl(securityProperties.getDefaultLoginSuccessUrl(), true)
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .oidcUserService(oidcUserService)))
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers("/logout")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
@@ -82,5 +94,4 @@ public class SecurityConfig {
 
         return http.build();
     }
-
 }
