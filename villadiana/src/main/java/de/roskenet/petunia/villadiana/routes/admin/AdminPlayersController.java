@@ -29,7 +29,7 @@ public class AdminPlayersController {
     private final RestClient engineClient;
 
     public AdminPlayersController(
-            @Value("${services.engine.base-url:http://localhost:8081}") String engineBaseUrl
+            @Value("${services.engine.base-url}") String engineBaseUrl
     ) {
         this.engineClient = RestClient.create(engineBaseUrl);
     }

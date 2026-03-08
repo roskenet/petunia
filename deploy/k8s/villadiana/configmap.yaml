@@ -9,3 +9,4 @@ data:
   DEFAULT_LOGIN_SUCCESS_URL: https://petunia.roskenet.de/petunias
   ALLOWED_ORIGIN_PATTERNS: https://petunia.roskenet.de
   ENVIRONMENT: prod
+  ENGINE_BASE_URL: http://petunia-engine
