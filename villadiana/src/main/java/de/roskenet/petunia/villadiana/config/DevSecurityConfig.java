@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.oidc.OidcIdToken;
+import org.springframework.security.oauth2.core.oidc.OidcUserInfo;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.security.web.SecurityFilterChain;
@@ -30,7 +31,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Configuration
-@Profile("dev")
+@Profile({"dev", "test"})
 public class DevSecurityConfig {
 
     private CorsConfigurationSource corsConfigurationSource() {
@@ -75,9 +76,17 @@ public class DevSecurityConfig {
                         )
                 );
 
+                OidcUserInfo userInfo = new OidcUserInfo(Map.of(
+                        "sub", keycloakId.toString(),
+                        "name", "James Bond",
+                        "email", "jbond@mifive.gov.uk"
+                ));
+
                 OidcUser oidcUser = new DefaultOidcUser(
-                        List.of(new SimpleGrantedAuthority("ROLE_USER")),
-                        idToken
+                        List.of(new SimpleGrantedAuthority("ROLE_player"),
+                                new SimpleGrantedAuthority("ROLE_admin")),
+                        idToken,
+                        userInfo
                 );
 
                 Authentication auth = new UsernamePasswordAuthenticationToken(oidcUser, null, oidcUser.getAuthorities());
