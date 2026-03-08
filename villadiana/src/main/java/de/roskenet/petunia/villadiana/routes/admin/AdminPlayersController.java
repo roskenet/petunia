@@ -5,6 +5,7 @@ import de.roskenet.petunia.dto.PlayerAccountDto;
 import de.roskenet.petunia.dto.UpdatePlayerAccountRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +35,7 @@ public class AdminPlayersController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('admin')")
     public List<PlayerAccountDto> getPlayers() {
         try {
             PlayerAccountDto[] accounts = engineClient.get()
@@ -47,6 +49,7 @@ public class AdminPlayersController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyRole('admin', 'trader')")
     public PlayerAccountDto getPlayer(@PathVariable UUID id) {
         try {
             return engineClient.get()
@@ -59,6 +62,7 @@ public class AdminPlayersController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('admin')")
     public ResponseEntity<PlayerAccountDto> createPlayer(@RequestBody CreatePlayerAccountRequest request) {
         try {
             PlayerAccountDto created = engineClient.post()
@@ -73,6 +77,7 @@ public class AdminPlayersController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('admin')")
     public PlayerAccountDto updatePlayer(
             @PathVariable UUID id,
             @RequestBody UpdatePlayerAccountRequest request
@@ -89,6 +94,7 @@ public class AdminPlayersController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('admin')")
     public ResponseEntity<Void> deletePlayer(@PathVariable UUID id) {
         try {
             engineClient.delete()

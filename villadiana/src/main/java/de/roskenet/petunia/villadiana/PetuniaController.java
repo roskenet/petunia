@@ -18,7 +18,7 @@ import java.util.List;
 @Slf4j
 public class PetuniaController {
     @GetMapping("/petunias")
-    @PreAuthorize("hasRole('trader')")
+    @PreAuthorize("hasAnyRole('trader', 'admin')")
     public List<PetuniaSpecies> getPetuniaSpecies(@AuthenticationPrincipal OidcUser principal) {
         System.out.println(principal);
         return Arrays.asList(
