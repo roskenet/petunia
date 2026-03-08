@@ -111,7 +111,7 @@ function PlayersTab() {
             description="This cannot be undone."
             okText="Delete"
             cancelText="Cancel"
-            onConfirm={() => void handleDelete(record.player_name)}
+            onConfirm={() => void handleDelete(record.id)}
           >
             <Button danger>Delete</Button>
           </Popconfirm>
@@ -155,9 +155,9 @@ function PlayersTab() {
     }
   };
 
-  const handleDelete = async (playerName: string) => {
+  const handleDelete = async (id: string) => {
     try {
-      await requestJson<void>(`/api/admin/players/${encodeURIComponent(playerName)}`, {
+      await requestJson<void>(`/api/admin/players/${encodeURIComponent(id)}`, {
         method: "DELETE",
       });
       message.success("Player deleted");

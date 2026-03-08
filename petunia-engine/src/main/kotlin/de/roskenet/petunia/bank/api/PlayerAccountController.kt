@@ -6,6 +6,7 @@ import de.roskenet.petunia.dto.UpdatePlayerAccountRequest
 import de.roskenet.petunia.bank.service.ClearingService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
+import java.util.UUID
 
 @RestController
 @RequestMapping("/api/accounts")
@@ -18,9 +19,9 @@ class PlayerAccountController(
             PlayerAccountDto(it.id, it.playerName, it.balance)
         }
 
-    @GetMapping("/{playerName}")
-    fun getAccountByPlayerName(@PathVariable playerName: String): PlayerAccountDto? =
-        clearingService.getAccountByPlayerName(playerName)?.let {
+    @GetMapping("/{id}")
+    fun getAccountById(@PathVariable id: UUID): PlayerAccountDto? =
+        clearingService.getAccountById(id)?.let {
             PlayerAccountDto(it.id, it.playerName, it.balance)
         }
 
@@ -31,18 +32,18 @@ class PlayerAccountController(
         return PlayerAccountDto(account.id, account.playerName, account.balance)
     }
 
-    @PutMapping("/{playerName}")
+    @PutMapping("/{id}")
     fun updateAccount(
-        @PathVariable playerName: String,
+        @PathVariable id: UUID,
         @RequestBody request: UpdatePlayerAccountRequest
     ): PlayerAccountDto {
-        val account = clearingService.updateAccount(playerName, request.playerName, request.balance)
+        val account = clearingService.updateAccount(id, request.playerName, request.balance)
         return PlayerAccountDto(account.id, account.playerName, account.balance)
     }
 
-    @DeleteMapping("/{playerName}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    fun deleteAccount(@PathVariable playerName: String) {
-        clearingService.deleteAccountByPlayerName(playerName)
+    fun deleteAccount(@PathVariable id: UUID) {
+        clearingService.deleteAccountById(id)
     }
 }

@@ -71,7 +71,8 @@ public class UserProvisioningFilter extends OncePerRequestFilter {
             return false;
         }
 
-        PlayerAccountDto player = adminPlayersController.getPlayer(principal.getUserInfo().getClaimAsString("name"));
+        UUID keycloakId = UUID.fromString(principal.getUserInfo().getClaimAsString("sub"));
+        PlayerAccountDto player = adminPlayersController.getPlayer(keycloakId);
 
         if (player == null) {
             return true;

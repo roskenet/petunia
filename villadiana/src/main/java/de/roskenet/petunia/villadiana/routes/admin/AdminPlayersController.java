@@ -19,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/admin/players")
@@ -45,11 +46,11 @@ public class AdminPlayersController {
         }
     }
 
-    @GetMapping("/{playerName}")
-    public PlayerAccountDto getPlayer(@PathVariable String playerName) {
+    @GetMapping("/{id}")
+    public PlayerAccountDto getPlayer(@PathVariable UUID id) {
         try {
             return engineClient.get()
-                    .uri("/api/accounts/{playerName}", playerName)
+                    .uri("/api/accounts/{id}", id)
                     .retrieve()
                     .body(PlayerAccountDto.class);
         } catch (RestClientResponseException ex) {
@@ -71,14 +72,14 @@ public class AdminPlayersController {
         }
     }
 
-    @PutMapping("/{playerName}")
+    @PutMapping("/{id}")
     public PlayerAccountDto updatePlayer(
-            @PathVariable String playerName,
+            @PathVariable UUID id,
             @RequestBody UpdatePlayerAccountRequest request
     ) {
         try {
             return engineClient.put()
-                    .uri("/api/accounts/{playerName}", playerName)
+                    .uri("/api/accounts/{id}", id)
                     .body(request)
                     .retrieve()
                     .body(PlayerAccountDto.class);
@@ -87,11 +88,11 @@ public class AdminPlayersController {
         }
     }
 
-    @DeleteMapping("/{playerName}")
-    public ResponseEntity<Void> deletePlayer(@PathVariable String playerName) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePlayer(@PathVariable UUID id) {
         try {
             engineClient.delete()
-                    .uri("/api/accounts/{playerName}", playerName)
+                    .uri("/api/accounts/{id}", id)
                     .retrieve()
                     .toBodilessEntity();
             return ResponseEntity.noContent().build();

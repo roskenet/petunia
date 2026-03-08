@@ -24,6 +24,10 @@ class ClearingService(
     fun getAccountByPlayerName(playerName: String): PlayerAccount? =
         playerAccountRepository.findByPlayerName(playerName)
 
+    @Transactional(readOnly = true)
+    fun getAccountById(id: UUID): PlayerAccount? =
+        playerAccountRepository.findById(id).orElse(null)
+
     @Transactional
     fun createAccount(playerSubject: UUID, playerName: String): PlayerAccount {
         val initialBalance = gameProperties.account.initialBalance
@@ -32,17 +36,16 @@ class ClearingService(
     }
 
     @Transactional
-    fun updateAccount(playerName: String, newPlayerName: String, balance: Long): PlayerAccount {
-        val existingAccount = playerAccountRepository.findByPlayerName(playerName)
-            ?: throw IllegalArgumentException("Account not found")
+    fun updateAccount(id: UUID, newPlayerName: String, balance: Long): PlayerAccount {
+        val existingAccount = playerAccountRepository.findById(id).orElseThrow { IllegalArgumentException("Account not found") }
 
         val updatedAccount = existingAccount.copy(playerName = newPlayerName, balance = balance)
         return playerAccountRepository.save(updatedAccount)
     }
 
     @Transactional
-    fun deleteAccountByPlayerName(playerName: String) {
-        playerAccountRepository.deleteByPlayerName(playerName)
+    fun deleteAccountById(id: UUID) {
+        playerAccountRepository.deleteById(id)
     }
 
     @Transactional(readOnly = true)
