@@ -10,6 +10,7 @@
     </parent>
     <artifactId>petunia-commons</artifactId>
     <name>Petunia Commons</name>
+    <version>1.0.0</version>
     <description>Common DTOs and utilities for ProjectPetunia</description>
 
     <dependencies>
@@ -51,13 +52,6 @@
                         <phase>none</phase>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>com.google.cloud.tools</groupId>
-                <artifactId>jib-maven-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
             </plugin>
         </plugins>
     </build>
