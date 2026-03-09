@@ -63,9 +63,7 @@ public class UserProvisioningFilter extends OncePerRequestFilter {
 
         boolean isTrader = authorities.stream()
                 .map(GrantedAuthority::getAuthority)
-                .filter(a -> a.equals("ROLE_trader"))
-                .findFirst()
-                .isPresent();
+                .anyMatch(a -> a.equals("ROLE_trader"));
 
         if (!isTrader) {
             return false;
