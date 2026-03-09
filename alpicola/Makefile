@@ -1,10 +1,10 @@
 APP_NAME=alpicola
-APP_VERSION=2.94.0
+APP_VERSION=2.95.0
 IMAGE_NAME=roskenet/$(APP_NAME):${APP_VERSION}
 CONTAINER_NAME=$(APP_NAME)
 PORT=80
 
-.PHONY: build push build-minikube run stop dev logs deploy clean
+.PHONY: build push build-minikube run stop dev logs deploy deploy-minikube clean
 
 build:
 	docker build -t $(IMAGE_NAME) .
@@ -33,10 +33,18 @@ logs:
 clean: stop
 	docker rmi $(IMAGE_NAME)
 
-deploy: build-minikube
+deploy: build
+	kubectl config use-context k3s-ionos
+	cat deploy/deployment.yaml | sed "s/\$$VERSION/$(APP_VERSION)/g" | kubectl apply -f -
+
+deploy-minikube: build-minikube
 	kubectl config use-context minikube
 	cat deploy/deployment.yaml | sed "s/\$$VERSION/$(APP_VERSION)/g" | kubectl apply -f -
 
 undeploy:
+		kubectl config use-context k3s-ionos
+		kubectl delete -f deploy/deployment.yaml
+
+undeploy-minikube:
 		kubectl config use-context minikube
 		kubectl delete -f deploy/deployment.yaml

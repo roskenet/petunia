@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: alpicola
-        image: roskenet/alpicola:2.94.0
+        image: roskenet/alpicola:$VERSION
         ports:
         - name: www
           containerPort: 80
