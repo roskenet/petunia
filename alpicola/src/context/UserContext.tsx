@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useRef, useEffect, useCallback } from 'react';
 
 export type UserInfo = {
     name: string;
@@ -20,6 +20,32 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 export function UserProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<UserInfo | null>(null);
     const [isLoading, setIsLoading] = useState(true);
+    const fetchingRef = useRef(false);
+
+    const loadUser = useCallback(async () => {
+        if (fetchingRef.current) return;
+        fetchingRef.current = true;
+        
+        setIsLoading(true);
+        try {
+            const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || '';
+            const response = await fetch(`${apiBaseUrl}/me`, {
+                credentials: 'include',
+            });
+            if (!response.ok) throw new Error('Not authenticated');
+            const data = await response.json();
+            setUser(data);
+        } catch (error) {
+            setUser(null);
+        } finally {
+            setIsLoading(false);
+            fetchingRef.current = false;
+        }
+    }, []);
+
+    useEffect(() => {
+        void loadUser();
+    }, [loadUser]);
 
     return (
         <UserContext.Provider value={{ user, setUser, isLoading, setIsLoading }}>
