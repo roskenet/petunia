@@ -1,22 +1,23 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { LogIn } from 'lucide-react';
 import LogoutButton from "@/components/LogoutButton";
 import { Layout, Typography, Space, Button } from 'antd';
+import { useUser } from '@/context/UserContext';
 
 const { Header: AntHeader } = Layout;
 const { Title, Text } = Typography;
 
-type UserInfo = {
-    name: string;
-    preferred_username: string;
-};
 
 export default function Header() {
-    const [user, setUser] = useState<UserInfo | null>(null);
+    const { user, setUser, setIsLoading } = useUser();
 
     useEffect(() => {
+        if (user) {
+            return;
+        }
+        setIsLoading(true);
         fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/me`, {
             credentials: 'include',
         })
@@ -24,9 +25,15 @@ export default function Header() {
                 if (!res.ok) throw new Error('Not authenticated');
                 return res.json();
             })
-            .then((data) => setUser(data))
-            .catch(() => setUser(null));
-    }, []);
+            .then((data) => {
+                setUser(data);
+                setIsLoading(false);
+            })
+            .catch(() => {
+                setUser(null);
+                setIsLoading(false);
+            });
+    }, [setUser, setIsLoading, user]);
 
 // export default function Header() {
 //     const [user, setUser] = useState<UserInfo | null>(null);
@@ -52,7 +59,7 @@ export default function Header() {
             <Space size="middle">
                 {user ? (
                     <>
-                        <Text style={{ color: '#595959' }}>👋 Hallo, {user.name}</Text>
+                        <Text style={{ color: '#595959' }}>👋 Hallo, {user.name} ({user.roles?.join(', ') || 'no roles'})</Text>
                         <LogoutButton />
                     </>
                 ) : (

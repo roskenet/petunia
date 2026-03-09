@@ -15,9 +15,11 @@ import {
   Tabs,
   Typography,
   message,
+  Alert,
 } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import { requestJson } from "@/lib/api";
+import { useUser } from "@/context/UserContext";
 
 const { Content } = Layout;
 const { Title, Paragraph, Text } = Typography;
@@ -476,6 +478,24 @@ const tabItems = [
 ];
 
 export default function AdminPage() {
+  const { user, isLoading: isUserLoading } = useUser();
+
+  const isAdmin = useMemo(() => {
+    return user?.roles?.includes("admin") ?? false;
+  }, [user]);
+
+  if (isUserLoading) {
+    return (
+      <Layout style={{ minHeight: "calc(100vh - 64px)", background: "#f5f5f5" }}>
+        <Content style={{ padding: "32px 24px" }}>
+          <Card style={{ maxWidth: 1100, margin: "0 auto" }}>
+            <Text>Loading user info...</Text>
+          </Card>
+        </Content>
+      </Layout>
+    );
+  }
+
   return (
     <Layout style={{ minHeight: "calc(100vh - 64px)", background: "#f5f5f5" }}>
       <Content style={{ padding: "32px 24px" }}>
@@ -483,7 +503,16 @@ export default function AdminPage() {
           <Title level={2} style={{ marginTop: 0 }}>
             Admin
           </Title>
-          <Tabs defaultActiveKey="players" items={tabItems} />
+          {isAdmin ? (
+              <Tabs defaultActiveKey="players" items={tabItems} />
+          ) : (
+              <Alert
+                  message="Access Denied"
+                  description="You are not allowed to view this data."
+                  type="error"
+                  showIcon
+              />
+          )}
         </Card>
       </Content>
     </Layout>
