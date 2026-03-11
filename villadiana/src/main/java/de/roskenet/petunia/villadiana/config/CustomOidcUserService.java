@@ -17,6 +17,12 @@ import java.util.Set;
 @Component
 public class CustomOidcUserService extends OidcUserService {
 
+    private final SecurityProperties securityProperties;
+
+    public CustomOidcUserService(SecurityProperties securityProperties) {
+        this.securityProperties = securityProperties;
+    }
+
     @Override
     public OidcUser loadUser(OidcUserRequest userRequest) throws OAuth2AuthenticationException {
         OidcUser oidcUser = super.loadUser(userRequest);
@@ -26,7 +32,7 @@ public class CustomOidcUserService extends OidcUserService {
         Map<String, Object> resourceAccess = oidcUser.getAttribute("resource_access");
 
         if (resourceAccess != null) {
-            Map<String, Object> client = (Map<String, Object>) resourceAccess.get("villadiana");
+            Map<String, Object> client = (Map<String, Object>) resourceAccess.get(securityProperties.getResourceAccessClientId());
 
             if (client != null) {
                 List<String> roles = (List<String>) client.get("roles");

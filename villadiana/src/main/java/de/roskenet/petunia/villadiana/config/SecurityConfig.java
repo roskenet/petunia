@@ -67,12 +67,12 @@ public class SecurityConfig {
                         .requestMatchers("/actuator/**").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(oauth -> oauth
-                        .loginPage("/oauth2/authorization/keycloak")
+                        .loginPage(securityProperties.getLoginUri())
                         .defaultSuccessUrl(securityProperties.getDefaultLoginSuccessUrl(), true)
                         .userInfoEndpoint(userInfo -> userInfo
                                 .oidcUserService(oidcUserService)))
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/logout")
+//                        .ignoringRequestMatchers("/logout")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()))
                 .addFilterAfter(new CsrfCookieFilter(), UsernamePasswordAuthenticationFilter.class)
@@ -81,7 +81,7 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutRequestMatcher(PathPatternRequestMatcher
                                 .withDefaults()
-                                .matcher(HttpMethod.GET, "/logout"))
+                                .matcher(HttpMethod.GET, securityProperties.getLogoutUri()))
                         .logoutSuccessHandler(oidcLogoutSuccessHandler())
                         .permitAll())
                 .exceptionHandling(eh -> eh
