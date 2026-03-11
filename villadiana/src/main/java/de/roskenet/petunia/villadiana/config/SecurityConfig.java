@@ -85,9 +85,7 @@ public class SecurityConfig {
                         .logoutSuccessHandler(oidcLogoutSuccessHandler())
                         .permitAll())
                 .exceptionHandling(eh -> eh
-                        .authenticationEntryPoint((req, res, authException) -> {
-                            res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthenticated");
-                        }));
+                        .authenticationEntryPoint((req, res, authException) -> res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthenticated")));
 
         return http.build();
     }
