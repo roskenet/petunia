@@ -1,8 +1,8 @@
 package de.roskenet.petunia.villadiana.routes.admin;
 
 import de.roskenet.petunia.dto.CreatePlayerAccountRequest;
-import de.roskenet.petunia.dto.PlayerAccountDto;
 import de.roskenet.petunia.dto.UpdatePlayerAccountRequest;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,6 +28,14 @@ public class AdminPlayersController {
 
     private final RestClient engineClient;
 
+    @Data
+    public static class PlayerAccount {
+        private UUID id;
+        private String playerName;
+        private int balance;
+    }
+
+
     public AdminPlayersController(
             @Value("${services.engine.base-url}") String engineBaseUrl
     ) {
@@ -36,12 +44,12 @@ public class AdminPlayersController {
 
     @GetMapping
     @PreAuthorize("hasRole('admin')")
-    public List<PlayerAccountDto> getPlayers() {
+    public List<PlayerAccount> getPlayers() {
         try {
-            PlayerAccountDto[] accounts = engineClient.get()
+            PlayerAccount[] accounts = engineClient.get()
                     .uri("/api/accounts")
                     .retrieve()
-                    .body(PlayerAccountDto[].class);
+                    .body(PlayerAccount[].class);
             return accounts == null ? List.of() : Arrays.asList(accounts);
         } catch (RestClientResponseException ex) {
             throw toStatusException(ex);
@@ -50,12 +58,12 @@ public class AdminPlayersController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAnyRole('admin', 'trader')")
-    public PlayerAccountDto getPlayer(@PathVariable UUID id) {
+    public PlayerAccount getPlayer(@PathVariable UUID id) {
         try {
             return engineClient.get()
                     .uri("/api/accounts/{id}", id)
                     .retrieve()
-                    .body(PlayerAccountDto.class);
+                    .body(PlayerAccount.class);
         } catch (RestClientResponseException ex) {
             throw toStatusException(ex);
         }
@@ -63,13 +71,13 @@ public class AdminPlayersController {
 
     @PostMapping
     @PreAuthorize("hasRole('admin')")
-    public ResponseEntity<PlayerAccountDto> createPlayer(@RequestBody CreatePlayerAccountRequest request) {
+    public ResponseEntity<PlayerAccount> createPlayer(@RequestBody CreatePlayerAccountRequest request) {
         try {
-            PlayerAccountDto created = engineClient.post()
+            PlayerAccount created = engineClient.post()
                     .uri("/api/accounts")
                     .body(request)
                     .retrieve()
-                    .body(PlayerAccountDto.class);
+                    .body(PlayerAccount.class);
             return ResponseEntity.status(201).body(created);
         } catch (RestClientResponseException ex) {
             throw toStatusException(ex);
@@ -78,7 +86,7 @@ public class AdminPlayersController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('admin')")
-    public PlayerAccountDto updatePlayer(
+    public PlayerAccount updatePlayer(
             @PathVariable UUID id,
             @RequestBody UpdatePlayerAccountRequest request
     ) {
@@ -87,7 +95,7 @@ public class AdminPlayersController {
                     .uri("/api/accounts/{id}", id)
                     .body(request)
                     .retrieve()
-                    .body(PlayerAccountDto.class);
+                    .body(PlayerAccount.class);
         } catch (RestClientResponseException ex) {
             throw toStatusException(ex);
         }
