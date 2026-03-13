@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 public class UserInfoController {
@@ -24,9 +25,10 @@ public class UserInfoController {
     public UserInfo me(@AuthenticationPrincipal OidcUser user) {
         String name = user.getFullName();
         String email = user.getEmail();
+        UUID sub = UUID.fromString(user.getSubject());
         List<String> roles = extractRoles(user);
 
-        return new UserInfo(name, email, roles);
+        return new UserInfo(name, email, sub, roles);
     }
 
     private List<String> extractRoles(OidcUser user) {

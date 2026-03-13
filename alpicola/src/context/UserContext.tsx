@@ -6,6 +6,7 @@ import { apiBaseUrl } from '@/lib/api';
 export type UserInfo = {
     name: string;
     email: string;
+    sub: string;
     roles: string[];
 };
 

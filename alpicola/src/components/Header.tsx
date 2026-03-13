@@ -18,6 +18,11 @@ export default function Header() {
                 <Title level={4} style={{margin: 0, color: '#eb2f96'}}>Project Petunia</Title>
             </Button>
             <Space size="middle">
+                {user && (
+                    <Button type="link" href="/dashboard">
+                        Dashboard
+                    </Button>
+                )}
                 {user ? (
                     <>
                         <Text style={{ color: '#595959' }}>👋 Hallo, {user.name} ({user.roles?.join(', ') || 'no roles'})</Text>

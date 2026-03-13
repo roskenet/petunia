@@ -12,13 +12,13 @@ The project has transitioned from a microservices approach to a consolidated mon
 
 ### Core Modules
 
-| Module | Responsibility |
-| :--- | :--- |
+| Module                                   | Responsibility |
+|:-----------------------------------------| :--- |
 | **Petunia Commons** (`/petunia-commons`) | Shared DTOs and enums between microservices. |
-| **Petunia Engine** (`/engine`) | The core monolith. Combines **Exchange** (order book, trade execution) and **Bank** (player accounts, portfolios, clearing). |
-| **Central Bank** (`/central-bank`) | Regulates the market, manages interest rates, and performs market interventions. |
-| **Villadiana BFF** (`/villadiana`) | Backend-for-Frontend, handles sessions, authentication, and WebSocket communication. |
-| **Alpicola Frontend** (`/alpicola`) | Next.js frontend for players to interact with the game. |
+| **Petunia Engine** (`/petunia-engine`)   | The core monolith. Combines **Exchange** (order book, trade execution) and **Bank** (player accounts, portfolios, clearing). |
+| **Central Bank** (`/central-bank`)       | Regulates the market, manages interest rates, and performs market interventions. |
+| **Villadiana BFF** (`/villadiana`)       | Backend-for-Frontend, handles sessions, authentication, and WebSocket communication. |
+| **Alpicola Frontend** (`/alpicola`)      | Next.js frontend for players to interact with the game. |
 
 The **polonium** project is a legacy landing page for the domain. It is currently a standalone project, not integrated into the main Maven build or the Kubernetes deployment structure.
 
