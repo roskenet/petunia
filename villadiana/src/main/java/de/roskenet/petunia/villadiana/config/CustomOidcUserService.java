@@ -32,7 +32,7 @@ public class CustomOidcUserService extends OidcUserService {
         Map<String, Object> resourceAccess = oidcUser.getAttribute("resource_access");
 
         if (resourceAccess != null) {
-            Map<String, Object> client = (Map<String, Object>) resourceAccess.get(securityProperties.resourceAccessClientId);
+            Map<String, Object> client = (Map<String, Object>) resourceAccess.get(securityProperties.getResourceAccessClientId());
 
             if (client != null) {
                 List<String> roles = (List<String>) client.get("roles");

@@ -2,7 +2,7 @@ spring:
   application:
     name: villadiana
   profiles:
-    active: ${ENVIRONMENT}
+    active: ${ENVIRONMENT:local}
   session:
     store-type: redis
     redis:
