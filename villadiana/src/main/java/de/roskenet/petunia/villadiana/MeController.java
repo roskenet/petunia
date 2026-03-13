@@ -1,12 +1,16 @@
-package de.roskenet.petunia.villadiana.routes;
+package de.roskenet.petunia.villadiana;
 
 import de.roskenet.petunia.dto.AssetDto;
 import de.roskenet.petunia.dto.OrderResponse;
 import de.roskenet.petunia.dto.PlaceOrderRequest;
 import de.roskenet.petunia.dto.PlayerAccountDto;
+import de.roskenet.petunia.villadiana.config.SecurityProperties;
+import de.roskenet.petunia.villadiana.dto.UserInfo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,19 +22,34 @@ import org.springframework.web.client.RestClientResponseException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/me")
-public class UserAccountController {
+public class MeController {
 
     private final RestClient engineClient;
+    private final SecurityProperties securityProperties;
 
-    public UserAccountController(
-            @Value("${services.engine.base-url}") String engineBaseUrl
+    public MeController(
+            @Value("${services.engine.base-url}") String engineBaseUrl,
+            SecurityProperties securityProperties
     ) {
         this.engineClient = RestClient.create(engineBaseUrl);
+        this.securityProperties = securityProperties;
+    }
+
+    @GetMapping
+    public UserInfo getMe(@AuthenticationPrincipal OidcUser user) {
+        String name = user.getFullName();
+        String email = user.getEmail();
+        UUID sub = UUID.fromString(user.getSubject());
+        List<String> roles = extractRoles(user);
+
+        return new UserInfo(name, email, sub, roles);
     }
 
     @GetMapping("/account/{id}")
@@ -75,6 +94,25 @@ public class UserAccountController {
         } catch (RestClientResponseException ex) {
             throw toStatusException(ex);
         }
+    }
+
+    private List<String> extractRoles(OidcUser user) {
+        Map<String, Object> resourceAccess = user.getAttribute("resource_access");
+
+        if (resourceAccess != null) {
+            Map<String, Object> client = (Map<String, Object>) resourceAccess.get(securityProperties.getResourceAccessClientId());
+
+            if (client != null) {
+                @SuppressWarnings("unchecked")
+                List<String> roles = (List<String>) client.get("roles");
+
+                if (roles != null) {
+                    return roles;
+                }
+            }
+        }
+
+        return Collections.emptyList();
     }
 
     private ResponseStatusException toStatusException(RestClientResponseException ex) {
