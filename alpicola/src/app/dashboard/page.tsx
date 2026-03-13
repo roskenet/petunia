@@ -57,10 +57,10 @@ export default function Dashboard() {
         setIsLoadingData(true);
         setError(null);
         try {
-            const accountData = await requestJson<PlayerAccount>(`/api/me/account/${user.sub}`);
+            const accountData = await requestJson<PlayerAccount>(`/api/dashboard/account/${user.sub}`);
             setAccount(accountData);
 
-            const assetsData = await requestJson<Asset[]>(`/api/me/account/${user.sub}/assets`);
+            const assetsData = await requestJson<Asset[]>(`/api/dashboard/account/${user.sub}/assets`);
             setAssets(assetsData);
         } catch (err: unknown) {
             const errorMessage = err instanceof Error ? err.message : "Failed to load account details";
@@ -95,7 +95,7 @@ export default function Dashboard() {
                 type: values.type,
             };
 
-            await requestJson('/api/me/orders', {
+            await requestJson('/api/dashboard/orders', {
                 method: 'POST',
                 body: JSON.stringify(orderRequest),
             });

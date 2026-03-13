@@ -30,13 +30,13 @@ export function UserProvider({ children }: { children: ReactNode }) {
         
         setIsLoading(true);
         try {
-            const response = await fetch(`${apiBaseUrl}/me`, {
+            const response = await fetch(`${apiBaseUrl}/api/me`, {
                 credentials: 'include',
             });
             if (!response.ok) throw new Error('Not authenticated');
             const data = await response.json();
             setUser(data);
-        } catch (error) {
+        } catch {
             setUser(null);
         } finally {
             setIsLoading(false);
