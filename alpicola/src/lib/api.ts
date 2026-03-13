@@ -55,5 +55,22 @@ export async function requestJson<T>(path: string, init?: RequestInit): Promise<
 }
 
 export async function logout(): Promise<void> {
-  window.location.href = `${apiBaseUrl}/logout`;
+  if (typeof document === "undefined") return;
+
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = `${apiBaseUrl}/logout`;
+
+  const csrfToken = getCookie("XSRF-TOKEN");
+  if (csrfToken) {
+    // Spring Security accepts CSRF token as _csrf form field for POST logouts.
+    const csrfInput = document.createElement("input");
+    csrfInput.type = "hidden";
+    csrfInput.name = "_csrf";
+    csrfInput.value = csrfToken;
+    form.appendChild(csrfInput);
+  }
+
+  document.body.appendChild(form);
+  form.submit();
 }
