@@ -2,6 +2,7 @@ package de.roskenet.petunia.villadiana.routes.admin;
 
 import de.roskenet.petunia.dto.CreatePlayerAccountRequest;
 import de.roskenet.petunia.dto.UpdatePlayerAccountRequest;
+import de.roskenet.petunia.villadiana.dto.PlayerAccount;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -28,12 +29,7 @@ public class AdminPlayersController {
 
     private final RestClient engineClient;
 
-    @Data
-    public static class PlayerAccount {
-        private UUID id;
-        private String playerName;
-        private int balance;
-    }
+
 
 
     public AdminPlayersController(

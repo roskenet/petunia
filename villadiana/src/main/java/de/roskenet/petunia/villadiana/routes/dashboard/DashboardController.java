@@ -1,9 +1,9 @@
 package de.roskenet.petunia.villadiana.routes.dashboard;
 
-import de.roskenet.petunia.dto.AssetDto;
 import de.roskenet.petunia.dto.OrderResponse;
 import de.roskenet.petunia.dto.PlaceOrderRequest;
-import de.roskenet.petunia.dto.PlayerAccountDto;
+import de.roskenet.petunia.villadiana.dto.Asset;
+import de.roskenet.petunia.villadiana.dto.PlayerAccount;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,12 +35,12 @@ public class DashboardController {
 
     @GetMapping("/account/{id}")
     @PreAuthorize("hasAnyRole('admin', 'trader')")
-    public PlayerAccountDto getMyAccount(@PathVariable UUID id) {
+    public PlayerAccount getMyAccount(@PathVariable UUID id) {
         try {
             return engineClient.get()
                     .uri("/api/accounts/{id}", id)
                     .retrieve()
-                    .body(PlayerAccountDto.class);
+                    .body(PlayerAccount.class);
         } catch (RestClientResponseException ex) {
             throw toStatusException(ex);
         }
@@ -48,12 +48,12 @@ public class DashboardController {
 
     @GetMapping("/account/{id}/assets")
     @PreAuthorize("hasAnyRole('admin', 'trader')")
-    public List<AssetDto> getMyAssets(@PathVariable UUID id) {
+    public List<Asset> getMyAssets(@PathVariable UUID id) {
         try {
-            AssetDto[] assets = engineClient.get()
+            Asset[] assets = engineClient.get()
                     .uri("/api/accounts/{id}/assets", id)
                     .retrieve()
-                    .body(AssetDto[].class);
+                    .body(Asset[].class);
             return assets == null ? List.of() : Arrays.asList(assets);
         } catch (RestClientResponseException ex) {
             throw toStatusException(ex);

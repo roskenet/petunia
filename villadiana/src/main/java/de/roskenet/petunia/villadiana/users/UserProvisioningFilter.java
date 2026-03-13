@@ -2,6 +2,7 @@ package de.roskenet.petunia.villadiana.users;
 
 import de.roskenet.petunia.dto.CreatePlayerAccountRequest;
 import de.roskenet.petunia.dto.PlayerAccountDto;
+import de.roskenet.petunia.villadiana.dto.PlayerAccount;
 import de.roskenet.petunia.villadiana.routes.admin.AdminPlayersController;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -70,7 +71,7 @@ public class UserProvisioningFilter extends OncePerRequestFilter {
         }
 
         UUID keycloakId = UUID.fromString(principal.getUserInfo().getClaimAsString("sub"));
-        AdminPlayersController.PlayerAccount player = adminPlayersController.getPlayer(keycloakId);
+        PlayerAccount player = adminPlayersController.getPlayer(keycloakId);
 
         return player == null;
     }
