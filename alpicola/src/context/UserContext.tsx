@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, ReactNode, useRef, useEffect, useCallback } from 'react';
+import { apiBaseUrl } from '@/lib/api';
 
 export type UserInfo = {
     name: string;
@@ -28,7 +29,6 @@ export function UserProvider({ children }: { children: ReactNode }) {
         
         setIsLoading(true);
         try {
-            const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL || '';
             const response = await fetch(`${apiBaseUrl}/me`, {
                 credentials: 'include',
             });

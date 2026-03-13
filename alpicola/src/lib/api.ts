@@ -1,4 +1,4 @@
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
+export const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? "";
 
 function getCookie(name: string): string | undefined {
   if (typeof document === "undefined") return undefined;
@@ -54,6 +54,12 @@ export async function requestJson<T>(path: string, init?: RequestInit): Promise<
   return (await response.json()) as T;
 }
 
+/**
+ * Performs a logout by submitting a hidden POST form to the logout endpoint.
+ * This is a special function because it requires a browser-level navigation to handle
+ * the OIDC (Keycloak) logout redirect correctly, which can be problematic with fetch due to CORS.
+ * It also handles the CSRF token as a form field, as expected by Spring Security.
+ */
 export async function logout(): Promise<void> {
   if (typeof document === "undefined") return;
 
