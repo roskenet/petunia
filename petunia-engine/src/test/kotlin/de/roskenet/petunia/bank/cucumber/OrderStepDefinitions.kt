@@ -4,9 +4,9 @@ import de.roskenet.petunia.bank.domain.Asset
 import de.roskenet.petunia.bank.domain.PlayerAccount
 import de.roskenet.petunia.bank.repository.AssetRepository
 import de.roskenet.petunia.bank.repository.PlayerAccountRepository
-import de.roskenet.petunia.dto.PlaceOrderRequest
-import de.roskenet.petunia.enums.OrderSide
-import de.roskenet.petunia.enums.OrderType
+import de.roskenet.petunia.exchange.dto.OrderSide
+import de.roskenet.petunia.exchange.dto.OrderType
+import de.roskenet.petunia.exchange.dto.PlaceOrderRequest
 import de.roskenet.petunia.exchange.repository.OrderRepository
 import de.roskenet.petunia.exchange.repository.TradeRepository
 import de.roskenet.petunia.security.domain.Security

@@ -1,7 +1,6 @@
 package de.roskenet.petunia.villadiana.users;
 
-import de.roskenet.petunia.dto.CreatePlayerAccountRequest;
-import de.roskenet.petunia.dto.PlayerAccountDto;
+import de.roskenet.petunia.villadiana.dto.CreatePlayerAccountRequest;
 import de.roskenet.petunia.villadiana.dto.PlayerAccount;
 import de.roskenet.petunia.villadiana.routes.admin.AdminPlayersController;
 import jakarta.servlet.FilterChain;

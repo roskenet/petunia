@@ -1,8 +1,8 @@
 package de.roskenet.petunia.villadiana.routes.admin;
 
-import de.roskenet.petunia.dto.CreateSecurityRequest;
-import de.roskenet.petunia.dto.SecurityDto;
-import de.roskenet.petunia.dto.UpdateSecurityRequest;
+import de.roskenet.petunia.villadiana.dto.CreateSecurityRequest;
+import de.roskenet.petunia.villadiana.dto.SecurityDto;
+import de.roskenet.petunia.villadiana.dto.UpdateSecurityRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

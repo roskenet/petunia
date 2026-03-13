@@ -1,9 +1,8 @@
 package de.roskenet.petunia.villadiana.routes.admin;
 
-import de.roskenet.petunia.dto.CreatePlayerAccountRequest;
-import de.roskenet.petunia.dto.UpdatePlayerAccountRequest;
+import de.roskenet.petunia.villadiana.dto.CreatePlayerAccountRequest;
 import de.roskenet.petunia.villadiana.dto.PlayerAccount;
-import lombok.Data;
+import de.roskenet.petunia.villadiana.dto.UpdatePlayerAccountRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

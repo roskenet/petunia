@@ -1,7 +1,7 @@
 package de.roskenet.petunia.exchange.api
 
-import de.roskenet.petunia.dto.OrderResponse
-import de.roskenet.petunia.dto.PlaceOrderRequest
+import de.roskenet.petunia.exchange.dto.OrderResponse
+import de.roskenet.petunia.exchange.dto.PlaceOrderRequest
 import de.roskenet.petunia.exchange.domain.Order
 import de.roskenet.petunia.exchange.service.OrderBookService
 import org.springframework.web.bind.annotation.*

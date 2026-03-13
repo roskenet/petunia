@@ -1,10 +1,10 @@
 package de.roskenet.petunia.exchange.service
 
 import de.roskenet.petunia.bank.service.ClearingService
-import de.roskenet.petunia.enums.OrderSide
-import de.roskenet.petunia.enums.OrderType
 import de.roskenet.petunia.exchange.domain.Order
 import de.roskenet.petunia.exchange.domain.Trade
+import de.roskenet.petunia.exchange.dto.OrderSide
+import de.roskenet.petunia.exchange.dto.OrderType
 import de.roskenet.petunia.exchange.repository.OrderRepository
 import de.roskenet.petunia.exchange.repository.TradeRepository
 import de.roskenet.petunia.security.service.SecurityService
