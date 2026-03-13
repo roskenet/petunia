@@ -16,6 +16,12 @@ spring:
       password: ${VALKEY_PASSWORD}
   security:
     oauth2:
+      allowed-origin-patterns: ${ALLOWED_ORIGIN_PATTERNS}
+      post-logout-redirect-uri: ${POST_LOGOUT_REDIRECT_URI}
+      default-login-success-url: ${DEFAULT_LOGIN_SUCCESS_URL}
+      login-uri: /oauth2/authorization/keycloak
+      logout-uri: /logout
+      resourceAccessClientId: villadiana
       client:
         provider:
           keycloak:
@@ -28,12 +34,6 @@ spring:
             authorization-grant-type: authorization_code
             scope: openid,profile,email
             provider: keycloak
-
-app:
-  security:
-    allowed-origin-patterns: ${ALLOWED_ORIGIN_PATTERNS}
-    post-logout-redirect-uri: ${POST_LOGOUT_REDIRECT_URI}
-    default-login-success-url: ${DEFAULT_LOGIN_SUCCESS_URL}
 
 #server:
 #  forward-headers-strategy: framework
