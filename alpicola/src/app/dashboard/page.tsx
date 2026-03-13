@@ -32,7 +32,7 @@ enum OrderType {
 }
 
 interface PlaceOrderRequest {
-    playerName: string;
+    player_id: string;
     symbol: string;
     quantity: number;
     price: number;
@@ -87,7 +87,7 @@ export default function Dashboard() {
         setIsSubmittingOrder(true);
         try {
             const orderRequest: PlaceOrderRequest = {
-                playerName: user.name,
+                player_id: user.sub,
                 symbol: values.symbol.toUpperCase(),
                 quantity: values.quantity,
                 price: values.type === OrderType.LIMIT && values.price ? Math.round(values.price * 100) : 0,

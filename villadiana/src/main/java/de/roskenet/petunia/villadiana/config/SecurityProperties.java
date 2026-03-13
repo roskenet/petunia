@@ -12,13 +12,13 @@ import java.util.List;
 @Setter
 @ConfigurationProperties(prefix = "spring.security.oauth2")
 public class SecurityProperties {
-    private List<String> allowedOriginPatterns;
-    private List<String> allowedMethods = List.of("GET", "POST", "PUT", "DELETE", "OPTIONS");
-    private List<String> allowedHeaders = List.of("*");
-    private boolean allowCredentials = true;
-    private String postLogoutRedirectUri;
-    private String defaultLoginSuccessUrl = "/";
-    private String resourceAccessClientId = "";
-    private String loginUri = "/login";
-    private String logoutUri = "/logout";
+    public List<String> allowedOriginPatterns;
+    public List<String> allowedMethods = List.of("GET", "POST", "PUT", "DELETE", "OPTIONS");
+    public List<String> allowedHeaders = List.of("*");
+    public boolean allowCredentials = true;
+    public String postLogoutRedirectUri;
+    public String defaultLoginSuccessUrl = "/";
+    public String resourceAccessClientId = "";
+    public String loginUri = "/login";
+    public String logoutUri = "/logout";
 }

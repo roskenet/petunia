@@ -3,6 +3,8 @@ spring:
     active: ${ENVIRONMENT:local}
   application:
     name: bank
+  jackson:
+    property-naming-strategy: SNAKE_CASE
   datasource:
     url: ${JDBC_URL}
     username: ${JDBC_USER}

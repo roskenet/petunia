@@ -39,7 +39,7 @@ public class MeController {
         Map<String, Object> resourceAccess = user.getAttribute("resource_access");
 
         if (resourceAccess != null) {
-            Map<String, Object> client = (Map<String, Object>) resourceAccess.get(securityProperties.getResourceAccessClientId());
+            Map<String, Object> client = (Map<String, Object>) resourceAccess.get(securityProperties.resourceAccessClientId);
 
             if (client != null) {
                 @SuppressWarnings("unchecked")

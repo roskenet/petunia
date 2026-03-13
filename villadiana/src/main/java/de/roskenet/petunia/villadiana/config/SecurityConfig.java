@@ -42,10 +42,10 @@ public class SecurityConfig {
 
     private CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(securityProperties.getAllowedOriginPatterns());
-        configuration.setAllowedMethods(securityProperties.getAllowedMethods());
-        configuration.setAllowedHeaders(securityProperties.getAllowedHeaders());
-        configuration.setAllowCredentials(securityProperties.isAllowCredentials());
+        configuration.setAllowedOriginPatterns(securityProperties.allowedOriginPatterns);
+        configuration.setAllowedMethods(securityProperties.allowedMethods);
+        configuration.setAllowedHeaders(securityProperties.allowedHeaders);
+        configuration.setAllowCredentials(securityProperties.allowCredentials);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
@@ -55,7 +55,7 @@ public class SecurityConfig {
     private LogoutSuccessHandler oidcLogoutSuccessHandler() {
         OidcClientInitiatedLogoutSuccessHandler handler =
                 new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
-        handler.setPostLogoutRedirectUri(securityProperties.getPostLogoutRedirectUri());
+        handler.setPostLogoutRedirectUri(securityProperties.postLogoutRedirectUri);
         return handler;
     }
 
@@ -67,8 +67,8 @@ public class SecurityConfig {
                         .requestMatchers("/actuator/**", "/error").permitAll()
                         .anyRequest().authenticated())
                 .oauth2Login(oauth -> oauth
-                        .loginPage(securityProperties.getLoginUri())
-                        .defaultSuccessUrl(securityProperties.getDefaultLoginSuccessUrl(), true)
+                        .loginPage(securityProperties.loginUri)
+                        .defaultSuccessUrl(securityProperties.defaultLoginSuccessUrl, true)
                         .userInfoEndpoint(userInfo -> userInfo
                                 .oidcUserService(oidcUserService)))
                 .csrf(csrf -> csrf
@@ -78,7 +78,7 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .logout(logout -> logout
-                    .logoutUrl(securityProperties.getLogoutUri())
+                    .logoutUrl(securityProperties.logoutUri)
                     .logoutSuccessHandler(oidcLogoutSuccessHandler())
                     .permitAll())
 //                .logout(logout -> logout
