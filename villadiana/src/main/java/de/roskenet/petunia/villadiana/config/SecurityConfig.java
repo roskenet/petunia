@@ -72,18 +72,21 @@ public class SecurityConfig {
                         .userInfoEndpoint(userInfo -> userInfo
                                 .oidcUserService(oidcUserService)))
                 .csrf(csrf -> csrf
-//                        .ignoringRequestMatchers("/logout")
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                         .csrfTokenRequestHandler(new CsrfTokenRequestAttributeHandler()))
                 .addFilterAfter(new CsrfCookieFilter(), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(sm -> sm
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .logout(logout -> logout
-                        .logoutRequestMatcher(PathPatternRequestMatcher
-                                .withDefaults()
-                                .matcher(HttpMethod.GET, securityProperties.getLogoutUri()))
-                        .logoutSuccessHandler(oidcLogoutSuccessHandler())
-                        .permitAll())
+                    .logoutUrl(securityProperties.getLogoutUri())
+                    .logoutSuccessHandler(oidcLogoutSuccessHandler())
+                    .permitAll())
+//                .logout(logout -> logout
+//                        .logoutRequestMatcher(PathPatternRequestMatcher
+//                                .withDefaults()
+//                                .matcher(HttpMethod.GET, securityProperties.getLogoutUri()))
+//                        .logoutSuccessHandler(oidcLogoutSuccessHandler())
+//                        .permitAll())
                 .exceptionHandling(eh -> eh
                         .authenticationEntryPoint((req, res, authException) -> res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthenticated")));
 
