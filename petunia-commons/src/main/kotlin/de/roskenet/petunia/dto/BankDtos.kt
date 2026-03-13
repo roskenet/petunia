@@ -31,8 +31,8 @@ data class CreateAssetRequest(
 )
 
 data class ClearTradeRequest(
-    val buyerName: String,
-    val sellerName: String,
+    val buyerId: UUID,
+    val sellerId: UUID,
     val symbol: String,
     val quantity: Long,
     val price: Long

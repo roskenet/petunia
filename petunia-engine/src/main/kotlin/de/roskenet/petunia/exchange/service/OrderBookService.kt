@@ -10,6 +10,7 @@ import de.roskenet.petunia.exchange.repository.TradeRepository
 import de.roskenet.petunia.security.service.SecurityService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.util.UUID
 
 @Service
 class OrderBookService(
@@ -20,7 +21,7 @@ class OrderBookService(
 ) {
     @Transactional
     fun placeOrder(
-        playerName: String,
+        playerId: UUID,
         symbol: String,
         quantity: Long,
         price: Long,
@@ -29,7 +30,7 @@ class OrderBookService(
     ): Order {
         val security = securityService.requireBySymbol(symbol)
         val order = Order(
-            playerName = playerName,
+            playerId = playerId,
             security = security,
             quantity = quantity,
             remainingQuantity = quantity,
@@ -79,8 +80,8 @@ class OrderBookService(
             val seller = if (newOrder.side == OrderSide.BUY) match else newOrder
 
             clearingService.clearTrade(
-                buyerName = buyer.playerName,
-                sellerName = seller.playerName,
+                buyerId = buyer.playerId,
+                sellerId = seller.playerId,
                 symbol = newOrder.symbol,
                 quantity = tradeQuantity,
                 price = tradePrice
@@ -88,8 +89,8 @@ class OrderBookService(
 
             tradeRepository.save(
                 Trade(
-                    buyerName = buyer.playerName,
-                    sellerName = seller.playerName,
+                    buyerId = buyer.playerId,
+                    sellerId = seller.playerId,
                     security = newOrder.security,
                     quantity = tradeQuantity,
                     price = tradePrice

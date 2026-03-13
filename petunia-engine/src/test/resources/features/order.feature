@@ -62,8 +62,16 @@ Feature: Orders are placed and matched
    The following scenarios are not mutually exclusive. While they cover standard matching logic, some are included specifically to help human readers understand the rules more clearly, even if they overlap from a purely technical
  testing perspective.
 
-  Scenario: 1. Price priority on the sell side
+  Background:
     Given The following accounts exist:
+      | Name    | Id                                   |
+      | Alice   | aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa |
+      | Bob     | bbbbbbbb-bbbb-bbbb-bbbb-bbbbbbbbbbbb |
+      | Charlie | cccccccc-cccc-cccc-cccc-cccccccccccc |
+      | Dave    | dddddddd-dddd-dddd-dddd-dddddddddddd |
+
+  Scenario: 1. Price priority on the sell side
+    Given These accounts have the following balance:
       | Name    | Shares (BAY) | Account Balance |
       | Alice   | 0            | 500             |
       | Bob     | 50           | 0               |
@@ -84,7 +92,7 @@ Feature: Orders are placed and matched
       | Charlie | 0            | 200             |
 
   Scenario: 2. Time priority for orders at the same price
-    Given The following accounts exist:
+    Given These accounts have the following balance:
       | Name    | Shares (BAY) | Account Balance |
       | Alice   | 0            | 500             |
       | Bob     | 50           | 0               |
@@ -105,7 +113,7 @@ Feature: Orders are placed and matched
       | Charlie | 50           | 0               |
 
   Scenario: 3. Buy order matches multiple sell orders
-    Given The following accounts exist:
+    Given These accounts have the following balance:
       | Name    | Shares (BAY) | Account Balance |
       | Alice   | 0            | 500             |
       | Bob     | 50           | 0               |
@@ -125,7 +133,7 @@ Feature: Orders are placed and matched
       | Charlie | 0            | 250             |
 
   Scenario: 4. Sell order matches multiple buy orders
-    Given The following accounts exist:
+    Given These accounts have the following balance:
       | Name    | Shares (BAY) | Account Balance |
       | Alice   | 50           | 500             |
       | Bob     | 0            | 250             |
@@ -145,7 +153,7 @@ Feature: Orders are placed and matched
       | Charlie | 50           | 50              |
 
   Scenario: 5. Partial fill leaves remaining order in book
-    Given The following accounts exist:
+    Given These accounts have the following balance:
       | Name  | Shares (BAY) | Account Balance |
       | Alice | 0            | 500             |
       | Bob   | 50           | 0               |
@@ -159,7 +167,7 @@ Feature: Orders are placed and matched
       | Alice  | BUY  | BAY    | 5     | LIMIT | 50       |
 
   Scenario: 6. Orders remain in book when prices do not cross
-    Given The following accounts exist:
+    Given These accounts have the following balance:
       | Name  | Shares (BAY) | Account Balance |
       | Alice | 0            | 500             |
       | Bob   | 50           | 0               |
@@ -172,7 +180,7 @@ Feature: Orders are placed and matched
       | Bob    | SELL | BAY    | 6     | LIMIT | 50       |
 
   Scenario: 7. Remaining orders keep correct price priority
-    Given The following accounts exist:
+    Given These accounts have the following balance:
       | Name    | Shares (BAY) | Account Balance |
       | Alice   | 0            | 500             |
       | Bob     | 50           | 0               |
@@ -188,7 +196,7 @@ Feature: Orders are placed and matched
       | Charlie | SELL | BAY    | 6     | LIMIT | 50       |
 
   Scenario: 8. Price priority overrides time priority
-    Given The following accounts exist:
+    Given These accounts have the following balance:
       | Name    | Shares (BAY) | Account Balance |
       | Alice   | 0            | 500             |
       | Bob     | 50           | 0               |
@@ -204,7 +212,7 @@ Feature: Orders are placed and matched
       | Bob    | SELL | BAY    | 5     | LIMIT | 50       |
 
   Scenario: 9. Buy order sweeps multiple price levels
-    Given The following accounts exist:
+    Given These accounts have the following balance:
       | Name    | Shares (BAY) | Account Balance |
       | Alice   | 0            | 1000            |
       | Bob     | 50           | 0               |
@@ -224,7 +232,7 @@ Feature: Orders are placed and matched
       | Dave   | SELL | BAY    | 5     | LIMIT | 30       |
 
   Scenario: 10. Time priority within the same price level
-    Given The following accounts exist:
+    Given These accounts have the following balance:
       | Name    | Shares (BAY) | Account Balance |
       | Alice   | 0            | 500             |
       | Bob     | 50           | 0               |
@@ -241,7 +249,7 @@ Feature: Orders are placed and matched
       | Charlie | SELL | BAY    | 5     | LIMIT | 20       |
 
   Scenario: 11. Market buy order matches best sell order
-    Given The following accounts exist:
+    Given These accounts have the following balance:
       | Name  | Shares (BAY) | Account Balance |
       | Alice | 0            | 500             |
       | Bob   | 50           | 0               |
@@ -253,7 +261,7 @@ Feature: Orders are placed and matched
     And The order book is empty
 
   Scenario: 12. Market buy order matches multiple sell orders
-    Given The following accounts exist:
+    Given These accounts have the following balance:
       | Name    | Shares (BAY) | Account Balance |
       | Alice   | 0            | 500             |
       | Bob     | 50           | 0               |
@@ -268,7 +276,7 @@ Feature: Orders are placed and matched
     And The order book is empty
 
   Scenario: 13. Market buy order is partially filled due to insufficient liquidity
-    Given The following accounts exist:
+    Given These accounts have the following balance:
       | Name  | Shares (BAY) | Account Balance |
       | Alice | 0            | 500             |
       | Bob   | 50           | 0               |
@@ -280,7 +288,7 @@ Feature: Orders are placed and matched
     And The order book is empty
 
   Scenario: 14. Market sell order matches best buy order
-    Given The following accounts exist:
+    Given These accounts have the following balance:
       | Name  | Shares (BAY) | Account Balance |
       | Alice | 100          | 0               |
       | Bob   | 0            | 500             |
@@ -292,7 +300,7 @@ Feature: Orders are placed and matched
     And The order book is empty
 
   Scenario: 15. Market sell order matches multiple buy orders
-    Given The following accounts exist:
+    Given These accounts have the following balance:
       | Name    | Shares (BAY) | Account Balance |
       | Alice   | 50           | 0               |
       | Bob     | 0            | 300             |
@@ -307,7 +315,7 @@ Feature: Orders are placed and matched
     And The order book is empty
 
   Scenario: 16. Market buy order when no sell orders exist
-    Given The following accounts exist:
+    Given These accounts have the following balance:
       | Name  | Shares (BAY) | Account Balance |
       | Alice | 0            | 500             |
     Given Alice has placed a market order to buy 100 shares of BAY
@@ -315,7 +323,7 @@ Feature: Orders are placed and matched
     And The order book is empty
 
   Scenario: 17. Market buy order consumes entire sell side of the book
-    Given The following accounts exist:
+    Given These accounts have the following balance:
       | Name    | Shares (BAY) | Account Balance |
       | Alice   | 0            | 1000            |
       | Bob     | 20           | 0               |
@@ -333,7 +341,7 @@ Feature: Orders are placed and matched
     And The order book is empty
 
   Scenario: 18. Market buy order partially fills due to insufficient liquidity
-    Given The following accounts exist:
+    Given These accounts have the following balance:
       | Name    | Shares (BAY) | Account Balance |
       | Alice   | 0            | 1000            |
       | Bob     | 40           | 0               |

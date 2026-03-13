@@ -6,7 +6,7 @@ import java.time.OffsetDateTime
 import java.util.*
 
 data class PlaceOrderRequest(
-    val playerName: String,
+    val playerId: UUID,
     val symbol: String,
     val quantity: Long,
     val price: Long,
@@ -16,7 +16,7 @@ data class PlaceOrderRequest(
 
 data class OrderResponse(
     val id: UUID,
-    val playerName: String,
+    val playerId: UUID,
     val symbol: String,
     val quantity: Long,
     val remainingQuantity: Long,

@@ -15,8 +15,8 @@ class Order(
     @Id
     val id: UUID = UUID.randomUUID(),
 
-    @Column(name = "player_name", nullable = false)
-    val playerName: String,
+    @Column(name = "player_id", nullable = false)
+    val playerId: UUID,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "symbol", referencedColumnName = "symbol", nullable = false)

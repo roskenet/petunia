@@ -14,6 +14,7 @@ import de.roskenet.petunia.security.repository.SecurityRepository
 import io.cucumber.datatable.DataTable
 import io.cucumber.java.en.Given
 import io.cucumber.java.en.Then
+import java.util.UUID
 import org.junit.jupiter.api.Assertions.*
 import org.springframework.boot.resttestclient.TestRestTemplate
 import org.springframework.http.HttpStatus
@@ -37,19 +38,35 @@ class OrderStepDefinitions(
 
         dataTable.asMaps().forEach { row ->
             val name = row["Name"]!!
+            val id = UUID.fromString(row["Id"]!!)
+
+            playerAccountRepository.save(
+                PlayerAccount(id = id, playerName = name, balance = 0L)
+            )
+        }
+    }
+
+    @Given("These accounts have the following balance:")
+    fun theseAccountsHaveTheFollowingBalance(dataTable: DataTable) {
+        dataTable.asMaps().forEach { row ->
+            val name = row["Name"]!!
             val balance = row["Account Balance"]!!.toLong()
 
-            val account = playerAccountRepository.save(
-                PlayerAccount(playerName = name, balance = balance)
-            )
+            val account = playerAccountRepository.findByPlayerName(name)!!
+            playerAccountRepository.save(account.copy(balance = balance))
 
             row.keys.filter { it.startsWith("Shares (") }.forEach { key ->
                 val symbol = key.substringAfter("(").substringBefore(")")
                 val shares = row[key]!!.toLong()
                 ensureSecurityExists(symbol)
-                if (shares > 0) {
-                    val security = securityRepository.findById(symbol).orElseThrow()
-                    assetRepository.save(Asset(account = account, security = security, quantity = shares))
+                val security = securityRepository.findById(symbol).orElseThrow()
+                val existingAsset = assetRepository.findByAccountIdAndSecuritySymbol(account.id, symbol)
+                if (existingAsset == null) {
+                    if (shares > 0) {
+                        assetRepository.save(Asset(account = account, security = security, quantity = shares))
+                    }
+                } else {
+                    assetRepository.save(existingAsset.copy(quantity = shares))
                 }
             }
         }
@@ -60,8 +77,9 @@ class OrderStepDefinitions(
     fun playerHasPlacedBuyOrder(playerName: String, quantity: Long, symbol: String, price: Long) {
         ensurePlayerExists(playerName)
         ensureSecurityExists(symbol)
+        val account = playerAccountRepository.findByPlayerName(playerName)!!
         val request = PlaceOrderRequest(
-            playerName = playerName,
+            playerId = account.id,
             symbol = symbol,
             quantity = quantity,
             price = price,
@@ -87,7 +105,7 @@ class OrderStepDefinitions(
         }
 
         val request = PlaceOrderRequest(
-            playerName = playerName,
+            playerId = account.id,
             symbol = symbol,
             quantity = quantity,
             price = price,
@@ -102,8 +120,9 @@ class OrderStepDefinitions(
     fun playerHasPlacedMarketBuyOrder(playerName: String, quantity: Long, symbol: String) {
         ensurePlayerExists(playerName)
         ensureSecurityExists(symbol)
+        val account = playerAccountRepository.findByPlayerName(playerName)!!
         val request = PlaceOrderRequest(
-            playerName = playerName,
+            playerId = account.id,
             symbol = symbol,
             quantity = quantity,
             price = 0,
@@ -130,7 +149,7 @@ class OrderStepDefinitions(
         }
 
         val request = PlaceOrderRequest(
-            playerName = playerName,
+            playerId = account.id,
             symbol = symbol,
             quantity = quantity,
             price = 0,
@@ -156,6 +175,7 @@ class OrderStepDefinitions(
 
         expectedRows.forEach { expected ->
             val playerName = expected["Player"]!!
+            val playerAccount = playerAccountRepository.findByPlayerName(playerName)!!
             val side = OrderSide.valueOf(expected["Side"]!!)
             val symbol = expected["Symbol"]!!
             val price = expected["Price"]!!.toLong()
@@ -163,7 +183,7 @@ class OrderStepDefinitions(
             val quantity = expected["Quantity"]!!.toLong()
 
             val actual = actualOrders.find {
-                it.playerName == playerName &&
+                it.playerId == playerAccount.id &&
                         it.side == side &&
                         it.symbol == symbol &&
                         it.price == price &&
@@ -187,19 +207,21 @@ class OrderStepDefinitions(
         assertEquals(expectedRows.size, actualTrades.size, "Trade book size mismatch")
 
         expectedRows.forEach { expected ->
-            val buyer = expected["Buyer"]!!
-            val seller = expected["Seller"]!!
+            val buyerName = expected["Buyer"]!!
+            val buyerAccount = playerAccountRepository.findByPlayerName(buyerName)!!
+            val sellerName = expected["Seller"]!!
+            val sellerAccount = playerAccountRepository.findByPlayerName(sellerName)!!
             val symbol = expected["Symbol"]!!
             val quantity = expected["Quantity"]!!.toLong()
             val price = expected["Price/Share"]!!.toLong()
 
             val actual = actualTrades.find {
-                it.buyerName == buyer &&
-                        it.sellerName == seller &&
+                it.buyerId == buyerAccount.id &&
+                        it.sellerId == sellerAccount.id &&
                         it.symbol == symbol &&
                         it.quantity == quantity &&
                         it.price == price
-            } ?: fail("Trade not found: $buyer $seller $symbol $quantity $price")
+            } ?: fail("Trade not found: $buyerName $sellerName $symbol $quantity $price")
         }
     }
 

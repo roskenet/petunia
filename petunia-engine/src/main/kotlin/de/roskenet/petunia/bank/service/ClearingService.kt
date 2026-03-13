@@ -81,16 +81,16 @@ class ClearingService(
 
     @Transactional
     fun clearTrade(
-        buyerName: String,
-        sellerName: String,
+        buyerId: UUID,
+        sellerId: UUID,
         symbol: String,
         quantity: Long,
         price: Long
     ): TradeSettlement {
         val security = securityService.requireBySymbol(symbol)
-        val buyer = playerAccountRepository.findByPlayerName(buyerName)
+        val buyer = playerAccountRepository.findById(buyerId).orElse(null)
             ?: throw IllegalArgumentException("Buyer not found")
-        val seller = playerAccountRepository.findByPlayerName(sellerName)
+        val seller = playerAccountRepository.findById(sellerId).orElse(null)
             ?: throw IllegalArgumentException("Seller not found")
         val sellerAsset = assetRepository.findByAccountIdAndSecuritySymbol(seller.id, symbol)
             ?: throw IllegalArgumentException("Seller asset not found")

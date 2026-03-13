@@ -12,11 +12,11 @@ class Trade(
     @Id
     val id: UUID = UUID.randomUUID(),
 
-    @Column(name = "buyer_name", nullable = false)
-    val buyerName: String,
+    @Column(name = "buyer_id", nullable = false)
+    val buyerId: UUID,
 
-    @Column(name = "seller_name", nullable = false)
-    val sellerName: String,
+    @Column(name = "seller_id", nullable = false)
+    val sellerId: UUID,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "symbol", referencedColumnName = "symbol", nullable = false)

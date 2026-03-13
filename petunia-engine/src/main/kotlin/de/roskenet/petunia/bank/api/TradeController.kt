@@ -16,8 +16,8 @@ class TradeController(
     @PostMapping("/clear")
     fun clearTrade(@RequestBody request: ClearTradeRequest): ClearTradeResponse {
         val settlement = clearingService.clearTrade(
-            buyerName = request.buyerName,
-            sellerName = request.sellerName,
+            buyerId = request.buyerId,
+            sellerId = request.sellerId,
             symbol = request.symbol,
             quantity = request.quantity,
             price = request.price

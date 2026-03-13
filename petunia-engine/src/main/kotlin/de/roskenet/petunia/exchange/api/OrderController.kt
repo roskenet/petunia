@@ -14,7 +14,7 @@ class OrderController(
     @PostMapping
     fun placeOrder(@RequestBody request: PlaceOrderRequest): OrderResponse {
         val order = orderBookService.placeOrder(
-            playerName = request.playerName,
+            playerId = request.playerId,
             symbol = request.symbol,
             quantity = request.quantity,
             price = request.price,
@@ -36,7 +36,7 @@ class OrderController(
 
     private fun Order.toResponse() = OrderResponse(
         id = this.id,
-        playerName = this.playerName,
+        playerId = this.playerId,
         symbol = this.symbol,
         quantity = this.quantity,
         remainingQuantity = this.remainingQuantity,
