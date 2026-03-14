@@ -5,6 +5,10 @@ ALTER TABLE orders RENAME COLUMN player_name TO player_id;
 -- However, to be safe and efficient:
 ALTER TABLE orders ALTER COLUMN player_id TYPE UUID USING (player_id::UUID);
 
+-- Fix enum issue for PostgreSQL
+ALTER TABLE orders ALTER COLUMN side TYPE VARCHAR(10);
+ALTER TABLE orders ALTER COLUMN type TYPE VARCHAR(10);
+
 -- Sync trades table with Trade JPA entity
 ALTER TABLE trades RENAME COLUMN buyer_name TO buyer_id;
 ALTER TABLE trades ALTER COLUMN buyer_id TYPE UUID USING (buyer_id::UUID);

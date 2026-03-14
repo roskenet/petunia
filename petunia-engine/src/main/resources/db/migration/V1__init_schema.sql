@@ -26,8 +26,8 @@ CREATE TABLE IF NOT EXISTS orders (
     quantity BIGINT NOT NULL,
     remaining_quantity BIGINT NOT NULL,
     price BIGINT NOT NULL,
-    side order_side NOT NULL,
-    type order_type NOT NULL DEFAULT 'LIMIT',
+    side VARCHAR(10) NOT NULL,
+    type VARCHAR(10) NOT NULL DEFAULT 'LIMIT',
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
