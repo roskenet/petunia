@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: petunia-engine
-        image: roskenet/petunia-engine:2.1.0
+        image: roskenet/petunia-engine:2.1.2
         ports:
         - name: www
           containerPort: 8080

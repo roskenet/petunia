@@ -33,7 +33,6 @@ class OrderBookService(
             playerId = playerId,
             security = security,
             quantity = quantity,
-            remainingQuantity = quantity,
             price = price,
             side = side,
             type = type
@@ -49,7 +48,7 @@ class OrderBookService(
     private fun matchOrders(newOrder: Order) {
         val oppositeSide = if (newOrder.side == OrderSide.BUY) OrderSide.SELL else OrderSide.BUY
 
-        while (newOrder.remainingQuantity > 0) {
+        while (newOrder.quantity > 0) {
             val matchingOrders = orderRepository.findBySecuritySymbol(newOrder.symbol)
                 .filter { it.id != newOrder.id }
                 .filter { it.side == oppositeSide }
@@ -73,7 +72,7 @@ class OrderBookService(
             if (matchingOrders.isEmpty()) break
 
             val match = matchingOrders.first()
-            val tradeQuantity = Math.min(newOrder.remainingQuantity, match.remainingQuantity)
+            val tradeQuantity = Math.min(newOrder.quantity, match.quantity)
             val tradePrice = match.price
 
             val buyer = if (newOrder.side == OrderSide.BUY) newOrder else match
@@ -97,25 +96,25 @@ class OrderBookService(
                 )
             )
 
-            newOrder.remainingQuantity -= tradeQuantity
-            match.remainingQuantity -= tradeQuantity
+            newOrder.quantity -= tradeQuantity
+            match.quantity -= tradeQuantity
 
-            if (match.remainingQuantity == 0L) {
+            if (match.quantity == 0L) {
                 orderRepository.delete(match)
             } else {
                 orderRepository.save(match)
             }
 
-            if (newOrder.remainingQuantity == 0L) {
+            if (newOrder.quantity == 0L) {
                 orderRepository.delete(newOrder)
             } else {
                 orderRepository.save(newOrder)
             }
         }
 
-        if (newOrder.type == OrderType.MARKET && newOrder.remainingQuantity > 0) {
+        if (newOrder.type == OrderType.MARKET && newOrder.quantity > 0) {
             orderRepository.delete(newOrder)
-            newOrder.remainingQuantity = 0
+            newOrder.quantity = 0
         }
     }
 

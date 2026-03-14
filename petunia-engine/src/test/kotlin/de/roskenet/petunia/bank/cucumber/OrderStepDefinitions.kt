@@ -188,7 +188,7 @@ class OrderStepDefinitions(
                         it.symbol == symbol &&
                         it.price == price &&
                         it.type == type &&
-                        it.remainingQuantity == quantity
+                        it.quantity == quantity
             } ?: fail("Order not found: $playerName $side $symbol $price $type $quantity")
         }
     }

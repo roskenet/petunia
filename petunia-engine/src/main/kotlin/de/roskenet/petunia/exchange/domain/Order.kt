@@ -23,10 +23,7 @@ class Order(
     val security: Security,
 
     @Column(name = "quantity", nullable = false)
-    val quantity: Long,
-
-    @Column(name = "remaining_quantity", nullable = false)
-    var remainingQuantity: Long,
+    var quantity: Long,
 
     @Column(name = "price", nullable = false)
     val price: Long,

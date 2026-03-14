@@ -19,11 +19,10 @@ data class OrderResponse(
     val playerId: UUID,
     val symbol: String,
     val quantity: Long,
-    val remainingQuantity: Long,
     val price: Long,
     val side: OrderSide,
     val type: OrderType,
     val createdAt: OffsetDateTime?
 ) {
-    constructor() : this(UUID.randomUUID(), UUID.randomUUID(), "", 0, 0, 0, OrderSide.BUY, OrderType.LIMIT, null)
+    constructor() : this(UUID.randomUUID(), UUID.randomUUID(), "", 0, 0, OrderSide.BUY, OrderType.LIMIT, null)
 }

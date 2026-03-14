@@ -21,7 +21,7 @@ spring:
       default-login-success-url: ${DEFAULT_LOGIN_SUCCESS_URL}
       login-uri: /oauth2/authorization/keycloak
       logout-uri: /logout
-      resourceAccessClientId: villadiana
+      resource-access-client-id: villadiana
       client:
         provider:
           keycloak:

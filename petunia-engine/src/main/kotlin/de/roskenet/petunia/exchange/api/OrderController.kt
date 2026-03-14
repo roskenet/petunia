@@ -39,7 +39,6 @@ class OrderController(
         playerId = this.playerId,
         symbol = this.symbol,
         quantity = this.quantity,
-        remainingQuantity = this.remainingQuantity,
         price = this.price,
         side = this.side,
         type = this.type,
