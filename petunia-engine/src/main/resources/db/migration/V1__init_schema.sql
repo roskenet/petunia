@@ -1,6 +1,3 @@
-CREATE TYPE order_side AS ENUM ('BUY', 'SELL');
-CREATE TYPE order_type AS ENUM ('LIMIT', 'MARKET');
-
 CREATE TABLE IF NOT EXISTS player_account (
     id UUID PRIMARY KEY,
     player_name VARCHAR(255) NOT NULL UNIQUE,
@@ -9,10 +6,17 @@ CREATE TABLE IF NOT EXISTS player_account (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS securities (
+    symbol VARCHAR(10) PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS asset (
     id UUID PRIMARY KEY,
     account_id UUID NOT NULL REFERENCES player_account(id),
-    symbol VARCHAR(10) NOT NULL,
+    symbol VARCHAR(10) NOT NULL REFERENCES securities(symbol),
     quantity BIGINT NOT NULL DEFAULT 0,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
@@ -21,8 +25,8 @@ CREATE TABLE IF NOT EXISTS asset (
 
 CREATE TABLE IF NOT EXISTS orders (
     id UUID PRIMARY KEY,
-    player_name VARCHAR(255) NOT NULL,
-    symbol VARCHAR(10) NOT NULL,
+    player_id UUID NOT NULL,
+    symbol VARCHAR(10) NOT NULL REFERENCES securities(symbol),
     quantity BIGINT NOT NULL,
     remaining_quantity BIGINT NOT NULL,
     price BIGINT NOT NULL,
@@ -34,9 +38,9 @@ CREATE TABLE IF NOT EXISTS orders (
 
 CREATE TABLE IF NOT EXISTS trades (
     id UUID PRIMARY KEY,
-    buyer_name VARCHAR(255) NOT NULL,
-    seller_name VARCHAR(255) NOT NULL,
-    symbol VARCHAR(10) NOT NULL,
+    buyer_id UUID NOT NULL,
+    seller_id UUID NOT NULL,
+    symbol VARCHAR(10) NOT NULL REFERENCES securities(symbol),
     quantity BIGINT NOT NULL,
     price BIGINT NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP

@@ -25,12 +25,6 @@ The ProjectPetunia core architecture has been transitioned to a monolithic struc
 - **Entry Point**: `de.roskenet.petunia.PetuniaEngine`
 - **Package structure**: `de.roskenet.petunia` (Main class moved from `de.roskenet.petunia.bank`)
 
-#### Central Bank Microservice
-- **Directory**: `/central-bank`
-- **Port**: 8083
-- **Dependencies**: Spring Web, Spring Data JPA, PostgreSQL Driver.
-- **Entry Point**: `de.roskenet.petunia.centralbank.CentralBankApplication`
-
 ### 3. Build Verification
 - Successfully ran `./mvnw compile -DskipTests` to ensure the engine and the parent project build correctly with JDK 25.
 - Integrated `jib-maven-plugin` version 3.5.1 for Docker image creation.
@@ -68,7 +62,6 @@ The ProjectPetunia core architecture has been transitioned to a monolithic struc
 ├── alpicola/
 │   └── src/
 ├── villadiana/
-├── central-bank/
 ├── deploy/
 ├── pom.xml
 └── README.md
@@ -76,4 +69,3 @@ The ProjectPetunia core architecture has been transitioned to a monolithic struc
 
 ## Next Steps
 - Refactor internal communication between exchange and bank components to use direct service calls.
-- Implement domain models and JPA entities for Central Bank service.

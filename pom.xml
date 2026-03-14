@@ -25,7 +25,6 @@
 
     <modules>
         <module>petunia-engine</module>
-        <module>central-bank</module>
         <module>villadiana</module>
     </modules>
 

@@ -17,7 +17,6 @@
   - [Dividends](#dividends)  
 - [Implementation](#implementation)  
   - [Petunia Engine](#petunia-engine)
-  - [Central Bank](#central-bank)
   - [Villadiana Backend-for-Frontend](#villadiana-backend-for-frontend)
   - [Alpicola Frontend](#alpicola-frontend)
 - [Technical Implementation](#technical-implementation)  
@@ -78,16 +77,6 @@ The Petunia Engine is the core of the game. It combines the functionality of the
 - **Bank**: Handles player accounts and portfolios, acts as a clearing house, and calculates dividends.
 
 Players interact with the game through the engine API.
-
-### Central Bank
-
-The central bank is the **game engine**:
-
-- Steers the game indirectly  
-- Can regulate market via interest rates or other interventions (e.g., inflation control)  
-- May act as a trader to maintain liquidity  
-
-> ⚠️ Its powers extend far beyond a real-world central bank — it’s the puppet master of Petunia.
 
 ### Villadiana Backend-for-Frontend
 

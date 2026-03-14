@@ -8,7 +8,7 @@
 
 ## 🏗️ System Architecture
 
-The project has transitioned from a microservices approach to a consolidated monolithic core for the main game logic, while maintaining a separate service for central bank functions.
+The project has transitioned to a consolidated monolithic core for the main game logic.
 
 ### Core Modules
 
@@ -16,7 +16,6 @@ The project has transitioned from a microservices approach to a consolidated mon
 |:-----------------------------------------| :--- |
 | **Petunia Commons** (`/petunia-commons`) | Shared DTOs and enums between microservices. |
 | **Petunia Engine** (`/petunia-engine`)   | The core monolith. Combines **Exchange** (order book, trade execution) and **Bank** (player accounts, portfolios, clearing). |
-| **Central Bank** (`/central-bank`)       | Regulates the market, manages interest rates, and performs market interventions. |
 | **Villadiana BFF** (`/villadiana`)       | Backend-for-Frontend, handles sessions, authentication, and WebSocket communication. |
 | **Alpicola Frontend** (`/alpicola`)      | Next.js frontend for players to interact with the game. |
 
@@ -104,7 +103,6 @@ The **Bank** component handles the movement of assets and funds.
 ├── alpicola/            # Next.js Frontend
 │   └── src/             # React components and pages
 ├── villadiana/          # Backend-for-Frontend (BFF)
-├── central-bank/        # Market Regulation service
 ├── deploy/              # Global deployment configurations (e.g., Valkey)
 ├── pom.xml              # Parent Maven POM
 └── PROGRESS.md          # Real-time status tracker
@@ -112,7 +110,6 @@ The **Bank** component handles the movement of assets and funds.
 
 ### Entry Points
 - **Petunia Engine**: `de.roskenet.petunia.PetuniaEngine` (Port 8080)
-- **Central Bank**: `de.roskenet.petunia.centralbank.CentralBankApplication` (Port 8083)
 
 ### Database Schema
 - **Flyway**: Migrations are located in `src/main/resources/db/migration/` within each module.
