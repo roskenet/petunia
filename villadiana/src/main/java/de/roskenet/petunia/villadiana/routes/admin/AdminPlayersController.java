@@ -65,7 +65,7 @@ public class AdminPlayersController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('admin')")
+    @PreAuthorize("hasAnyRole('admin', 'trader')")
     public ResponseEntity<PlayerAccount> createPlayer(@RequestBody CreatePlayerAccountRequest request) {
         try {
             PlayerAccount created = engineClient.post()

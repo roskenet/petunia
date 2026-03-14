@@ -1,15 +1,11 @@
 package de.roskenet.petunia.villadiana.config;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-@Getter
-@Setter
 @ConfigurationProperties(prefix = "spring.security.oauth2")
 public class SecurityProperties {
     private List<String> allowedOriginPatterns;
@@ -21,4 +17,76 @@ public class SecurityProperties {
     private String resourceAccessClientId = "";
     private String loginUri = "/login";
     private String logoutUri = "/logout";
+
+    public List<String> getAllowedOriginPatterns() {
+        return allowedOriginPatterns;
+    }
+
+    public void setAllowedOriginPatterns(List<String> allowedOriginPatterns) {
+        this.allowedOriginPatterns = allowedOriginPatterns;
+    }
+
+    public List<String> getAllowedMethods() {
+        return allowedMethods;
+    }
+
+    public void setAllowedMethods(List<String> allowedMethods) {
+        this.allowedMethods = allowedMethods;
+    }
+
+    public List<String> getAllowedHeaders() {
+        return allowedHeaders;
+    }
+
+    public void setAllowedHeaders(List<String> allowedHeaders) {
+        this.allowedHeaders = allowedHeaders;
+    }
+
+    public boolean isAllowCredentials() {
+        return allowCredentials;
+    }
+
+    public void setAllowCredentials(boolean allowCredentials) {
+        this.allowCredentials = allowCredentials;
+    }
+
+    public String getPostLogoutRedirectUri() {
+        return postLogoutRedirectUri;
+    }
+
+    public void setPostLogoutRedirectUri(String postLogoutRedirectUri) {
+        this.postLogoutRedirectUri = postLogoutRedirectUri;
+    }
+
+    public String getDefaultLoginSuccessUrl() {
+        return defaultLoginSuccessUrl;
+    }
+
+    public void setDefaultLoginSuccessUrl(String defaultLoginSuccessUrl) {
+        this.defaultLoginSuccessUrl = defaultLoginSuccessUrl;
+    }
+
+    public String getResourceAccessClientId() {
+        return resourceAccessClientId;
+    }
+
+    public void setResourceAccessClientId(String resourceAccessClientId) {
+        this.resourceAccessClientId = resourceAccessClientId;
+    }
+
+    public String getLoginUri() {
+        return loginUri;
+    }
+
+    public void setLoginUri(String loginUri) {
+        this.loginUri = loginUri;
+    }
+
+    public String getLogoutUri() {
+        return logoutUri;
+    }
+
+    public void setLogoutUri(String logoutUri) {
+        this.logoutUri = logoutUri;
+    }
 }
