@@ -1,5 +1,5 @@
 # Build Stage – nur um static site zu exportieren
-FROM node:24-alpine AS builder
+FROM node:24.14.0-alpine3.23 AS builder
 WORKDIR /app
 
 # Build argument to determine what to build
@@ -18,7 +18,7 @@ RUN if [ "$BUILD_ENV" = "minikube" ]; then \
     fi
 
 # NGINX Stage – statische Seite servieren
-FROM nginx:stable-alpine AS runner
+FROM nginx:1.29.6-alpine-slim AS runner
 
 # Kopiere deine exportierte Site nach /usr/share/nginx/html
 COPY --from=builder /app/out /usr/share/nginx/html

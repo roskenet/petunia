@@ -292,7 +292,7 @@ export default function Dashboard() {
                                         precision={2}
                                         style={{ width: '100%' }}
                                         formatter={(value) => `${value} €`}
-                                        parser={(value) => value!.replace(' €', '')}
+                                        parser={(value) => Number(value!.replace(' €', ''))}
                                     />
                                 </Form.Item>
                             ) : null

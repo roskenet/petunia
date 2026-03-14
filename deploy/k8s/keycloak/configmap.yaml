@@ -14,6 +14,6 @@ data:
   DB_USER: "keycloak"
   DB_DATABASE: "keycloak"
   KC_HOSTNAME: "https://auth.roskenet.de"
-  KC_PROXY: "edge"
+  KC_PROXY_HEADERS: "xforwarded"
   KC_HTTP_ENABLED: "true"
   KC_HOSTNAME_STRICT: "false"

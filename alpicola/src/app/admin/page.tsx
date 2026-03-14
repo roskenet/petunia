@@ -92,6 +92,52 @@ function PlayersTab() {
     void loadPlayers();
   }, [loadPlayers]);
 
+  const openCreateModal = useCallback(() => {
+    form.setFieldsValue({ player_name: "", balance: 0 });
+    setIsModalOpen(true);
+  }, [form]);
+
+  const closeModal = useCallback(() => {
+    setIsModalOpen(false);
+    form.resetFields();
+  }, [form]);
+
+  const handleSave = useCallback(async () => {
+    const values = await form.validateFields();
+    setIsSaving(true);
+
+    try {
+      const payload: CreatePlayerPayload = {
+        player_name: values.player_name,
+        initial_balance: values.balance,
+      };
+      await requestJson<PlayerDto>("/api/admin/players", {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+      message.success("Player created");
+
+      closeModal();
+      await loadPlayers();
+    } catch (error) {
+      message.error((error as Error).message || "Could not save player");
+    } finally {
+      setIsSaving(false);
+    }
+  }, [form, closeModal, loadPlayers]);
+
+  const handleDelete = useCallback(async (id: string) => {
+    try {
+      await requestJson<void>(`/api/admin/players/${encodeURIComponent(id)}`, {
+        method: "DELETE",
+      });
+      message.success("Player deleted");
+      await loadPlayers();
+    } catch (error) {
+      message.error((error as Error).message || "Could not delete player");
+    }
+  }, [loadPlayers]);
+
   const columns: ColumnsType<PlayerDto> = useMemo(
     () => [
       {
@@ -120,54 +166,8 @@ function PlayersTab() {
         ),
       },
     ],
-    []
+    [handleDelete]
   );
-
-  const openCreateModal = () => {
-    form.setFieldsValue({ player_name: "", balance: 0 });
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    form.resetFields();
-  };
-
-  const handleSave = async () => {
-    const values = await form.validateFields();
-    setIsSaving(true);
-
-    try {
-      const payload: CreatePlayerPayload = {
-        player_name: values.player_name,
-        initial_balance: values.balance,
-      };
-      await requestJson<PlayerDto>("/api/admin/players", {
-        method: "POST",
-        body: JSON.stringify(payload),
-      });
-      message.success("Player created");
-
-      closeModal();
-      await loadPlayers();
-    } catch (error) {
-      message.error((error as Error).message || "Could not save player");
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  const handleDelete = async (id: string) => {
-    try {
-      await requestJson<void>(`/api/admin/players/${encodeURIComponent(id)}`, {
-        method: "DELETE",
-      });
-      message.success("Player deleted");
-      await loadPlayers();
-    } catch (error) {
-      message.error((error as Error).message || "Could not delete player");
-    }
-  };
 
   return (
     <Space direction="vertical" size="middle" style={{ width: "100%" }}>
@@ -275,62 +275,28 @@ function SecuritiesTab() {
     void loadSecurities();
   }, [loadSecurities]);
 
-  const columns: ColumnsType<SecurityDto> = useMemo(
-    () => [
-      {
-        title: "Symbol",
-        dataIndex: "symbol",
-        key: "symbol",
-      },
-      {
-        title: "Name",
-        dataIndex: "name",
-        key: "name",
-      },
-      {
-        title: "Actions",
-        key: "actions",
-        render: (_, record) => (
-          <Space>
-            <Button onClick={() => openEditModal(record)}>Edit</Button>
-            <Popconfirm
-              title={`Delete ${record.symbol}?`}
-              description="This cannot be undone."
-              okText="Delete"
-              cancelText="Cancel"
-              onConfirm={() => void handleDelete(record.symbol)}
-            >
-              <Button danger>Delete</Button>
-            </Popconfirm>
-          </Space>
-        ),
-      },
-    ],
-    []
-  );
-
-  const openCreateModal = () => {
+  const openCreateModal = useCallback(() => {
     setEditingSecurity(null);
     form.setFieldsValue({ symbol: "", name: "" });
     setIsModalOpen(true);
-  };
+  }, [form]);
 
-  const openEditModal = (security: SecurityDto) => {
+  const openEditModal = useCallback((security: SecurityDto) => {
     setEditingSecurity(security);
     form.setFieldsValue({
       symbol: security.symbol,
       name: security.name,
     });
     setIsModalOpen(true);
-  };
+  }, [form]);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setIsModalOpen(false);
     setEditingSecurity(null);
     form.resetFields();
-  };
+  }, [form]);
 
-  const handleSave = async () => {
+  const handleSave = useCallback(async () => {
     const values = await form.validateFields();
     setIsSaving(true);
 
@@ -363,9 +329,9 @@ function SecuritiesTab() {
     } finally {
       setIsSaving(false);
     }
-  };
+  }, [editingSecurity, form, closeModal, loadSecurities]);
 
-  const handleDelete = async (symbol: string) => {
+  const handleDelete = useCallback(async (symbol: string) => {
     try {
       await requestJson<void>(`/api/admin/securities/${encodeURIComponent(symbol)}`, {
         method: "DELETE",
@@ -375,7 +341,41 @@ function SecuritiesTab() {
     } catch (error) {
       message.error((error as Error).message || "Could not delete security");
     }
-  };
+  }, [loadSecurities]);
+
+  const columns: ColumnsType<SecurityDto> = useMemo(
+    () => [
+      {
+        title: "Symbol",
+        dataIndex: "symbol",
+        key: "symbol",
+      },
+      {
+        title: "Name",
+        dataIndex: "name",
+        key: "name",
+      },
+      {
+        title: "Actions",
+        key: "actions",
+        render: (_, record) => (
+          <Space>
+            <Button onClick={() => openEditModal(record)}>Edit</Button>
+            <Popconfirm
+              title={`Delete ${record.symbol}?`}
+              description="This cannot be undone."
+              okText="Delete"
+              cancelText="Cancel"
+              onConfirm={() => void handleDelete(record.symbol)}
+            >
+              <Button danger>Delete</Button>
+            </Popconfirm>
+          </Space>
+        ),
+      },
+    ],
+    [handleDelete, openEditModal]
+  );
 
   return (
     <Space direction="vertical" size="middle" style={{ width: "100%" }}>
