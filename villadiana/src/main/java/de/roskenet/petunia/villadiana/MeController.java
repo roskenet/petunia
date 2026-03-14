@@ -14,7 +14,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/me")
+@RequestMapping("/me")
 public class MeController {
 
     private final SecurityProperties securityProperties;
