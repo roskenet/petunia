@@ -12,6 +12,9 @@ build:
 push:
 	docker push $(IMAGE_NAME)
 
+push-minikube:
+	docker push $(IMAGE_NAME)-minikube
+
 build-minikube:
 	docker build --build-arg BUILD_ENV=minikube -t $(IMAGE_NAME)-minikube .
 
@@ -39,7 +42,7 @@ deploy: build
 
 deploy-minikube: build-minikube
 	kubectl config use-context minikube
-	cat deploy/deployment.yaml | sed "s/\$$VERSION/$(APP_VERSION)/g" | kubectl apply -f -
+	cat deploy/deployment.yaml | sed "s/\$$VERSION/$(APP_VERSION)-minikube/g" | kubectl apply -f -
 
 undeploy:
 		kubectl config use-context k3s-ionos
