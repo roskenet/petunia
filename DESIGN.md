@@ -14,7 +14,6 @@ The project has transitioned to a consolidated monolithic core for the main game
 
 | Module                                   | Responsibility |
 |:-----------------------------------------| :--- |
-| **Petunia Commons** (`/petunia-commons`) | Shared DTOs and enums between microservices. |
 | **Petunia Engine** (`/petunia-engine`)   | The core monolith. Combines **Exchange** (order book, trade execution) and **Bank** (player accounts, portfolios, clearing). |
 | **Villadiana BFF** (`/villadiana`)       | Backend-for-Frontend, handles sessions, authentication, and WebSocket communication. |
 | **Alpicola Frontend** (`/alpicola`)      | Next.js frontend for players to interact with the game. |
@@ -98,7 +97,6 @@ The **Bank** component handles the movement of assets and funds.
 ### Project Structure
 ```text
 .
-├── petunia-commons/     # Shared DTOs and Enums
 ├── engine/              # Main Monolith (Exchange + Bank)
 ├── alpicola/            # Next.js Frontend
 │   └── src/             # React components and pages
