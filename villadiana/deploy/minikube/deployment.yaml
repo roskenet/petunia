@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: villadiana
-        image: roskenet/villadiana:4.3.1
+        image: roskenet/villadiana:4.3.2
         ports:
         - name: www
           containerPort: 8080

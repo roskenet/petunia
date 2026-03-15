@@ -1,4 +1,4 @@
-package de.roskenet.petunia.villadiana.dto;
+package de.roskenet.petunia.villadiana.bff;
 
 import java.util.List;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package de.roskenet.petunia.villadiana.config;
+package de.roskenet.petunia.villadiana.bff;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

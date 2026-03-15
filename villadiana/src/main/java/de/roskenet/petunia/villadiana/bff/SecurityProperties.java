@@ -1,4 +1,4 @@
-package de.roskenet.petunia.villadiana.config;
+package de.roskenet.petunia.villadiana.bff;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
