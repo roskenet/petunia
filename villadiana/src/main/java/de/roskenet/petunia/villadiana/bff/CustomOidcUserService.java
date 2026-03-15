@@ -33,10 +33,8 @@ public class CustomOidcUserService extends OidcUserService {
 
         if (resourceAccess != null) {
             Map<String, Object> client = (Map<String, Object>) resourceAccess.get(securityProperties.getResourceAccessClientId());
-
             if (client != null) {
                 List<String> roles = (List<String>) client.get("roles");
-
                 if (roles != null) {
                     for (String role : roles) {
                         authorities.add(new SimpleGrantedAuthority("ROLE_" + role));

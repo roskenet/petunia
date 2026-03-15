@@ -28,9 +28,6 @@ public class AdminPlayersController {
 
     private final RestClient engineClient;
 
-
-
-
     public AdminPlayersController(
             @Value("${services.engine.base-url}") String engineBaseUrl
     ) {
