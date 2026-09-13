@@ -1,0 +1,3701 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-03-14T21:09:15Z"
+    generateName: alpicola-6bbcb8fd7-
+    labels:
+      app: alpicola
+      pod-template-hash: 6bbcb8fd7
+    name: alpicola-6bbcb8fd7-g522j
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: alpicola-6bbcb8fd7
+      uid: adf0cd49-7102-4105-aad1-10775799beba
+    resourceVersion: "18086931"
+    uid: ed6d4381-3e9d-4c39-9afd-87f59acf5d70
+  spec:
+    containers:
+    - image: roskenet/alpicola:2.100.0
+      imagePullPolicy: IfNotPresent
+      name: alpicola
+      ports:
+      - containerPort: 80
+        name: www
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-8n4s7
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: petunia
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-8n4s7
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-17T19:19:56Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-03-14T21:09:15Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-17T19:19:56Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-17T19:19:56Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-03-14T21:09:15Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://78b5c80db2baa0523ebd1f561c31517d11ae23f7300d48e92f47683d36ded6ed
+      image: docker.io/roskenet/alpicola:2.100.0
+      imageID: docker.io/roskenet/alpicola@sha256:a41e3c239f704782c36bf999b2c9c1d79797fb254c022129a17e3d49952efdf2
+      lastState:
+        terminated:
+          containerID: containerd://e1c2c678fb236768305d90e87742d8d7e656fc424712017336617860bf4abc38
+          exitCode: 255
+          finishedAt: "2026-07-17T19:19:41Z"
+          reason: Unknown
+          startedAt: "2026-03-14T21:09:19Z"
+      name: alpicola
+      ready: true
+      restartCount: 1
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-17T19:19:55Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-8n4s7
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 217.154.117.238
+    hostIPs:
+    - ip: 217.154.117.238
+    phase: Running
+    podIP: 10.42.0.238
+    podIPs:
+    - ip: 10.42.0.238
+    qosClass: BestEffort
+    startTime: "2026-03-14T21:09:15Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-09-03T03:43:40Z"
+    generateName: keycloak-5f767dbbf5-
+    labels:
+      app: keycloak
+      pod-template-hash: 5f767dbbf5
+    name: keycloak-5f767dbbf5-s69tg
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: keycloak-5f767dbbf5
+      uid: 612f1e11-9719-42ae-beed-90a8ad83ce5c
+    resourceVersion: "20412103"
+    uid: 8fe193c6-bf2f-433b-be8b-1bab383dd857
+  spec:
+    containers:
+    - args:
+      - start-dev
+      - --db-url=${JDBC_URL}
+      - --db=${DB_VENDOR}
+      - --db-username=${DB_USER}
+      - --db-password=${DB_PASSWORD}
+      env:
+      - name: KEYCLOAK_ADMIN_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: KEYCLOAK_ADMIN_PASSWORD
+            name: petunia-secret
+      - name: DB_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: KEYCLOAK_DB_PASSWORD
+            name: petunia-secret
+      envFrom:
+      - configMapRef:
+          name: keycloak-config
+      image: keycloak/keycloak:26.5
+      imagePullPolicy: IfNotPresent
+      name: keycloak
+      ports:
+      - containerPort: 8080
+        name: service
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-vbj8v
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: petunia
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-vbj8v
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-09-03T03:43:41Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-09-03T03:43:40Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-09-03T03:43:41Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-09-03T03:43:41Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-09-03T03:43:40Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://94867d85e13ba19547173b1ae05e3bdaeb331c5b02b3a56b4d7ee8443296d262
+      image: docker.io/keycloak/keycloak:26.5
+      imageID: docker.io/keycloak/keycloak@sha256:ae8efb0d218d8921334b03a2dbee7069a0b868240691c50a3ffc9f42fabba8b4
+      lastState: {}
+      name: keycloak
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-09-03T03:43:41Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-vbj8v
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 217.154.117.238
+    hostIPs:
+    - ip: 217.154.117.238
+    phase: Running
+    podIP: 10.42.0.5
+    podIPs:
+    - ip: 10.42.0.5
+    qosClass: BestEffort
+    startTime: "2026-09-03T03:43:40Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-03-14T15:02:27Z"
+    generateName: petunia-engine-d865bdcb-
+    labels:
+      app: petunia-engine
+      pod-template-hash: d865bdcb
+    name: petunia-engine-d865bdcb-46s5z
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: petunia-engine-d865bdcb
+      uid: 5f25fcf0-86ce-491d-ba12-e3dabfdfbfa4
+    resourceVersion: "18086932"
+    uid: 2f8ad3cc-07a1-4d2d-970f-094701f01134
+  spec:
+    containers:
+    - envFrom:
+      - configMapRef:
+          name: petunia-engine
+      image: roskenet/petunia-engine:2.1.3
+      imagePullPolicy: IfNotPresent
+      name: petunia-engine
+      ports:
+      - containerPort: 8080
+        name: www
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-7smnh
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: petunia
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-7smnh
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-17T19:19:56Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-03-14T15:02:27Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-17T19:19:56Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-17T19:19:56Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-03-14T15:02:27Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://ac57f297e72a3c10572b22c73d194a0c9285c49aa29f222686941b913292d676
+      image: docker.io/roskenet/petunia-engine:2.1.3
+      imageID: docker.io/roskenet/petunia-engine@sha256:821725730dfdfc6161580705e7e9d0261fe777f1add17b3b1cd3f86cc9f4a1cc
+      lastState:
+        terminated:
+          containerID: containerd://8655c34b323c0b58218b35d02730aeda25e90ecdd67773d17b06762264cbc438
+          exitCode: 255
+          finishedAt: "2026-07-17T19:19:41Z"
+          reason: Unknown
+          startedAt: "2026-03-14T15:02:30Z"
+      name: petunia-engine
+      ready: true
+      restartCount: 1
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-17T19:19:55Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-7smnh
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 217.154.117.238
+    hostIPs:
+    - ip: 217.154.117.238
+    phase: Running
+    podIP: 10.42.0.237
+    podIPs:
+    - ip: 10.42.0.237
+    qosClass: BestEffort
+    startTime: "2026-03-14T15:02:27Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-03-15T21:33:37Z"
+    generateName: polonium-6bd5bcdf64-
+    labels:
+      app: polonium
+      pod-template-hash: 6bd5bcdf64
+    name: polonium-6bd5bcdf64-t9mhq
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: polonium-6bd5bcdf64
+      uid: 10c69368-0503-4beb-b818-fd05662f32ac
+    resourceVersion: "18086952"
+    uid: 1ab119b2-c206-4cf3-8f0f-9614f6042607
+  spec:
+    containers:
+    - image: roskenet/polonium:10.1.1
+      imagePullPolicy: IfNotPresent
+      name: polonium
+      ports:
+      - containerPort: 8080
+        name: http
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-6qckm
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: petunia
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-6qckm
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-17T19:19:56Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-03-15T21:33:37Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-17T19:19:56Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-17T19:19:56Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-03-15T21:33:37Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://16b9e7bd2a2833572f7fbd106537665c3e671e5a57d367acdd47c17e4e9b442e
+      image: docker.io/roskenet/polonium:10.1.1
+      imageID: docker.io/roskenet/polonium@sha256:11bad7936d751ca9c62812ecda991491747e903ce515013b191dd85755760f44
+      lastState:
+        terminated:
+          containerID: containerd://ae3d43a0b3c57bb698bad4b0f0b0d65d22896b0d16f5bde0d7f6f2401759fd63
+          exitCode: 255
+          finishedAt: "2026-07-17T19:19:41Z"
+          reason: Unknown
+          startedAt: "2026-03-15T21:33:41Z"
+      name: polonium
+      ready: true
+      restartCount: 1
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-17T19:19:56Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-6qckm
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 217.154.117.238
+    hostIPs:
+    - ip: 217.154.117.238
+    phase: Running
+    podIP: 10.42.0.243
+    podIPs:
+    - ip: 10.42.0.243
+    qosClass: BestEffort
+    startTime: "2026-03-15T21:33:37Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-02-28T14:35:35Z"
+    generateName: postgres-6b87c944b9-
+    labels:
+      app: postgres
+      pod-template-hash: 6b87c944b9
+    name: postgres-6b87c944b9-rzdz6
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: postgres-6b87c944b9
+      uid: 6405f3f5-cb1e-4863-b36c-34b3704576a0
+    resourceVersion: "18086991"
+    uid: ecc70c0d-0b01-4029-bfc4-0737d774439c
+  spec:
+    containers:
+    - command:
+      - postgres
+      - -c
+      - config_file=/etc/postgres-config/postgresql.conf
+      image: postgres:17
+      imagePullPolicy: IfNotPresent
+      name: postgres
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /etc/postgres-config
+        name: postgres-config
+      - mountPath: /var/lib/postgresql/data
+        name: postgres-data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-w7kfs
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    initContainers:
+    - command:
+      - sh
+      - -c
+      - |
+        mkdir -p /var/lib/postgresql/data
+        chown -R 999:999 /var/lib/postgresql/data
+        chmod 700 /var/lib/postgresql/data
+
+        if [ ! -f /var/lib/postgresql/data/PG_VERSION ]; then
+          echo "Initializing PostgreSQL database..."
+          su postgres -c "/usr/lib/postgresql/17/bin/initdb -D /var/lib/postgresql/data"
+
+          su postgres -c "/usr/lib/postgresql/17/bin/pg_ctl -D /var/lib/postgresql/data -o '-c listen_addresses=localhost' -w start"
+
+          echo "ALTER USER postgres WITH PASSWORD '${POSTGRES_PASSWORD}';" | su postgres -c "psql"
+          su postgres -c "/usr/lib/postgresql/17/bin/pg_ctl -D /var/lib/postgresql/data -m fast stop"
+        else
+          echo "PostgreSQL already initialized"
+        fi
+      env:
+      - name: POSTGRES_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: postgres-root-password
+            name: postgres
+      image: postgres:17
+      imagePullPolicy: IfNotPresent
+      name: postgres-init
+      resources: {}
+      securityContext:
+        runAsUser: 0
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/lib/postgresql/data
+        name: postgres-data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-w7kfs
+        readOnly: true
+    nodeName: petunia
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext:
+      fsGroup: 999
+      runAsGroup: 999
+      runAsUser: 999
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - configMap:
+        defaultMode: 420
+        name: postgres
+      name: postgres-config
+    - name: postgres-data
+      persistentVolumeClaim:
+        claimName: postgres-data
+    - name: kube-api-access-w7kfs
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-17T19:19:56Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-02-28T14:35:36Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-17T19:19:58Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-17T19:19:58Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-02-28T14:35:35Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://a997f97c908fdd1973c8134d181e63f92f7052d920aa3e2a80bf3e8158154598
+      image: docker.io/library/postgres:17
+      imageID: docker.io/library/postgres@sha256:4d89c904835259bc58876520e56267ca07a4ebd6a027f7814bbbf91b50d685be
+      lastState:
+        terminated:
+          containerID: containerd://89015362530584cdc01f90bd3dd2d7a825293bb14e154ab133f1f067cac2053e
+          exitCode: 255
+          finishedAt: "2026-07-17T19:19:41Z"
+          reason: Unknown
+          startedAt: "2026-02-28T14:35:36Z"
+      name: postgres
+      ready: true
+      restartCount: 1
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-17T19:19:57Z"
+      volumeMounts:
+      - mountPath: /etc/postgres-config
+        name: postgres-config
+      - mountPath: /var/lib/postgresql/data
+        name: postgres-data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-w7kfs
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 217.154.117.238
+    hostIPs:
+    - ip: 217.154.117.238
+    initContainerStatuses:
+    - containerID: containerd://74d994779caf83508a0926e506c0812e5e687ff92a27be1352d0deb202f92c3e
+      image: docker.io/library/postgres:17
+      imageID: docker.io/library/postgres@sha256:4d89c904835259bc58876520e56267ca07a4ebd6a027f7814bbbf91b50d685be
+      lastState: {}
+      name: postgres-init
+      ready: true
+      restartCount: 1
+      started: false
+      state:
+        terminated:
+          containerID: containerd://74d994779caf83508a0926e506c0812e5e687ff92a27be1352d0deb202f92c3e
+          exitCode: 0
+          finishedAt: "2026-07-17T19:19:55Z"
+          reason: Completed
+          startedAt: "2026-07-17T19:19:55Z"
+      volumeMounts:
+      - mountPath: /var/lib/postgresql/data
+        name: postgres-data
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-w7kfs
+        readOnly: true
+        recursiveReadOnly: Disabled
+    phase: Running
+    podIP: 10.42.0.235
+    podIPs:
+    - ip: 10.42.0.235
+    qosClass: BestEffort
+    startTime: "2026-02-28T14:35:35Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-02-28T22:42:21Z"
+    generateName: valkey-7cc94dc8dc-
+    labels:
+      app: valkey
+      pod-template-hash: 7cc94dc8dc
+    name: valkey-7cc94dc8dc-xhlxm
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: valkey-7cc94dc8dc
+      uid: e3274327-e947-4537-9d26-d89d2f95911f
+    resourceVersion: "18087018"
+    uid: 1f6c5c53-313b-4f73-95e2-ee6aa490df87
+  spec:
+    containers:
+    - args:
+      - valkey-server
+      - /usr/local/etc/valkey/valkey.conf
+      image: valkey/valkey:latest
+      imagePullPolicy: Always
+      name: valkey
+      ports:
+      - containerPort: 6379
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /usr/local/etc/valkey/valkey.conf
+        name: config
+        subPath: valkey.conf
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-bcfjr
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: petunia
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - configMap:
+        defaultMode: 420
+        name: valkey-config
+      name: config
+    - name: kube-api-access-bcfjr
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-17T19:20:02Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-02-28T22:42:21Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-17T19:20:02Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-07-17T19:20:02Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-02-28T22:42:21Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://0115e79efd6aacbfc2bbef00d0411d9244fdffd5a2ea24e7f93fd67a01470e79
+      image: docker.io/valkey/valkey:latest
+      imageID: docker.io/valkey/valkey@sha256:8e8d64b405ce18f41b8e5ee20aa4687a8ed0022d1298f2ce31cdcf3a76e09411
+      lastState:
+        terminated:
+          containerID: containerd://868f33183e1f4784ad368761931d3ca0ff9e010b6e320ecfba2ef738e53914ca
+          exitCode: 255
+          finishedAt: "2026-07-17T19:19:41Z"
+          reason: Unknown
+          startedAt: "2026-02-28T22:42:23Z"
+      name: valkey
+      ready: true
+      restartCount: 1
+      started: true
+      state:
+        running:
+          startedAt: "2026-07-17T19:20:01Z"
+      volumeMounts:
+      - mountPath: /usr/local/etc/valkey/valkey.conf
+        name: config
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-bcfjr
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 217.154.117.238
+    hostIPs:
+    - ip: 217.154.117.238
+    phase: Running
+    podIP: 10.42.0.246
+    podIPs:
+    - ip: 10.42.0.246
+    qosClass: BestEffort
+    startTime: "2026-02-28T22:42:21Z"
+- apiVersion: v1
+  kind: Pod
+  metadata:
+    creationTimestamp: "2026-09-03T03:50:26Z"
+    generateName: villadiana-65d6559b6d-
+    labels:
+      app: villadiana
+      pod-template-hash: 65d6559b6d
+    name: villadiana-65d6559b6d-c4fg5
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: ReplicaSet
+      name: villadiana-65d6559b6d
+      uid: 696f766e-786c-455c-8061-cc5567ab89a7
+    resourceVersion: "20412356"
+    uid: 8486c336-6bfe-4ffb-8f98-c102506f1837
+  spec:
+    containers:
+    - env:
+      - name: KEYCLOAK_VILLADIANA_SECRET
+        valueFrom:
+          secretKeyRef:
+            key: KEYCLOAK_VILLADIANA_SECRET
+            name: petunia-secret
+      - name: VALKEY_PASSWORD
+        valueFrom:
+          secretKeyRef:
+            key: VALKEY_PASSWORD
+            name: petunia-secret
+      envFrom:
+      - configMapRef:
+          name: villadiana
+      image: roskenet/villadiana:4.3.2
+      imagePullPolicy: IfNotPresent
+      name: villadiana
+      ports:
+      - containerPort: 8080
+        name: www
+        protocol: TCP
+      resources: {}
+      terminationMessagePath: /dev/termination-log
+      terminationMessagePolicy: File
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-2t6nd
+        readOnly: true
+    dnsPolicy: ClusterFirst
+    enableServiceLinks: true
+    nodeName: petunia
+    preemptionPolicy: PreemptLowerPriority
+    priority: 0
+    restartPolicy: Always
+    schedulerName: default-scheduler
+    securityContext: {}
+    serviceAccount: default
+    serviceAccountName: default
+    terminationGracePeriodSeconds: 30
+    tolerations:
+    - effect: NoExecute
+      key: node.kubernetes.io/not-ready
+      operator: Exists
+      tolerationSeconds: 300
+    - effect: NoExecute
+      key: node.kubernetes.io/unreachable
+      operator: Exists
+      tolerationSeconds: 300
+    volumes:
+    - name: kube-api-access-2t6nd
+      projected:
+        defaultMode: 420
+        sources:
+        - serviceAccountToken:
+            expirationSeconds: 3607
+            path: token
+        - configMap:
+            items:
+            - key: ca.crt
+              path: ca.crt
+            name: kube-root-ca.crt
+        - downwardAPI:
+            items:
+            - fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.namespace
+              path: namespace
+  status:
+    conditions:
+    - lastProbeTime: null
+      lastTransitionTime: "2026-09-03T03:50:27Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: null
+      lastTransitionTime: "2026-09-03T03:50:26Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: null
+      lastTransitionTime: "2026-09-03T03:50:27Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: null
+      lastTransitionTime: "2026-09-03T03:50:27Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: null
+      lastTransitionTime: "2026-09-03T03:50:26Z"
+      status: "True"
+      type: PodScheduled
+    containerStatuses:
+    - containerID: containerd://df8adcdfc6d665c163c57c0cf77272c98aa26f2d791b9682a2a07f51d16e0a9c
+      image: docker.io/roskenet/villadiana:4.3.2
+      imageID: docker.io/roskenet/villadiana@sha256:0726ee104fc259b978accd4a4767867428c13eda94a75b24c725642653189062
+      lastState: {}
+      name: villadiana
+      ready: true
+      restartCount: 0
+      started: true
+      state:
+        running:
+          startedAt: "2026-09-03T03:50:27Z"
+      volumeMounts:
+      - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+        name: kube-api-access-2t6nd
+        readOnly: true
+        recursiveReadOnly: Disabled
+    hostIP: 217.154.117.238
+    hostIPs:
+    - ip: 217.154.117.238
+    phase: Running
+    podIP: 10.42.0.6
+    podIPs:
+    - ip: 10.42.0.6
+    qosClass: BestEffort
+    startTime: "2026-09-03T03:50:26Z"
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"alpicola","namespace":"default"},"spec":{"ports":[{"port":80,"protocol":"TCP","targetPort":"www"}],"selector":{"app":"alpicola"}}}
+    creationTimestamp: "2026-02-28T16:09:44Z"
+    name: alpicola
+    namespace: default
+    resourceVersion: "11263378"
+    uid: 1bb0f5f1-f489-4d3b-b1cf-367789e5fccf
+  spec:
+    clusterIP: 10.43.83.167
+    clusterIPs:
+    - 10.43.83.167
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 80
+      protocol: TCP
+      targetPort: www
+    selector:
+      app: alpicola
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"keycloak"},"name":"keycloak","namespace":"default"},"spec":{"ports":[{"name":"http","port":80,"protocol":"TCP","targetPort":"service"}],"selector":{"app":"keycloak"},"type":"ClusterIP"}}
+    creationTimestamp: "2026-02-28T14:59:05Z"
+    labels:
+      app: keycloak
+    name: keycloak
+    namespace: default
+    resourceVersion: "11318689"
+    uid: 85cb311c-7800-4b4d-a0f9-03947a75d8c6
+  spec:
+    clusterIP: 10.43.34.149
+    clusterIPs:
+    - 10.43.34.149
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: service
+    selector:
+      app: keycloak
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    creationTimestamp: "2025-07-13T19:16:37Z"
+    labels:
+      component: apiserver
+      provider: kubernetes
+    name: kubernetes
+    namespace: default
+    resourceVersion: "51"
+    uid: 46083e6e-fa4c-4548-9b98-5a059de0fe31
+  spec:
+    clusterIP: 10.43.0.1
+    clusterIPs:
+    - 10.43.0.1
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: https
+      port: 443
+      protocol: TCP
+      targetPort: 6443
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"petunia-engine","namespace":"default"},"spec":{"ports":[{"port":80,"protocol":"TCP","targetPort":"www"}],"selector":{"app":"petunia-engine"}}}
+    creationTimestamp: "2026-03-07T08:06:55Z"
+    name: petunia-engine
+    namespace: default
+    resourceVersion: "11592129"
+    uid: 7398ff35-974b-43a3-a075-36452f6795de
+  spec:
+    clusterIP: 10.43.208.132
+    clusterIPs:
+    - 10.43.208.132
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 80
+      protocol: TCP
+      targetPort: www
+    selector:
+      app: petunia-engine
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"polonium","namespace":"default"},"spec":{"ports":[{"port":80,"targetPort":"http"}],"selector":{"app":"polonium"}}}
+    creationTimestamp: "2026-03-01T23:09:11Z"
+    name: polonium
+    namespace: default
+    resourceVersion: "11328880"
+    uid: 1fbfaf15-e699-4334-92c0-9290e1656629
+  spec:
+    clusterIP: 10.43.52.159
+    clusterIPs:
+    - 10.43.52.159
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 80
+      protocol: TCP
+      targetPort: http
+    selector:
+      app: polonium
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"labels":{"app":"postgres"},"name":"postgres","namespace":"default"},"spec":{"ports":[{"port":5432}],"selector":{"app":"postgres"}}}
+    creationTimestamp: "2026-02-28T13:53:33Z"
+    labels:
+      app: postgres
+    name: postgres
+    namespace: default
+    resourceVersion: "11258350"
+    uid: f824d4af-0e78-437d-8ebf-9b01cd0a3c75
+  spec:
+    clusterIP: 10.43.126.123
+    clusterIPs:
+    - 10.43.126.123
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 5432
+      protocol: TCP
+      targetPort: 5432
+    selector:
+      app: postgres
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"valkey","namespace":"default"},"spec":{"ports":[{"name":"tcp-port","port":6379,"protocol":"TCP","targetPort":6379}],"selector":{"app":"valkey"},"type":"ClusterIP"}}
+    creationTimestamp: "2026-02-28T13:28:09Z"
+    name: valkey
+    namespace: default
+    resourceVersion: "11257466"
+    uid: f8f7b61f-962c-4119-95c0-91d8b48620e4
+  spec:
+    clusterIP: 10.43.126.48
+    clusterIPs:
+    - 10.43.126.48
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - name: tcp-port
+      port: 6379
+      protocol: TCP
+      targetPort: 6379
+    selector:
+      app: valkey
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    annotations:
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"v1","kind":"Service","metadata":{"annotations":{},"name":"villadiana","namespace":"default"},"spec":{"ports":[{"port":80,"protocol":"TCP","targetPort":"www"}],"selector":{"app":"villadiana"}}}
+    creationTimestamp: "2026-02-28T19:08:42Z"
+    name: villadiana
+    namespace: default
+    resourceVersion: "11318829"
+    uid: 35b9fb3a-760f-4b2f-a83d-1d5aec2d9aaf
+  spec:
+    clusterIP: 10.43.30.108
+    clusterIPs:
+    - 10.43.30.108
+    internalTrafficPolicy: Cluster
+    ipFamilies:
+    - IPv4
+    ipFamilyPolicy: SingleStack
+    ports:
+    - port: 80
+      protocol: TCP
+      targetPort: www
+    selector:
+      app: villadiana
+    sessionAffinity: None
+    type: ClusterIP
+  status:
+    loadBalancer: {}
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "18"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"alpicola","namespace":"default"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"alpicola"}},"template":{"metadata":{"labels":{"app":"alpicola"}},"spec":{"containers":[{"image":"roskenet/alpicola:2.100.0","name":"alpicola","ports":[{"containerPort":80,"name":"www"}]}]}}}}
+    creationTimestamp: "2026-02-28T16:09:38Z"
+    generation: 18
+    name: alpicola
+    namespace: default
+    resourceVersion: "18086943"
+    uid: 35c13a23-7c9a-4a6b-b89e-d73c55d68f8c
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: alpicola
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: alpicola
+      spec:
+        containers:
+        - image: roskenet/alpicola:2.100.0
+          imagePullPolicy: IfNotPresent
+          name: alpicola
+          ports:
+          - containerPort: 80
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-03-06T20:35:49Z"
+      lastUpdateTime: "2026-03-14T21:09:20Z"
+      message: ReplicaSet "alpicola-6bbcb8fd7" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2026-07-17T19:19:56Z"
+      lastUpdateTime: "2026-07-17T19:19:56Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 18
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "2"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app":"keycloak"},"name":"keycloak","namespace":"default"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"keycloak"}},"template":{"metadata":{"labels":{"app":"keycloak"}},"spec":{"containers":[{"args":["start-dev","--db-url=${JDBC_URL}","--db=${DB_VENDOR}","--db-username=${DB_USER}","--db-password=${DB_PASSWORD}"],"env":[{"name":"KEYCLOAK_ADMIN_PASSWORD","valueFrom":{"secretKeyRef":{"key":"KEYCLOAK_ADMIN_PASSWORD","name":"petunia-secret"}}},{"name":"DB_PASSWORD","valueFrom":{"secretKeyRef":{"key":"KEYCLOAK_DB_PASSWORD","name":"petunia-secret"}}}],"envFrom":[{"configMapRef":{"name":"keycloak-config"}}],"image":"keycloak/keycloak:26.5","imagePullPolicy":"IfNotPresent","name":"keycloak","ports":[{"containerPort":8080,"name":"service"}]}]}}}}
+    creationTimestamp: "2026-02-28T14:59:50Z"
+    generation: 2
+    labels:
+      app: keycloak
+    name: keycloak
+    namespace: default
+    resourceVersion: "20412107"
+    uid: 1ba71968-652d-42c9-ae62-2b7005dd90c1
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: keycloak
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: keycloak
+      spec:
+        containers:
+        - args:
+          - start-dev
+          - --db-url=${JDBC_URL}
+          - --db=${DB_VENDOR}
+          - --db-username=${DB_USER}
+          - --db-password=${DB_PASSWORD}
+          env:
+          - name: KEYCLOAK_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: KEYCLOAK_ADMIN_PASSWORD
+                name: petunia-secret
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: KEYCLOAK_DB_PASSWORD
+                name: petunia-secret
+          envFrom:
+          - configMapRef:
+              name: keycloak-config
+          image: keycloak/keycloak:26.5
+          imagePullPolicy: IfNotPresent
+          name: keycloak
+          ports:
+          - containerPort: 8080
+            name: service
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-02-28T14:59:50Z"
+      lastUpdateTime: "2026-03-01T18:24:11Z"
+      message: ReplicaSet "keycloak-5f767dbbf5" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2026-09-03T03:43:41Z"
+      lastUpdateTime: "2026-09-03T03:43:41Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 2
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "7"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"petunia-engine","namespace":"default"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"petunia-engine"}},"template":{"metadata":{"labels":{"app":"petunia-engine"}},"spec":{"containers":[{"envFrom":[{"configMapRef":{"name":"petunia-engine"}}],"image":"roskenet/petunia-engine:2.1.3","name":"petunia-engine","ports":[{"containerPort":8080,"name":"www"}]}]}}}}
+    creationTimestamp: "2026-03-07T08:06:50Z"
+    generation: 7
+    name: petunia-engine
+    namespace: default
+    resourceVersion: "18086944"
+    uid: 003a70b6-b9cf-4426-8dfe-3c9bb993447d
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: petunia-engine
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: petunia-engine
+      spec:
+        containers:
+        - envFrom:
+          - configMapRef:
+              name: petunia-engine
+          image: roskenet/petunia-engine:2.1.3
+          imagePullPolicy: IfNotPresent
+          name: petunia-engine
+          ports:
+          - containerPort: 8080
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-03-07T08:06:50Z"
+      lastUpdateTime: "2026-03-14T15:02:31Z"
+      message: ReplicaSet "petunia-engine-d865bdcb" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2026-07-17T19:19:56Z"
+      lastUpdateTime: "2026-07-17T19:19:56Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 7
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "3"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"polonium","namespace":"default"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"polonium"}},"template":{"metadata":{"labels":{"app":"polonium"}},"spec":{"containers":[{"image":"roskenet/polonium:10.1.1","imagePullPolicy":"IfNotPresent","name":"polonium","ports":[{"containerPort":8080,"name":"http"}]}]}}}}
+    creationTimestamp: "2026-03-01T23:07:56Z"
+    generation: 3
+    name: polonium
+    namespace: default
+    resourceVersion: "18086957"
+    uid: 0d1d525d-7863-4ef7-a8de-63470c19572f
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: polonium
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: polonium
+      spec:
+        containers:
+        - image: roskenet/polonium:10.1.1
+          imagePullPolicy: IfNotPresent
+          name: polonium
+          ports:
+          - containerPort: 8080
+            name: http
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-03-01T23:07:56Z"
+      lastUpdateTime: "2026-03-15T21:33:42Z"
+      message: ReplicaSet "polonium-6bd5bcdf64" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2026-07-17T19:19:56Z"
+      lastUpdateTime: "2026-07-17T19:19:56Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 3
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"postgres","namespace":"default"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"postgres"}},"template":{"metadata":{"labels":{"app":"postgres"}},"spec":{"containers":[{"command":["postgres","-c","config_file=/etc/postgres-config/postgresql.conf"],"image":"postgres:17","imagePullPolicy":"IfNotPresent","name":"postgres","volumeMounts":[{"mountPath":"/etc/postgres-config","name":"postgres-config"},{"mountPath":"/var/lib/postgresql/data","name":"postgres-data"}]}],"initContainers":[{"command":["sh","-c","mkdir -p /var/lib/postgresql/data\nchown -R 999:999 /var/lib/postgresql/data\nchmod 700 /var/lib/postgresql/data\n\nif [ ! -f /var/lib/postgresql/data/PG_VERSION ]; then\n  echo \"Initializing PostgreSQL database...\"\n  su postgres -c \"/usr/lib/postgresql/17/bin/initdb -D /var/lib/postgresql/data\"\n\n  su postgres -c \"/usr/lib/postgresql/17/bin/pg_ctl -D /var/lib/postgresql/data -o '-c listen_addresses=localhost' -w start\"\n\n  echo \"ALTER USER postgres WITH PASSWORD '${POSTGRES_PASSWORD}';\" | su postgres -c \"psql\"\n  su postgres -c \"/usr/lib/postgresql/17/bin/pg_ctl -D /var/lib/postgresql/data -m fast stop\"\nelse\n  echo \"PostgreSQL already initialized\"\nfi\n"],"env":[{"name":"POSTGRES_PASSWORD","valueFrom":{"secretKeyRef":{"key":"postgres-root-password","name":"postgres"}}}],"image":"postgres:17","name":"postgres-init","securityContext":{"runAsUser":0},"volumeMounts":[{"mountPath":"/var/lib/postgresql/data","name":"postgres-data"}]}],"securityContext":{"fsGroup":999,"runAsGroup":999,"runAsUser":999},"volumes":[{"configMap":{"name":"postgres"},"name":"postgres-config"},{"name":"postgres-data","persistentVolumeClaim":{"claimName":"postgres-data"}}]}}}}
+    creationTimestamp: "2026-02-28T14:35:35Z"
+    generation: 1
+    name: postgres
+    namespace: default
+    resourceVersion: "18086995"
+    uid: 5719249a-e868-46c0-b32c-57312b08f653
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: postgres
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: postgres
+      spec:
+        containers:
+        - command:
+          - postgres
+          - -c
+          - config_file=/etc/postgres-config/postgresql.conf
+          image: postgres:17
+          imagePullPolicy: IfNotPresent
+          name: postgres
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /etc/postgres-config
+            name: postgres-config
+          - mountPath: /var/lib/postgresql/data
+            name: postgres-data
+        dnsPolicy: ClusterFirst
+        initContainers:
+        - command:
+          - sh
+          - -c
+          - |
+            mkdir -p /var/lib/postgresql/data
+            chown -R 999:999 /var/lib/postgresql/data
+            chmod 700 /var/lib/postgresql/data
+
+            if [ ! -f /var/lib/postgresql/data/PG_VERSION ]; then
+              echo "Initializing PostgreSQL database..."
+              su postgres -c "/usr/lib/postgresql/17/bin/initdb -D /var/lib/postgresql/data"
+
+              su postgres -c "/usr/lib/postgresql/17/bin/pg_ctl -D /var/lib/postgresql/data -o '-c listen_addresses=localhost' -w start"
+
+              echo "ALTER USER postgres WITH PASSWORD '${POSTGRES_PASSWORD}';" | su postgres -c "psql"
+              su postgres -c "/usr/lib/postgresql/17/bin/pg_ctl -D /var/lib/postgresql/data -m fast stop"
+            else
+              echo "PostgreSQL already initialized"
+            fi
+          env:
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: postgres-root-password
+                name: postgres
+          image: postgres:17
+          imagePullPolicy: IfNotPresent
+          name: postgres-init
+          resources: {}
+          securityContext:
+            runAsUser: 0
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: postgres-data
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          fsGroup: 999
+          runAsGroup: 999
+          runAsUser: 999
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: postgres
+          name: postgres-config
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-data
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-02-28T14:35:35Z"
+      lastUpdateTime: "2026-02-28T14:35:37Z"
+      message: ReplicaSet "postgres-6b87c944b9" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2026-07-17T19:19:58Z"
+      lastUpdateTime: "2026-07-17T19:19:58Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "1"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"valkey","namespace":"default"},"spec":{"selector":{"matchLabels":{"app":"valkey"}},"template":{"metadata":{"labels":{"app":"valkey"}},"spec":{"containers":[{"args":["valkey-server","/usr/local/etc/valkey/valkey.conf"],"image":"valkey/valkey:latest","name":"valkey","ports":[{"containerPort":6379}],"volumeMounts":[{"mountPath":"/usr/local/etc/valkey/valkey.conf","name":"config","subPath":"valkey.conf"}]}],"volumes":[{"configMap":{"name":"valkey-config"},"name":"config"}]}}}}
+    creationTimestamp: "2026-02-28T22:42:21Z"
+    generation: 1
+    name: valkey
+    namespace: default
+    resourceVersion: "18087021"
+    uid: eedfcaa8-7e74-4170-b743-0e820a5dbf22
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: valkey
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: valkey
+      spec:
+        containers:
+        - args:
+          - valkey-server
+          - /usr/local/etc/valkey/valkey.conf
+          image: valkey/valkey:latest
+          imagePullPolicy: Always
+          name: valkey
+          ports:
+          - containerPort: 6379
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /usr/local/etc/valkey/valkey.conf
+            name: config
+            subPath: valkey.conf
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: valkey-config
+          name: config
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-02-28T22:42:21Z"
+      lastUpdateTime: "2026-02-28T22:42:23Z"
+      message: ReplicaSet "valkey-7cc94dc8dc" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2026-07-17T19:20:02Z"
+      lastUpdateTime: "2026-07-17T19:20:02Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: Deployment
+  metadata:
+    annotations:
+      deployment.kubernetes.io/revision: "5"
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"name":"villadiana","namespace":"default"},"spec":{"replicas":1,"selector":{"matchLabels":{"app":"villadiana"}},"template":{"metadata":{"labels":{"app":"villadiana"}},"spec":{"containers":[{"env":[{"name":"KEYCLOAK_VILLADIANA_SECRET","valueFrom":{"secretKeyRef":{"key":"KEYCLOAK_VILLADIANA_SECRET","name":"petunia-secret"}}},{"name":"VALKEY_PASSWORD","valueFrom":{"secretKeyRef":{"key":"VALKEY_PASSWORD","name":"petunia-secret"}}}],"envFrom":[{"configMapRef":{"name":"villadiana"}}],"image":"roskenet/villadiana:4.3.2","name":"villadiana","ports":[{"containerPort":8080,"name":"www"}]}]}}}}
+    creationTimestamp: "2026-03-08T22:16:43Z"
+    generation: 5
+    name: villadiana
+    namespace: default
+    resourceVersion: "20412361"
+    uid: 7c9f1dcf-b6a9-4d9a-af6d-d84a7d2fc351
+  spec:
+    progressDeadlineSeconds: 600
+    replicas: 1
+    revisionHistoryLimit: 10
+    selector:
+      matchLabels:
+        app: villadiana
+    strategy:
+      rollingUpdate:
+        maxSurge: 25%
+        maxUnavailable: 25%
+      type: RollingUpdate
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: villadiana
+      spec:
+        containers:
+        - env:
+          - name: KEYCLOAK_VILLADIANA_SECRET
+            valueFrom:
+              secretKeyRef:
+                key: KEYCLOAK_VILLADIANA_SECRET
+                name: petunia-secret
+          - name: VALKEY_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: VALKEY_PASSWORD
+                name: petunia-secret
+          envFrom:
+          - configMapRef:
+              name: villadiana
+          image: roskenet/villadiana:4.3.2
+          imagePullPolicy: IfNotPresent
+          name: villadiana
+          ports:
+          - containerPort: 8080
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    conditions:
+    - lastTransitionTime: "2026-03-08T22:16:43Z"
+      lastUpdateTime: "2026-03-14T14:59:38Z"
+      message: ReplicaSet "villadiana-65d6559b6d" has successfully progressed.
+      reason: NewReplicaSetAvailable
+      status: "True"
+      type: Progressing
+    - lastTransitionTime: "2026-09-03T03:50:27Z"
+      lastUpdateTime: "2026-09-03T03:50:27Z"
+      message: Deployment has minimum availability.
+      reason: MinimumReplicasAvailable
+      status: "True"
+      type: Available
+    observedGeneration: 5
+    readyReplicas: 1
+    replicas: 1
+    updatedReplicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "15"
+    creationTimestamp: "2026-03-14T11:03:47Z"
+    generation: 2
+    labels:
+      app: alpicola
+      pod-template-hash: 55765c55fd
+    name: alpicola-55765c55fd
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: alpicola
+      uid: 35c13a23-7c9a-4a6b-b89e-d73c55d68f8c
+    resourceVersion: "11945871"
+    uid: 136227dc-0f4c-4392-abd3-a5f0aa12b670
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: alpicola
+        pod-template-hash: 55765c55fd
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: alpicola
+          pod-template-hash: 55765c55fd
+      spec:
+        containers:
+        - image: roskenet/alpicola:2.97.0
+          imagePullPolicy: IfNotPresent
+          name: alpicola
+          ports:
+          - containerPort: 80
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "9"
+    creationTimestamp: "2026-03-02T20:30:14Z"
+    generation: 2
+    labels:
+      app: alpicola
+      pod-template-hash: 56cfdfd65d
+    name: alpicola-56cfdfd65d
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: alpicola
+      uid: 35c13a23-7c9a-4a6b-b89e-d73c55d68f8c
+    resourceVersion: "11568590"
+    uid: f4a7a982-7a8f-4765-8c0c-acdb2b23989b
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: alpicola
+        pod-template-hash: 56cfdfd65d
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: alpicola
+          pod-template-hash: 56cfdfd65d
+      spec:
+        containers:
+        - image: roskenet/alpicola:2.91.2
+          imagePullPolicy: IfNotPresent
+          name: alpicola
+          ports:
+          - containerPort: 80
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "8"
+    creationTimestamp: "2026-03-01T21:53:47Z"
+    generation: 2
+    labels:
+      app: alpicola
+      pod-template-hash: 577f9cd8b7
+    name: alpicola-577f9cd8b7
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: alpicola
+      uid: 35c13a23-7c9a-4a6b-b89e-d73c55d68f8c
+    resourceVersion: "11372449"
+    uid: 229dbaa8-1cf2-4075-9db0-0c951e2e3d2e
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: alpicola
+        pod-template-hash: 577f9cd8b7
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: alpicola
+          pod-template-hash: 577f9cd8b7
+      spec:
+        containers:
+        - image: roskenet/alpicola:2.91.1
+          imagePullPolicy: IfNotPresent
+          name: alpicola
+          ports:
+          - containerPort: 80
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "10"
+    creationTimestamp: "2026-03-06T20:24:01Z"
+    generation: 2
+    labels:
+      app: alpicola
+      pod-template-hash: 57976bdd8d
+    name: alpicola-57976bdd8d
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: alpicola
+      uid: 35c13a23-7c9a-4a6b-b89e-d73c55d68f8c
+    resourceVersion: "11568555"
+    uid: dcca4a10-e573-4468-b627-fbaa1d90c960
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: alpicola
+        pod-template-hash: 57976bdd8d
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: alpicola
+          pod-template-hash: 57976bdd8d
+      spec:
+        containers:
+        - image: roskenet/alpicola:2.92.0-minikube
+          imagePullPolicy: IfNotPresent
+          name: alpicola
+          ports:
+          - containerPort: 80
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "12"
+    creationTimestamp: "2026-03-07T07:47:59Z"
+    generation: 2
+    labels:
+      app: alpicola
+      pod-template-hash: 5f87d588f4
+    name: alpicola-5f87d588f4
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: alpicola
+      uid: 35c13a23-7c9a-4a6b-b89e-d73c55d68f8c
+    resourceVersion: "11667829"
+    uid: 1faca202-bfc9-43d7-a4c8-81af4104efb2
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: alpicola
+        pod-template-hash: 5f87d588f4
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: alpicola
+          pod-template-hash: 5f87d588f4
+      spec:
+        containers:
+        - image: roskenet/alpicola:2.93.0
+          imagePullPolicy: IfNotPresent
+          name: alpicola
+          ports:
+          - containerPort: 80
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "17"
+    creationTimestamp: "2026-03-14T14:56:35Z"
+    generation: 2
+    labels:
+      app: alpicola
+      pod-template-hash: 67b6964c9b
+    name: alpicola-67b6964c9b
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: alpicola
+      uid: 35c13a23-7c9a-4a6b-b89e-d73c55d68f8c
+    resourceVersion: "11963563"
+    uid: 0d1a5cad-d6ab-417c-972d-8b4f734d68f9
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: alpicola
+        pod-template-hash: 67b6964c9b
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: alpicola
+          pod-template-hash: 67b6964c9b
+      spec:
+        containers:
+        - image: roskenet/alpicola:2.99.0
+          imagePullPolicy: IfNotPresent
+          name: alpicola
+          ports:
+          - containerPort: 80
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "18"
+    creationTimestamp: "2026-03-14T21:09:15Z"
+    generation: 1
+    labels:
+      app: alpicola
+      pod-template-hash: 6bbcb8fd7
+    name: alpicola-6bbcb8fd7
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: alpicola
+      uid: 35c13a23-7c9a-4a6b-b89e-d73c55d68f8c
+    resourceVersion: "18086938"
+    uid: adf0cd49-7102-4105-aad1-10775799beba
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: alpicola
+        pod-template-hash: 6bbcb8fd7
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: alpicola
+          pod-template-hash: 6bbcb8fd7
+      spec:
+        containers:
+        - image: roskenet/alpicola:2.100.0
+          imagePullPolicy: IfNotPresent
+          name: alpicola
+          ports:
+          - containerPort: 80
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "11"
+    creationTimestamp: "2026-03-06T20:35:49Z"
+    generation: 3
+    labels:
+      app: alpicola
+      pod-template-hash: 6f6d4ddfbf
+    name: alpicola-6f6d4ddfbf
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: alpicola
+      uid: 35c13a23-7c9a-4a6b-b89e-d73c55d68f8c
+    resourceVersion: "11591466"
+    uid: d065d8bd-1917-41cd-b0ad-b9cbb9c98285
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: alpicola
+        pod-template-hash: 6f6d4ddfbf
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: alpicola
+          pod-template-hash: 6f6d4ddfbf
+      spec:
+        containers:
+        - image: roskenet/alpicola:2.92.0
+          imagePullPolicy: IfNotPresent
+          name: alpicola
+          ports:
+          - containerPort: 80
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 3
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "14"
+    creationTimestamp: "2026-03-08T23:31:59Z"
+    generation: 2
+    labels:
+      app: alpicola
+      pod-template-hash: 77947b76fb
+    name: alpicola-77947b76fb
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: alpicola
+      uid: 35c13a23-7c9a-4a6b-b89e-d73c55d68f8c
+    resourceVersion: "11942605"
+    uid: 0f20ded7-be09-4768-9889-daeb06e3ec54
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: alpicola
+        pod-template-hash: 77947b76fb
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: alpicola
+          pod-template-hash: 77947b76fb
+      spec:
+        containers:
+        - image: roskenet/alpicola:2.95.0
+          imagePullPolicy: IfNotPresent
+          name: alpicola
+          ports:
+          - containerPort: 80
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "16"
+    creationTimestamp: "2026-03-14T12:35:11Z"
+    generation: 2
+    labels:
+      app: alpicola
+      pod-template-hash: 96659546c
+    name: alpicola-96659546c
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: alpicola
+      uid: 35c13a23-7c9a-4a6b-b89e-d73c55d68f8c
+    resourceVersion: "11950763"
+    uid: dd986d1f-4128-4641-9621-22daded2dbcb
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: alpicola
+        pod-template-hash: 96659546c
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: alpicola
+          pod-template-hash: 96659546c
+      spec:
+        containers:
+        - image: roskenet/alpicola:2.98.0
+          imagePullPolicy: IfNotPresent
+          name: alpicola
+          ports:
+          - containerPort: 80
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "13"
+    creationTimestamp: "2026-03-08T21:04:47Z"
+    generation: 2
+    labels:
+      app: alpicola
+      pod-template-hash: c54846b67
+    name: alpicola-c54846b67
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: alpicola
+      uid: 35c13a23-7c9a-4a6b-b89e-d73c55d68f8c
+    resourceVersion: "11673142"
+    uid: f30d64a2-e540-47ad-a9d0-ff129f10f3be
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: alpicola
+        pod-template-hash: c54846b67
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: alpicola
+          pod-template-hash: c54846b67
+      spec:
+        containers:
+        - image: roskenet/alpicola:2.94.0
+          imagePullPolicy: IfNotPresent
+          name: alpicola
+          ports:
+          - containerPort: 80
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "2"
+    creationTimestamp: "2026-03-01T18:24:09Z"
+    generation: 1
+    labels:
+      app: keycloak
+      pod-template-hash: 5f767dbbf5
+    name: keycloak-5f767dbbf5
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: keycloak
+      uid: 1ba71968-652d-42c9-ae62-2b7005dd90c1
+    resourceVersion: "20412105"
+    uid: 612f1e11-9719-42ae-beed-90a8ad83ce5c
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: keycloak
+        pod-template-hash: 5f767dbbf5
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: keycloak
+          pod-template-hash: 5f767dbbf5
+      spec:
+        containers:
+        - args:
+          - start-dev
+          - --db-url=${JDBC_URL}
+          - --db=${DB_VENDOR}
+          - --db-username=${DB_USER}
+          - --db-password=${DB_PASSWORD}
+          env:
+          - name: KEYCLOAK_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: KEYCLOAK_ADMIN_PASSWORD
+                name: petunia-secret
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: KEYCLOAK_DB_PASSWORD
+                name: petunia-secret
+          envFrom:
+          - configMapRef:
+              name: keycloak-config
+          image: keycloak/keycloak:26.5
+          imagePullPolicy: IfNotPresent
+          name: keycloak
+          ports:
+          - containerPort: 8080
+            name: service
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2026-02-28T14:59:50Z"
+    generation: 2
+    labels:
+      app: keycloak
+      pod-template-hash: 7575ff89f8
+    name: keycloak-7575ff89f8
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: keycloak
+      uid: 1ba71968-652d-42c9-ae62-2b7005dd90c1
+    resourceVersion: "11318682"
+    uid: a1f8f6c1-47f7-4354-bc26-0998929957e9
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: keycloak
+        pod-template-hash: 7575ff89f8
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: keycloak
+          pod-template-hash: 7575ff89f8
+      spec:
+        containers:
+        - args:
+          - start-dev
+          - --db-url=${JDBC_URL}
+          - --db=${DB_VENDOR}
+          - --db-username=${DB_USER}
+          - --db-password=${DB_PASSWORD}
+          env:
+          - name: JDBC_URL
+            value: jdbc:postgresql://postgres/keycloak
+          - name: HOSTNAME
+            value: https://auth.roskenet.de
+          - name: KEYCLOAK_ADMIN
+            value: keycloak
+          - name: KEYCLOAK_ADMIN_PASSWORD
+            value: keycloak
+          - name: DB_VENDOR
+            value: postgres
+          - name: DB_ADDR
+            value: postgres
+          - name: DB_PORT
+            value: "5432"
+          - name: DB_USER
+            value: keycloak
+          - name: DB_PASSWORD
+            value: keycloak
+          - name: DB_DATABASE
+            value: keycloak
+          - name: KC_HOSTNAME
+            value: https://auth.roskenet.de
+          - name: KC_PROXY
+            value: edge
+          - name: KC_HTTP_ENABLED
+            value: "true"
+          - name: KC_HOSTNAME_STRICT
+            value: "false"
+          image: keycloak/keycloak:26.5
+          imagePullPolicy: IfNotPresent
+          name: keycloak
+          ports:
+          - containerPort: 8080
+            name: service
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "2"
+    creationTimestamp: "2026-03-07T08:08:32Z"
+    generation: 2
+    labels:
+      app: petunia-engine
+      pod-template-hash: 5b6b8c547
+    name: petunia-engine-5b6b8c547
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: petunia-engine
+      uid: 003a70b6-b9cf-4426-8dfe-3c9bb993447d
+    resourceVersion: "11668414"
+    uid: 2510fd69-2c72-4fd7-b813-8c91bf074516
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: petunia-engine
+        pod-template-hash: 5b6b8c547
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: petunia-engine
+          pod-template-hash: 5b6b8c547
+      spec:
+        containers:
+        - envFrom:
+          - configMapRef:
+              name: petunia-engine
+          image: roskenet/petunia-engine:1.0.0
+          imagePullPolicy: IfNotPresent
+          name: petunia-engine
+          ports:
+          - containerPort: 8080
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "4"
+    creationTimestamp: "2026-03-14T08:52:06Z"
+    generation: 2
+    labels:
+      app: petunia-engine
+      pod-template-hash: 6584d4dd77
+    name: petunia-engine-6584d4dd77
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: petunia-engine
+      uid: 003a70b6-b9cf-4426-8dfe-3c9bb993447d
+    resourceVersion: "11940936"
+    uid: c54c8e17-2dbc-49f3-a5c4-291bf5cbc696
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: petunia-engine
+        pod-template-hash: 6584d4dd77
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: petunia-engine
+          pod-template-hash: 6584d4dd77
+      spec:
+        containers:
+        - envFrom:
+          - configMapRef:
+              name: petunia-engine
+          image: roskenet/petunia-engine:2.1.0
+          imagePullPolicy: IfNotPresent
+          name: petunia-engine
+          ports:
+          - containerPort: 8080
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "6"
+    creationTimestamp: "2026-03-14T12:40:53Z"
+    generation: 2
+    labels:
+      app: petunia-engine
+      pod-template-hash: 65bbb4c6ff
+    name: petunia-engine-65bbb4c6ff
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: petunia-engine
+      uid: 003a70b6-b9cf-4426-8dfe-3c9bb993447d
+    resourceVersion: "11951036"
+    uid: da88b611-01bb-4f7d-8047-bfa3defb1013
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: petunia-engine
+        pod-template-hash: 65bbb4c6ff
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: petunia-engine
+          pod-template-hash: 65bbb4c6ff
+      spec:
+        containers:
+        - envFrom:
+          - configMapRef:
+              name: petunia-engine
+          image: roskenet/petunia-engine:2.1.2
+          imagePullPolicy: IfNotPresent
+          name: petunia-engine
+          ports:
+          - containerPort: 8080
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "5"
+    creationTimestamp: "2026-03-14T10:15:40Z"
+    generation: 2
+    labels:
+      app: petunia-engine
+      pod-template-hash: 6fbc7c5f74
+    name: petunia-engine-6fbc7c5f74
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: petunia-engine
+      uid: 003a70b6-b9cf-4426-8dfe-3c9bb993447d
+    resourceVersion: "11946100"
+    uid: f4ea6756-a196-4956-af69-6c21b3934bfe
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: petunia-engine
+        pod-template-hash: 6fbc7c5f74
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: petunia-engine
+          pod-template-hash: 6fbc7c5f74
+      spec:
+        containers:
+        - envFrom:
+          - configMapRef:
+              name: petunia-engine
+          image: roskenet/petunia-engine:2.1.1
+          imagePullPolicy: IfNotPresent
+          name: petunia-engine
+          ports:
+          - containerPort: 8080
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2026-03-07T08:06:50Z"
+    generation: 2
+    labels:
+      app: petunia-engine
+      pod-template-hash: 9f4888887
+    name: petunia-engine-9f4888887
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: petunia-engine
+      uid: 003a70b6-b9cf-4426-8dfe-3c9bb993447d
+    resourceVersion: "11592242"
+    uid: 1412a831-5fe1-4f00-8dd3-53b552aa4add
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: petunia-engine
+        pod-template-hash: 9f4888887
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: petunia-engine
+          pod-template-hash: 9f4888887
+      spec:
+        containers:
+        - envFrom:
+          - configMapRef:
+              name: petunia-config
+          image: roskenet/petunia-engine:1.0.0
+          imagePullPolicy: IfNotPresent
+          name: petunia-engine
+          ports:
+          - containerPort: 8080
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "7"
+    creationTimestamp: "2026-03-14T15:02:27Z"
+    generation: 1
+    labels:
+      app: petunia-engine
+      pod-template-hash: d865bdcb
+    name: petunia-engine-d865bdcb
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: petunia-engine
+      uid: 003a70b6-b9cf-4426-8dfe-3c9bb993447d
+    resourceVersion: "18086942"
+    uid: 5f25fcf0-86ce-491d-ba12-e3dabfdfbfa4
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: petunia-engine
+        pod-template-hash: d865bdcb
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: petunia-engine
+          pod-template-hash: d865bdcb
+      spec:
+        containers:
+        - envFrom:
+          - configMapRef:
+              name: petunia-engine
+          image: roskenet/petunia-engine:2.1.3
+          imagePullPolicy: IfNotPresent
+          name: petunia-engine
+          ports:
+          - containerPort: 8080
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "3"
+    creationTimestamp: "2026-03-08T21:17:33Z"
+    generation: 2
+    labels:
+      app: petunia-engine
+      pod-template-hash: f996959d
+    name: petunia-engine-f996959d
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: petunia-engine
+      uid: 003a70b6-b9cf-4426-8dfe-3c9bb993447d
+    resourceVersion: "11937971"
+    uid: aa30d1bc-0476-49cf-917a-b298359a30e0
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: petunia-engine
+        pod-template-hash: f996959d
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: petunia-engine
+          pod-template-hash: f996959d
+      spec:
+        containers:
+        - envFrom:
+          - configMapRef:
+              name: petunia-engine
+          image: roskenet/petunia-engine:2.0.0
+          imagePullPolicy: IfNotPresent
+          name: petunia-engine
+          ports:
+          - containerPort: 8080
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2026-03-01T23:07:56Z"
+    generation: 2
+    labels:
+      app: polonium
+      pod-template-hash: 6889f8f794
+    name: polonium-6889f8f794
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: polonium
+      uid: 0d1d525d-7863-4ef7-a8de-63470c19572f
+    resourceVersion: "12012250"
+    uid: 730b8b7a-2ff7-464b-861f-e175f2d0a77f
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: polonium
+        pod-template-hash: 6889f8f794
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: polonium
+          pod-template-hash: 6889f8f794
+      spec:
+        containers:
+        - image: roskenet/polonium:3.1.1
+          imagePullPolicy: IfNotPresent
+          name: polonium
+          ports:
+          - containerPort: 8080
+            name: http
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "3"
+    creationTimestamp: "2026-03-15T21:33:37Z"
+    generation: 1
+    labels:
+      app: polonium
+      pod-template-hash: 6bd5bcdf64
+    name: polonium-6bd5bcdf64
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: polonium
+      uid: 0d1d525d-7863-4ef7-a8de-63470c19572f
+    resourceVersion: "18086954"
+    uid: 10c69368-0503-4beb-b818-fd05662f32ac
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: polonium
+        pod-template-hash: 6bd5bcdf64
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: polonium
+          pod-template-hash: 6bd5bcdf64
+      spec:
+        containers:
+        - image: roskenet/polonium:10.1.1
+          imagePullPolicy: IfNotPresent
+          name: polonium
+          ports:
+          - containerPort: 8080
+            name: http
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "2"
+    creationTimestamp: "2026-03-15T20:57:28Z"
+    generation: 2
+    labels:
+      app: polonium
+      pod-template-hash: 7c557c6dc7
+    name: polonium-7c557c6dc7
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: polonium
+      uid: 0d1d525d-7863-4ef7-a8de-63470c19572f
+    resourceVersion: "12013412"
+    uid: 399ce95e-e5de-4fe4-9ca6-6c062b65c5a2
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: polonium
+        pod-template-hash: 7c557c6dc7
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: polonium
+          pod-template-hash: 7c557c6dc7
+      spec:
+        containers:
+        - image: roskenet/polonium:10.1.0
+          imagePullPolicy: IfNotPresent
+          name: polonium
+          ports:
+          - containerPort: 8080
+            name: http
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2026-02-28T14:35:35Z"
+    generation: 1
+    labels:
+      app: postgres
+      pod-template-hash: 6b87c944b9
+    name: postgres-6b87c944b9
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: postgres
+      uid: 5719249a-e868-46c0-b32c-57312b08f653
+    resourceVersion: "18086994"
+    uid: 6405f3f5-cb1e-4863-b36c-34b3704576a0
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: postgres
+        pod-template-hash: 6b87c944b9
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: postgres
+          pod-template-hash: 6b87c944b9
+      spec:
+        containers:
+        - command:
+          - postgres
+          - -c
+          - config_file=/etc/postgres-config/postgresql.conf
+          image: postgres:17
+          imagePullPolicy: IfNotPresent
+          name: postgres
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /etc/postgres-config
+            name: postgres-config
+          - mountPath: /var/lib/postgresql/data
+            name: postgres-data
+        dnsPolicy: ClusterFirst
+        initContainers:
+        - command:
+          - sh
+          - -c
+          - |
+            mkdir -p /var/lib/postgresql/data
+            chown -R 999:999 /var/lib/postgresql/data
+            chmod 700 /var/lib/postgresql/data
+
+            if [ ! -f /var/lib/postgresql/data/PG_VERSION ]; then
+              echo "Initializing PostgreSQL database..."
+              su postgres -c "/usr/lib/postgresql/17/bin/initdb -D /var/lib/postgresql/data"
+
+              su postgres -c "/usr/lib/postgresql/17/bin/pg_ctl -D /var/lib/postgresql/data -o '-c listen_addresses=localhost' -w start"
+
+              echo "ALTER USER postgres WITH PASSWORD '${POSTGRES_PASSWORD}';" | su postgres -c "psql"
+              su postgres -c "/usr/lib/postgresql/17/bin/pg_ctl -D /var/lib/postgresql/data -m fast stop"
+            else
+              echo "PostgreSQL already initialized"
+            fi
+          env:
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: postgres-root-password
+                name: postgres
+          image: postgres:17
+          imagePullPolicy: IfNotPresent
+          name: postgres-init
+          resources: {}
+          securityContext:
+            runAsUser: 0
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /var/lib/postgresql/data
+            name: postgres-data
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext:
+          fsGroup: 999
+          runAsGroup: 999
+          runAsUser: 999
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: postgres
+          name: postgres-config
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-data
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2026-02-28T22:42:21Z"
+    generation: 1
+    labels:
+      app: valkey
+      pod-template-hash: 7cc94dc8dc
+    name: valkey-7cc94dc8dc
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: valkey
+      uid: eedfcaa8-7e74-4170-b743-0e820a5dbf22
+    resourceVersion: "18087020"
+    uid: e3274327-e947-4537-9d26-d89d2f95911f
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: valkey
+        pod-template-hash: 7cc94dc8dc
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: valkey
+          pod-template-hash: 7cc94dc8dc
+      spec:
+        containers:
+        - args:
+          - valkey-server
+          - /usr/local/etc/valkey/valkey.conf
+          image: valkey/valkey:latest
+          imagePullPolicy: Always
+          name: valkey
+          ports:
+          - containerPort: 6379
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+          - mountPath: /usr/local/etc/valkey/valkey.conf
+            name: config
+            subPath: valkey.conf
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+        volumes:
+        - configMap:
+            defaultMode: 420
+            name: valkey-config
+          name: config
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "1"
+    creationTimestamp: "2026-03-08T22:16:43Z"
+    generation: 2
+    labels:
+      app: villadiana
+      pod-template-hash: 594b5b7b56
+    name: villadiana-594b5b7b56
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: villadiana
+      uid: 7c9f1dcf-b6a9-4d9a-af6d-d84a7d2fc351
+    resourceVersion: "11940491"
+    uid: 9dd19783-5bd2-4ccc-a5f0-7ae6415f9490
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: villadiana
+        pod-template-hash: 594b5b7b56
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: villadiana
+          pod-template-hash: 594b5b7b56
+      spec:
+        containers:
+        - env:
+          - name: KEYCLOAK_VILLADIANA_SECRET
+            valueFrom:
+              secretKeyRef:
+                key: KEYCLOAK_VILLADIANA_SECRET
+                name: petunia-secret
+          - name: VALKEY_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: VALKEY_PASSWORD
+                name: petunia-secret
+          envFrom:
+          - configMapRef:
+              name: villadiana
+          image: roskenet/villadiana:4.1.0
+          imagePullPolicy: IfNotPresent
+          name: villadiana
+          ports:
+          - containerPort: 8080
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "5"
+    creationTimestamp: "2026-03-14T14:59:34Z"
+    generation: 1
+    labels:
+      app: villadiana
+      pod-template-hash: 65d6559b6d
+    name: villadiana-65d6559b6d
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: villadiana
+      uid: 7c9f1dcf-b6a9-4d9a-af6d-d84a7d2fc351
+    resourceVersion: "20412359"
+    uid: 696f766e-786c-455c-8061-cc5567ab89a7
+  spec:
+    replicas: 1
+    selector:
+      matchLabels:
+        app: villadiana
+        pod-template-hash: 65d6559b6d
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: villadiana
+          pod-template-hash: 65d6559b6d
+      spec:
+        containers:
+        - env:
+          - name: KEYCLOAK_VILLADIANA_SECRET
+            valueFrom:
+              secretKeyRef:
+                key: KEYCLOAK_VILLADIANA_SECRET
+                name: petunia-secret
+          - name: VALKEY_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: VALKEY_PASSWORD
+                name: petunia-secret
+          envFrom:
+          - configMapRef:
+              name: villadiana
+          image: roskenet/villadiana:4.3.2
+          imagePullPolicy: IfNotPresent
+          name: villadiana
+          ports:
+          - containerPort: 8080
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    availableReplicas: 1
+    fullyLabeledReplicas: 1
+    observedGeneration: 1
+    readyReplicas: 1
+    replicas: 1
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "3"
+    creationTimestamp: "2026-03-14T11:04:43Z"
+    generation: 2
+    labels:
+      app: villadiana
+      pod-template-hash: bf6b5c5f8
+    name: villadiana-bf6b5c5f8
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: villadiana
+      uid: 7c9f1dcf-b6a9-4d9a-af6d-d84a7d2fc351
+    resourceVersion: "11943000"
+    uid: fd70828d-ece5-4692-a0e2-b1dcadfdfca8
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: villadiana
+        pod-template-hash: bf6b5c5f8
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: villadiana
+          pod-template-hash: bf6b5c5f8
+      spec:
+        containers:
+        - env:
+          - name: KEYCLOAK_VILLADIANA_SECRET
+            valueFrom:
+              secretKeyRef:
+                key: KEYCLOAK_VILLADIANA_SECRET
+                name: petunia-secret
+          - name: VALKEY_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: VALKEY_PASSWORD
+                name: petunia-secret
+          envFrom:
+          - configMapRef:
+              name: villadiana
+          image: roskenet/villadiana:4.3.0
+          imagePullPolicy: IfNotPresent
+          name: villadiana
+          ports:
+          - containerPort: 8080
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "4"
+    creationTimestamp: "2026-03-14T11:12:53Z"
+    generation: 2
+    labels:
+      app: villadiana
+      pod-template-hash: cc4b79db5
+    name: villadiana-cc4b79db5
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: villadiana
+      uid: 7c9f1dcf-b6a9-4d9a-af6d-d84a7d2fc351
+    resourceVersion: "11950903"
+    uid: 65630aec-6970-4b38-b209-670be2df4e0d
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: villadiana
+        pod-template-hash: cc4b79db5
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: villadiana
+          pod-template-hash: cc4b79db5
+      spec:
+        containers:
+        - env:
+          - name: KEYCLOAK_VILLADIANA_SECRET
+            valueFrom:
+              secretKeyRef:
+                key: KEYCLOAK_VILLADIANA_SECRET
+                name: petunia-secret
+          - name: VALKEY_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: VALKEY_PASSWORD
+                name: petunia-secret
+          envFrom:
+          - configMapRef:
+              name: villadiana
+          image: roskenet/villadiana:4.3.1
+          imagePullPolicy: IfNotPresent
+          name: villadiana
+          ports:
+          - containerPort: 8080
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 2
+    replicas: 0
+- apiVersion: apps/v1
+  kind: ReplicaSet
+  metadata:
+    annotations:
+      deployment.kubernetes.io/desired-replicas: "1"
+      deployment.kubernetes.io/max-replicas: "2"
+      deployment.kubernetes.io/revision: "2"
+    creationTimestamp: "2026-03-14T10:04:14Z"
+    generation: 2
+    labels:
+      app: villadiana
+      pod-template-hash: d5b5cb658
+    name: villadiana-d5b5cb658
+    namespace: default
+    ownerReferences:
+    - apiVersion: apps/v1
+      blockOwnerDeletion: true
+      controller: true
+      kind: Deployment
+      name: villadiana
+      uid: 7c9f1dcf-b6a9-4d9a-af6d-d84a7d2fc351
+    resourceVersion: "11942673"
+    uid: 68a89d68-7f36-4613-a5ac-7cda37c9baa2
+  spec:
+    replicas: 0
+    selector:
+      matchLabels:
+        app: villadiana
+        pod-template-hash: d5b5cb658
+    template:
+      metadata:
+        creationTimestamp: null
+        labels:
+          app: villadiana
+          pod-template-hash: d5b5cb658
+      spec:
+        containers:
+        - env:
+          - name: KEYCLOAK_VILLADIANA_SECRET
+            valueFrom:
+              secretKeyRef:
+                key: KEYCLOAK_VILLADIANA_SECRET
+                name: petunia-secret
+          - name: VALKEY_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: VALKEY_PASSWORD
+                name: petunia-secret
+          envFrom:
+          - configMapRef:
+              name: villadiana
+          image: roskenet/villadiana:4.2.1
+          imagePullPolicy: IfNotPresent
+          name: villadiana
+          ports:
+          - containerPort: 8080
+            name: www
+            protocol: TCP
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+        dnsPolicy: ClusterFirst
+        restartPolicy: Always
+        schedulerName: default-scheduler
+        securityContext: {}
+        terminationGracePeriodSeconds: 30
+  status:
+    observedGeneration: 2
+    replicas: 0
+kind: List
+metadata:
+  resourceVersion: ""

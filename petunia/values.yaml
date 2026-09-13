@@ -1,0 +1,12 @@
+# cert-manager Helm values
+# Used with: helm install cert-manager jetstack/cert-manager --namespace cert-manager -f values.yaml
+
+# Install Custom Resource Definitions required by cert-manager
+installCRDs: true
+
+# Feature gates for cert-manager behavior
+config:
+  featureGates:
+    # Allow ACME HTTP-01 challenges with ImplementationSpecific path type
+    # Required for Nginx Ingress Controller compatibility
+    ACMEHTTP01IngressPathTypeExact: false

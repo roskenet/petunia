@@ -1,0 +1,27 @@
+# ClusterIssuer for Let's Encrypt
+# This resource enables automatic TLS certificate provisioning using Let's Encrypt
+#
+# IMPORTANT: Update the 'email' field below to your own email address before applying
+# The email is used by Let's Encrypt for account management and certificate-related notices
+#
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-prod
+spec:
+  acme:
+    email: felix.roske@roskenet.de  # ← CHANGE THIS TO YOUR EMAIL
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      name: letsencrypt-prod
+    solvers:
+    - http01:
+        ingress:
+          ingressClassName: nginx
+          podTemplate:
+            metadata:
+              annotations:
+                nginx.ingress.kubernetes.io/enable-access-log: "false"
+          serviceType: ClusterIP
+          pathType: ImplementationSpecific
+
